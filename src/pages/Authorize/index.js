@@ -33,10 +33,8 @@ const Authorize = () => {
         }
       })
       .catch((e) => console.log(e));
-    setAuthorized((prev) => ({ ...prev, hubSpot: true }));
+    // setAuthorized((prev) => ({ ...prev, hubSpot: true }));
   };
-
-  const signeasyTokenAuthHandler = async () => {};
 
   const signeasyAuthHandler = async () => {
     await axios
@@ -44,7 +42,6 @@ const Authorize = () => {
         "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/sign-in"
       )
       .then((response) => {
-        console.log(response);
         const authUrl = response?.data?.data?.url;
 
         if (window) {
@@ -149,6 +146,7 @@ const Authorize = () => {
             />
           )}
         </div>
+
         {/* // signeasy */}
         {authorized?.hubSpot && (
           <div className="flex flex-col items-center">
