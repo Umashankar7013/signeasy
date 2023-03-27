@@ -3,14 +3,14 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const Authorize = () => {
-  const [authorized, setAuthorized] = useState({
+  const [externalPopup, setExternalPopup] = useState(null);
+  const [authorized, setAuthorized] = useLocalStorage("authStatus", {
     hubSpot: false,
     signeasy: false,
   });
-  const [externalPopup, setExternalPopup] = useState(null);
-  const router = useRouter();
 
   const hubSpotAuthHandler = async () => {
     await axios
@@ -35,7 +35,6 @@ const Authorize = () => {
         }
       })
       .catch((e) => console.log(e));
-    // setAuthorized((prev) => ({ ...prev, hubSpot: true }));
   };
 
   const signeasyAuthHandler = async () => {
@@ -73,31 +72,20 @@ const Authorize = () => {
         timer && clearInterval(timer);
         return;
       }
-      console.log(externalPopup, "externalPopup");
+      // console.log(externalPopup, "externalPopup");
       const currentUrl = externalPopup.location.href;
-      console.log(currentUrl, "currentUrl");
+      // console.log(currentUrl, "currentUrl");
       if (!currentUrl) {
         return;
       }
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       if (status) {
+        setAuthorized((prev) => ({ ...prev, hubSpot: true }));
         externalPopup.close();
         console.log(`The popup URL has URL status param = ${status}`);
-        YourApi.endpoint(status)
-          .then(() => {
-            // change UI to show after the code was stored
-            console.log("Success");
-          })
-          .catch(() => {
-            // API error
-            console.log("error");
-          })
-          .finally(() => {
-            // clear timer at the end
-            setExternalPopup(null);
-            timer && clearInterval(timer);
-          });
+        setExternalPopup(null);
+        timer && clearInterval(timer);
       }
     }, 500);
   }, [externalPopup, router]);

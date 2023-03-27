@@ -1,11 +1,13 @@
-import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import Authorize from "../Authorize";
 
 const Home = () => {
-  const router = useRouter();
-  return (
+  const [showAuth, setShowAuth] = useState(false);
+  return showAuth ? (
+    <Authorize />
+  ) : (
     <div className="h-[100vh] w-[100vw] flex flex-col pt-[250px] items-center">
       <div className="text-[#1088E7] font-[600] font-inter text-[30px]">
         Signeasy
@@ -30,7 +32,7 @@ const Home = () => {
         }
         className="bg-[#1088E7] px-[14px] py-[10px] mt-[30px]"
         titleClassName="text-white"
-        onClick={() => router.push("/Authorize")}
+        onClick={() => setShowAuth(true)}
       />
     </div>
   );
