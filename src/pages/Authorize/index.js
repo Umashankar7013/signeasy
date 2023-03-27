@@ -71,16 +71,18 @@ const Authorize = () => {
         timer && clearInterval(timer);
         return;
       }
+      console.log(externalPopup, "externalPopup");
       const currentUrl = externalPopup.location.href;
+      console.log(currentUrl, "currentUrl");
       if (!currentUrl) {
         return;
       }
       const searchParams = new URL(currentUrl).searchParams;
-      const code = searchParams.get("code");
-      if (code) {
+      const status = searchParams.get("status");
+      if (status) {
         externalPopup.close();
-        console.log(`The popup URL has URL code param = ${code}`);
-        YourApi.endpoint(code)
+        console.log(`The popup URL has URL status param = ${status}`);
+        YourApi.endpoint(status)
           .then(() => {
             // change UI to show after the code was stored
             console.log("Success");
