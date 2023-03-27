@@ -120,7 +120,7 @@ const Authorize = () => {
           access_token: accessToken,
         }));
         axios({
-          method: "post",
+          method: "put",
           url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/store-token",
           data: {
             uuid: hubSpotAuth?.uuid,
