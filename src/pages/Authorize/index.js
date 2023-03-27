@@ -106,7 +106,7 @@ const Authorize = () => {
       }
       // console.log(externalPopup, "externalPopup");
       const currentUrl = signeasyPopup.location.href;
-      console.log(currentUrl, "currentUrl");
+      // console.log(currentUrl, "currentUrl");
       if (!currentUrl) {
         return;
       }
@@ -128,7 +128,6 @@ const Authorize = () => {
           },
         }).then((response) => {
           if (response?.data?.is_success) {
-            console.log(response?.is_success, "uma");
             signeasyPopup.close();
             console.log(`The popup URL has URL status param = ${status}`);
             setSigneasyPopup(null);
