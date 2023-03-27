@@ -82,8 +82,9 @@ const Authorize = () => {
       }
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
+      const uuid = searchParams.get("uuid");
       if (status) {
-        setHubspotAuth((prev) => ({ ...prev, success: true }));
+        setHubspotAuth((prev) => ({ ...prev, success: true, uuid }));
         externalPopup.close();
         console.log(`The popup URL has URL status param = ${status}`);
         setExternalPopup(null);
@@ -109,6 +110,7 @@ const Authorize = () => {
       }
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
+
       if (status) {
         setSigneasyAuth((prev) => ({ ...prev, success: true }));
         signeasyPopup.close();
