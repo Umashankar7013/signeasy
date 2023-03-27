@@ -78,7 +78,12 @@ const Authorize = () => {
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       if (status) {
-        setAuthorized((prev) => ({ ...prev, hubSpot: true }));
+        if (authorized?.hubSpot) {
+          setAuthorized((prev) => ({ ...prev, signeasy: true }));
+        } else {
+          setAuthorized((prev) => ({ ...prev, hubSpot: true }));
+        }
+
         externalPopup.close();
         console.log(`The popup URL has URL status param = ${status}`);
         setExternalPopup(null);
