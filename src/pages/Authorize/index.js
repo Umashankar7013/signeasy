@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import AuthDone from "../AuthDone/Index";
 
 const Authorize = () => {
   const [externalPopup, setExternalPopup] = useState(null);
@@ -138,7 +139,9 @@ const Authorize = () => {
     }, 500);
   }, [signeasyPopup]);
 
-  return (
+  return hubSpotAuth?.success && signeasyAuth?.success ? (
+    <AuthDone />
+  ) : (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
       <div className="flex items-start pt-[30px]">
         <div className="text-[24px] pr-[20px] font-inter font-[500]">
