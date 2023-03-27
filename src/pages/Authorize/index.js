@@ -6,9 +6,14 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const Authorize = () => {
   const [externalPopup, setExternalPopup] = useState(null);
-  const [authorized, setAuthorized] = useLocalStorage("authStatus", {
-    hubSpot: false,
-    signeasy: false,
+  const [signeasyPopup, setSigneasyPopup] = useState(null);
+  const [hubSpotAuth, setHubspotAuth] = useLocalStorage("hubSpotAuth", {
+    success: false,
+    uuid: "",
+  });
+  const [signeasyAuth, setSigneasyAuth] = useLocalStorage("signeasyAuth", {
+    success: false,
+    access_token: "",
   });
 
   const hubSpotAuthHandler = async () => {
@@ -54,7 +59,7 @@ const Authorize = () => {
             title,
             `width=${width},height=${height},left=${left},top=${top}`
           );
-          setExternalPopup(popup);
+          setSigneasyPopup(popup);
         }
       })
       .catch((e) => console.log(e));
@@ -78,12 +83,7 @@ const Authorize = () => {
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       if (status) {
-        if (authorized?.hubSpot) {
-          setAuthorized((prev) => ({ ...prev, signeasy: true }));
-        } else {
-          setAuthorized((prev) => ({ ...prev, hubSpot: true }));
-        }
-
+        setHubspotAuth((prev) => ({ ...prev, success: true }));
         externalPopup.close();
         console.log(`The popup URL has URL status param = ${status}`);
         setExternalPopup(null);
@@ -91,6 +91,33 @@ const Authorize = () => {
       }
     }, 500);
   }, [externalPopup]);
+
+  useEffect(() => {
+    if (!signeasyPopup) {
+      return;
+    }
+    const timer = setInterval(() => {
+      if (!signeasyPopup) {
+        timer && clearInterval(timer);
+        return;
+      }
+      // console.log(externalPopup, "externalPopup");
+      const currentUrl = signeasyPopup.location.href;
+      console.log(currentUrl, "currentUrl");
+      if (!currentUrl) {
+        return;
+      }
+      const searchParams = new URL(currentUrl).searchParams;
+      const status = searchParams.get("status");
+      if (status) {
+        setSigneasyAuth((prev) => ({ ...prev, success: true }));
+        signeasyPopup.close();
+        console.log(`The popup URL has URL status param = ${status}`);
+        setSigneasyPopup(null);
+        timer && clearInterval(timer);
+      }
+    }, 500);
+  }, [signeasyPopup]);
 
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
@@ -117,7 +144,7 @@ const Authorize = () => {
           <div className="text-[13px] pt-[60px] font-[600] pb-[30px] text-gray-400 font-inter">
             WE NEED PERMISSION TO ACCESS YOUR ACCOUNTS
           </div>
-          {authorized?.hubSpot ? (
+          {hubSpotAuth?.success ? (
             <div>
               <div className="text-[green] font-inter text-center pb-[10px]">
                 Authorized Succesfully
@@ -127,7 +154,7 @@ const Authorize = () => {
                 className="w-[250px] border-[red]"
                 titleClassName="py-[5px] text-[red]"
                 onClick={() =>
-                  setAuthorized((prev) => ({ ...prev, hubSpot: false }))
+                  setHubspotAuth((prev) => ({ ...prev, success: false }))
                 }
               />
             </div>
@@ -142,7 +169,7 @@ const Authorize = () => {
         </div>
 
         {/* // signeasy */}
-        {authorized?.hubSpot && (
+        {hubSpotAuth?.success && (
           <div className="flex flex-col items-center">
             <ImageWithBasePath
               src="signeasyIcon"
@@ -157,7 +184,7 @@ const Authorize = () => {
             <div className="text-[13px] pt-[60px] font-[600] pb-[30px] text-gray-400 font-inter">
               WE NEED PERMISSION TO ACCESS YOUR ACCOUNTS
             </div>
-            {authorized?.signeasy ? (
+            {signeasyAuth?.success ? (
               <div>
                 <div className="text-[green] font-inter text-center pb-[10px]">
                   Authorized Succesfully
@@ -167,7 +194,7 @@ const Authorize = () => {
                   className="w-[250px] border-[red]"
                   titleClassName="py-[5px] text-[red]"
                   onClick={() =>
-                    setAuthorized((prev) => ({ ...prev, signeasy: false }))
+                    setSigneasyAuth((prev) => ({ ...prev, success: false }))
                   }
                 />
               </div>
