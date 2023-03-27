@@ -29,7 +29,6 @@ const Authorize = () => {
             title,
             `width=${width},height=${height},left=${left},top=${top}`
           );
-          console.log(popup);
           setExternalPopup(popup);
         }
       })
@@ -43,7 +42,6 @@ const Authorize = () => {
       )
       .then((response) => {
         const authUrl = response?.data?.data?.url;
-
         if (window) {
           const width = 500;
           const height = 400;
@@ -59,7 +57,6 @@ const Authorize = () => {
         }
       })
       .catch((e) => console.log(e));
-    setAuthorized((prev) => ({ ...prev, signeasy: true }));
   };
 
   useEffect(() => {
