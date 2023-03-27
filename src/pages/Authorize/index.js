@@ -10,28 +10,34 @@ const Authorize = () => {
     signeasy: false,
   });
   const [externalPopup, setExternalPopup] = useState(null);
-  const [authUrl, setAuthUrl] = useState("");
+  const [authUrl, setAuthUrl] = useState(null);
 
   const hubSpotAuthHandler = async () => {
     await axios
       .get("https://13.235.22.210/api/v1/oauth/hubspot/sign-in")
       .then((response) => {
-        setAuthUrl(response?.data?.data?.url);
+        const authUrl = response?.data?.data?.url;
 
-        // if (window) {
-        //   const width = 500;
-        //   const height = 400;
-        //   const left = window.screenX + (window.outerWidth - width) / 2;
-        //   const top = window.screenY + (window.outerHeight - height) / 2.5;
-        //   const title = "hubspot_auth";
-        //   const popup = window.open(
-        //     authUrl,
-        //     title,
-        //     `width=${width},height=${height},left=${left},top=${top}`
-        //   );
-        //   console.log(popup?.location, "uma");
-        //   setExternalPopup(popup);
-        // }
+        if (window) {
+          const width = 500;
+          const height = 400;
+          const left = window.screenX + (window.outerWidth - width) / 2;
+          const top = window.screenY + (window.outerHeight - height) / 2.5;
+          const title = "hubspot_auth";
+          const popup = window.open(
+            authUrl,
+            title,
+            `width=${width},height=${height},left=${left},top=${top}`
+          );
+          popup.addEventListener("load", () => {
+            // Get the URL of the popup window
+            var popupUrl = popup.location.href;
+
+            // Do something with the URL
+            console.log(popupUrl, "uma");
+          });
+          // setExternalPopup(popup);
+        }
       })
       .catch((e) => console.log(e));
   };
@@ -113,20 +119,12 @@ const Authorize = () => {
               />
             </div>
           ) : (
-            <OauthPopup
-              url={authUrl}
-              onClose={() => console.log("popup closed")}
-              onCode={(code, params) => {
-                console.log(code, params, "uma");
-              }}
-            >
-              <PrimaryButton
-                title="Authorize"
-                className="w-[250px] border-[#1088E7]"
-                titleClassName="py-[5px] text-[#1088E7]"
-                onClick={hubSpotAuthHandler}
-              />
-            </OauthPopup>
+            <PrimaryButton
+              title="Authorize"
+              className="w-[250px] border-[#1088E7]"
+              titleClassName="py-[5px] text-[#1088E7]"
+              onClick={hubSpotAuthHandler}
+            />
           )}
         </div>
         {/* // signeasy */}
@@ -171,14 +169,16 @@ const Authorize = () => {
             )}
           </div>
         )}
-
-        {/* <OauthPopup
-          url="http://FriendlyMultiNationalTechConglomerate.com"
-          // onCode={onCode}
-          // onClose={onClose}
-        >
-          <div>Click me to open a Popup</div>
-        </OauthPopup> */}
+        {/* 
+        {authUrl && (
+          <OauthPopup
+            url={authUrl}
+            onClose={() => console.log("popup closed")}
+            onCode={(code, params) => {
+              console.log(code, params, "uma");
+            }}
+          />
+        )} */}
       </div>
     </div>
   );
