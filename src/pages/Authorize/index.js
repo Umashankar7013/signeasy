@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
@@ -88,7 +87,7 @@ const Authorize = () => {
         timer && clearInterval(timer);
       }
     }, 500);
-  }, [externalPopup, router]);
+  }, [externalPopup]);
 
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
