@@ -42,6 +42,7 @@ const Authorize = () => {
       )
       .then((response) => {
         const authUrl = response?.data?.data?.url;
+        console.log(authUrl, "authUrl");
         if (window) {
           const width = 500;
           const height = 400;
