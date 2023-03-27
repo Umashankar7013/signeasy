@@ -65,6 +65,8 @@ const Authorize = () => {
       .catch((e) => console.log(e));
   };
 
+  const signeasyTokenAuthHandler = async () => {};
+
   useEffect(() => {
     if (!externalPopup) {
       return;
@@ -110,13 +112,27 @@ const Authorize = () => {
       }
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
-
-      if (status) {
-        setSigneasyAuth((prev) => ({ ...prev, success: true }));
-        signeasyPopup.close();
-        console.log(`The popup URL has URL status param = ${status}`);
-        setSigneasyPopup(null);
-        timer && clearInterval(timer);
+      const accessToken = searchParams.get("access_token");
+      if (status === "success") {
+        setSigneasyAuth((prev) => ({
+          ...prev,
+          success: true,
+          access_token: accessToken,
+        }));
+        axios({
+          method: "post",
+          url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/store-token",
+          data: {
+            uuid: hubSpotAuth?.uuid,
+            signeasy_access_token: accessToken,
+          },
+        }).then((response) => {
+          console.log(response, "response");
+          // signeasyPopup.close();
+          // console.log(`The popup URL has URL status param = ${status}`);
+          // setSigneasyPopup(null);
+          // timer && clearInterval(timer);
+        });
       }
     }, 500);
   }, [signeasyPopup]);
