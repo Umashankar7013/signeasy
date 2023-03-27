@@ -127,11 +127,13 @@ const Authorize = () => {
             signeasy_access_token: accessToken,
           },
         }).then((response) => {
-          console.log(response, "response");
-          // signeasyPopup.close();
-          // console.log(`The popup URL has URL status param = ${status}`);
-          // setSigneasyPopup(null);
-          // timer && clearInterval(timer);
+          if (response?.data?.is_success) {
+            console.log(response?.is_success, "uma");
+            signeasyPopup.close();
+            console.log(`The popup URL has URL status param = ${status}`);
+            setSigneasyPopup(null);
+            timer && clearInterval(timer);
+          }
         });
       }
     }, 500);
