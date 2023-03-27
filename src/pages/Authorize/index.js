@@ -11,37 +11,32 @@ const Authorize = () => {
   const [externalPopup, setExternalPopup] = useState(null);
 
   const hubSpotAuthHandler = async () => {
-    // await axios
-    //   .get("http://13.235.22.210:3000/api/v1/oauth/hubspot/sign-in")
-    //   .then((response) => {
-    //     console.log(response);
-    //   });
-    // await fetch("http://13.235.22.210:3000/api/v1/oauth/hubspot/sign-in")
-    //   .then((r) => console.log(r))
-    //   .catch((e) => console.log(e));
-    if (window) {
-      const width = 500;
-      const height = 400;
-      const left = window.screenX + (window.outerWidth - width) / 2;
-      const top = window.screenY + (window.outerHeight - height) / 2.5;
-      const title = `title`;
-      const popup = window.open(
-        "https://app.hubspot.com/oauth/authorize?client_id=6e11be2b-8da6-46b5-b38b-ed37499f9841&scope=crm.objects.contacts.read&redirect_uri=http%3A%2F%2F13.235.22.210%3A3000%2Fapi%2Fv1%2Foauth%2Fhubspot%2Fcallback",
-        title,
-        `width=${width},height=${height},left=${left},top=${top}`
-      );
-      setExternalPopup(popup);
-    }
-
-    // setAuthorized((prev) => ({ ...prev, hubSpot: true }));
+    await axios
+      .get("https://13.235.22.210/api/v1/oauth/hubspot/sign-in")
+      .then((response) => {
+        const authUrl = response?.data?.data?.url;
+        if (window) {
+          const width = 500;
+          const height = 400;
+          const left = window.screenX + (window.outerWidth - width) / 2;
+          const top = window.screenY + (window.outerHeight - height) / 2.5;
+          const title = "hubspot_auth";
+          const popup = window.open(
+            authUrl,
+            title,
+            `width=${width},height=${height},left=${left},top=${top}`
+          );
+          setExternalPopup(popup);
+        }
+      })
+      .catch((e) => console.log(e));
   };
 
   useEffect(() => {
     if (!externalPopup) {
       return;
     }
-
-    // console.log(externalPopup?.location, "uma");
+    console.log(externalPopup.location.href, "uma");
 
     const timer = setInterval(() => {
       if (!externalPopup) {
@@ -49,7 +44,6 @@ const Authorize = () => {
         return;
       }
       const currentUrl = externalPopup.location.href;
-      console.log(externalPopup.location.href, "uma");
       if (!currentUrl) {
         return;
       }
@@ -61,7 +55,7 @@ const Authorize = () => {
         YourApi.endpoint(code)
           .then(() => {
             // change UI to show after the code was stored
-            console.log("first");
+            console.log("Success");
           })
           .catch(() => {
             // API error
