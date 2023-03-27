@@ -71,7 +71,7 @@ const Authorize = () => {
       }
       // console.log(externalPopup, "externalPopup");
       const currentUrl = externalPopup.location.href;
-      // console.log(currentUrl, "currentUrl");
+      console.log(currentUrl, "currentUrl");
       if (!currentUrl) {
         return;
       }
