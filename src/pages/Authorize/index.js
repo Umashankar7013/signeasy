@@ -10,12 +10,14 @@ const Authorize = () => {
   const [signeasyPopup, setSigneasyPopup] = useState(null);
   const [hubSpotAuth, setHubspotAuth] = useLocalStorage("hubSpotAuth", {
     success: false,
-    uuid: "",
+    userId: "",
+    portalId: "",
   });
   const [signeasyAuth, setSigneasyAuth] = useLocalStorage("signeasyAuth", {
     success: false,
     access_token: "",
   });
+  const redirectUri = "https://signeasy.vercel.app";
 
   const popupHandler = async ({ url }) => {
     let popup;
@@ -34,19 +36,28 @@ const Authorize = () => {
     return popup || {};
   };
 
-  const revokeHandler = async () => {};
+  const revokeHandler = async ({ url, name }) => {
+    const data = await axios({
+      method: "delete",
+      url,
+      params: {
+        hubspot_user_id: hubSpotAuth?.userId,
+        hubspot_portal_id: hubSpotAuth?.portalId,
+      },
+    });
+    console.log(data, "delete");
+  };
 
   const hubSpotAuthHandler = async () => {
     const popup = await popupHandler({
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/sign-in?redirect_uri=https://signeasy.vercel.app/",
+      url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/sign-in?redirect_uri=${redirectUri}/`,
     });
     setHubspotPopup(popup);
-    // https://signeasy.vercel.app/
   };
 
   const signeasyAuthHandler = async () => {
     const popup = await popupHandler({
-      url: "",
+      url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/signeasy/sign-in?redirect_uri=${redirectUri}&hubspot_user_id=${hubSpotAuth?.userId}&hubspot_portal_id=${hubSpotAuth?.portalId}`,
     });
     setSigneasyPopup(popup);
   };
@@ -64,12 +75,17 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
-      console.log(currentUrl, "curren");
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
-      const uuid = searchParams.get("uuid");
+      const userId = searchParams.get("hubspot_user_id");
+      const portalId = searchParams.get("hubspot_portal_id");
       if (status === "success") {
-        setHubspotAuth((prev) => ({ ...prev, success: true, uuid }));
+        setHubspotAuth((prev) => ({
+          ...prev,
+          success: true,
+          userId,
+          portalId,
+        }));
         hubspotPopup.close();
         console.log(`The popup URL has URL status param = ${status}`);
         setHubspotPopup(null);
@@ -156,7 +172,9 @@ const Authorize = () => {
                 className="w-[250px] border-[red]"
                 titleClassName="py-[5px] text-[red]"
                 onClick={() =>
-                  setHubspotAuth((prev) => ({ ...prev, success: false }))
+                  revokeHandler({
+                    url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot/revoke",
+                  })
                 }
               />
             </div>
