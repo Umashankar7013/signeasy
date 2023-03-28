@@ -37,15 +37,16 @@ const Authorize = () => {
   };
 
   const revokeHandler = async ({ url, name }) => {
-    const data = await axios({
+    await axios({
       method: "delete",
       url,
       params: {
         hubspot_user_id: hubSpotAuth?.userId,
         hubspot_portal_id: hubSpotAuth?.portalId,
       },
+    }).then((response) => {
+      console.log(response, "delete");
     });
-    console.log(data, "delete");
   };
 
   const hubSpotAuthHandler = async () => {
