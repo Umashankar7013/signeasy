@@ -66,8 +66,6 @@ const Authorize = () => {
       .catch((e) => console.log(e));
   };
 
-  const signeasyTokenAuthHandler = async () => {};
-
   useEffect(() => {
     if (!externalPopup) {
       return;
@@ -128,6 +126,7 @@ const Authorize = () => {
             signeasy_access_token: accessToken,
           },
         }).then((response) => {
+          console.log(response);
           if (response?.data?.is_success) {
             signeasyPopup.close();
             console.log(`The popup URL has URL status param = ${status}`);
