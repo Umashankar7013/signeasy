@@ -117,13 +117,14 @@ const Authorize = () => {
       console.log(currentUrl, "sign");
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
-      const accessToken = searchParams.get("access_token");
       if (status === "success") {
         setSigneasyAuth((prev) => ({
           ...prev,
           success: true,
-          access_token: accessToken,
         }));
+        signeasyPopup.close();
+        setSigneasyPopup(null);
+        timer && clearInterval(timer);
       }
     }, 500);
   }, [signeasyPopup]);
