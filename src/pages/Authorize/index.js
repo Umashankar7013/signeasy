@@ -126,9 +126,7 @@ const Authorize = () => {
     }, 500);
   }, [signeasyPopup]);
 
-  return hubSpotAuth?.success && signeasyAuth?.success ? (
-    <AuthDone />
-  ) : (
+  return (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
       <div className="flex items-start pt-[30px]">
         <div className="text-[24px] pr-[20px] font-inter font-[500]">
