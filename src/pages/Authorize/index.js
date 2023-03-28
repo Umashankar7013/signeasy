@@ -6,7 +6,7 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 import AuthDone from "../AuthDone/Index";
 
 const Authorize = () => {
-  const [externalPopup, setExternalPopup] = useState(null);
+  const [hubspotPopup, setHubspotPopup] = useState(null);
   const [signeasyPopup, setSigneasyPopup] = useState(null);
   const [hubSpotAuth, setHubspotAuth] = useLocalStorage("hubSpotAuth", {
     success: false,
@@ -17,82 +17,68 @@ const Authorize = () => {
     access_token: "",
   });
 
-  const hubSpotAuthHandler = async () => {
+  const popupHandler = async ({ url }) => {
+    let popup;
     await axios
-      .get(
-        "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/sign-in"
-      )
+      .get(url)
       .then((response) => {
         const authUrl = response?.data?.data?.url;
         if (window) {
-          const width = 500;
-          const height = 400;
+          const width = 1000;
+          const height = 700;
           const left = window.screenX + (window.outerWidth - width) / 2;
           const top = window.screenY + (window.outerHeight - height) / 2.5;
-          const title = "hubspot_auth";
-          const popup = window.open(
+          const title = "auth";
+          popup = window.open(
             authUrl,
             title,
-            `width=${width},height=${height},left=${left},top=${top}`
+            `width=${width},height=${height},left=${left},top=${top},modal=yes`
           );
-          setExternalPopup(popup);
         }
       })
       .catch((e) => console.log(e));
+    return popup || {};
+  };
+
+  const hubSpotAuthHandler = async () => {
+    const popup = await popupHandler({
+      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/sign-in",
+    });
+    setHubspotPopup(popup);
   };
 
   const signeasyAuthHandler = async () => {
-    await axios
-      .get(
-        "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/sign-in"
-      )
-      .then((response) => {
-        const authUrl = response?.data?.data?.url;
-        console.log(authUrl, "authUrl");
-        if (window) {
-          const width = 500;
-          const height = 400;
-          const left = window.screenX + (window.outerWidth - width) / 2;
-          const top = window.screenY + (window.outerHeight - height) / 2.5;
-          const title = "hubspot_auth";
-          const popup = window.open(
-            authUrl,
-            title,
-            `width=${width},height=${height},left=${left},top=${top}`
-          );
-          setSigneasyPopup(popup);
-        }
-      })
-      .catch((e) => console.log(e));
+    const popup = await popupHandler({
+      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/sign-in",
+    });
+    setSigneasyPopup(popup);
   };
 
   useEffect(() => {
-    if (!externalPopup) {
+    if (!hubspotPopup) {
       return;
     }
     const timer = setInterval(() => {
-      if (!externalPopup) {
+      if (!hubspotPopup) {
         timer && clearInterval(timer);
         return;
       }
-      // console.log(externalPopup, "externalPopup");
-      const currentUrl = externalPopup.location.href;
-      console.log(currentUrl, "currentUrl");
+      const currentUrl = hubspotPopup.location.href;
       if (!currentUrl) {
         return;
       }
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       const uuid = searchParams.get("uuid");
-      if (status) {
+      if (status === "success") {
         setHubspotAuth((prev) => ({ ...prev, success: true, uuid }));
-        externalPopup.close();
+        hubspotPopup.close();
         console.log(`The popup URL has URL status param = ${status}`);
-        setExternalPopup(null);
+        setHubspotPopup(null);
         timer && clearInterval(timer);
       }
     }, 500);
-  }, [externalPopup]);
+  }, [hubspotPopup]);
 
   useEffect(() => {
     if (!signeasyPopup) {
@@ -103,9 +89,7 @@ const Authorize = () => {
         timer && clearInterval(timer);
         return;
       }
-      // console.log(externalPopup, "externalPopup");
       const currentUrl = signeasyPopup.location.href;
-      // console.log(currentUrl, "currentUrl");
       if (!currentUrl) {
         return;
       }
@@ -126,7 +110,6 @@ const Authorize = () => {
             signeasy_access_token: accessToken,
           },
         }).then((response) => {
-          console.log(response);
           if (response?.data?.is_success) {
             signeasyPopup.close();
             console.log(`The popup URL has URL status param = ${status}`);
