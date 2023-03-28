@@ -45,7 +45,13 @@ const Authorize = () => {
         hubspot_portal_id: hubSpotAuth?.portalId,
       },
     }).then((response) => {
-      console.log(response, "delete");
+      if (response?.data?.is_success) {
+        if (name === "hubspot") {
+          setHubspotAuth((prev) => ({ ...prev, success: false }));
+        } else {
+          setSigneasyAuth((prev) => ({ ...prev, success: false }));
+        }
+      }
     });
   };
 
@@ -108,6 +114,7 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
+      console.log(currentUrl, "sign");
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       const accessToken = searchParams.get("access_token");
@@ -117,21 +124,6 @@ const Authorize = () => {
           success: true,
           access_token: accessToken,
         }));
-        axios({
-          method: "put",
-          url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/store-token",
-          data: {
-            uuid: hubSpotAuth?.uuid,
-            signeasy_access_token: accessToken,
-          },
-        }).then((response) => {
-          if (response?.data?.is_success) {
-            signeasyPopup.close();
-            console.log(`The popup URL has URL status param = ${status}`);
-            setSigneasyPopup(null);
-            timer && clearInterval(timer);
-          }
-        });
       }
     }, 500);
   }, [signeasyPopup]);
@@ -175,6 +167,7 @@ const Authorize = () => {
                 onClick={() =>
                   revokeHandler({
                     url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/revoke",
+                    name: "hubspot",
                   })
                 }
               />
@@ -215,7 +208,9 @@ const Authorize = () => {
                   className="w-[250px] border-[red]"
                   titleClassName="py-[5px] text-[red]"
                   onClick={() =>
-                    setSigneasyAuth((prev) => ({ ...prev, success: false }))
+                    revokeHandler({
+                      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/revoke",
+                    })
                   }
                 />
               </div>
