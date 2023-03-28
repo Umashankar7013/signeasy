@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-import AuthDone from "../AuthDone/Index";
 
 const Authorize = () => {
   const [hubspotPopup, setHubspotPopup] = useState(null);
