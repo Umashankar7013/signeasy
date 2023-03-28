@@ -58,7 +58,7 @@ const Authorize = () => {
 
   const signeasyAuthHandler = async () => {
     const popup = await popupHandler({
-      url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/signeasy/sign-in?redirect_uri=${redirectUri}&hubspot_user_id=${hubSpotAuth?.userId}&hubspot_portal_id=${hubSpotAuth?.portalId}`,
+      url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/sign-in?redirect_uri=${redirectUri}&hubspot_user_id=${hubSpotAuth?.userId}&hubspot_portal_id=${hubSpotAuth?.portalId}`,
     });
     setSigneasyPopup(popup);
   };
@@ -174,7 +174,7 @@ const Authorize = () => {
                 titleClassName="py-[5px] text-[red]"
                 onClick={() =>
                   revokeHandler({
-                    url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot/revoke",
+                    url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/revoke",
                   })
                 }
               />
