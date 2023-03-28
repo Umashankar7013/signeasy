@@ -64,8 +64,8 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
+      console.log(currentUrl, "curren");
       const searchParams = new URL(currentUrl).searchParams;
-      console.log(searchParams, "uma");
       const status = searchParams.get("status");
       const uuid = searchParams.get("uuid");
       if (status === "success") {
