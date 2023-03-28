@@ -15,7 +15,6 @@ const Authorize = () => {
   });
   const [signeasyAuth, setSigneasyAuth] = useLocalStorage("signeasyAuth", {
     success: false,
-    access_token: "",
   });
   const redirectUri = "https://signeasy.vercel.app";
 
@@ -94,7 +93,6 @@ const Authorize = () => {
           portalId,
         }));
         hubspotPopup.close();
-        console.log(`The popup URL has URL status param = ${status}`);
         setHubspotPopup(null);
         timer && clearInterval(timer);
       }
@@ -114,7 +112,6 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
-      console.log(currentUrl, "sign");
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       if (status === "success") {
