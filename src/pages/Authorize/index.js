@@ -19,37 +19,34 @@ const Authorize = () => {
 
   const popupHandler = async ({ url }) => {
     let popup;
-    await axios
-      .get(url)
-      .then((response) => {
-        const authUrl = response?.data?.data?.url;
-        if (window) {
-          const width = 1000;
-          const height = 700;
-          const left = window.screenX + (window.outerWidth - width) / 2;
-          const top = window.screenY + (window.outerHeight - height) / 2.5;
-          const title = "auth";
-          popup = window.open(
-            authUrl,
-            title,
-            `width=${width},height=${height},left=${left},top=${top},modal=yes`
-          );
-        }
-      })
-      .catch((e) => console.log(e));
+    if (window) {
+      const width = 1000;
+      const height = 700;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2.5;
+      const title = "auth";
+      popup = window.open(
+        url,
+        title,
+        `width=${width},height=${height},left=${left},top=${top},modal=yes`
+      );
+    }
     return popup || {};
   };
 
+  const revokeHandler = async () => {};
+
   const hubSpotAuthHandler = async () => {
     const popup = await popupHandler({
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/sign-in",
+      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/sign-in?redirect_uri=https://signeasy.vercel.app/",
     });
     setHubspotPopup(popup);
+    // https://signeasy.vercel.app/
   };
 
   const signeasyAuthHandler = async () => {
     const popup = await popupHandler({
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/sign-in",
+      url: "",
     });
     setSigneasyPopup(popup);
   };
@@ -68,6 +65,7 @@ const Authorize = () => {
         return;
       }
       const searchParams = new URL(currentUrl).searchParams;
+      console.log(searchParams, "uma");
       const status = searchParams.get("status");
       const uuid = searchParams.get("uuid");
       if (status === "success") {
