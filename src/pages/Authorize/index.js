@@ -79,6 +79,7 @@ const Authorize = () => {
         return;
       }
     }, 500);
+    console.log(flag, "flag");
     if (flag) {
       console.log(searchParams, "ouput");
       return searchParams;
