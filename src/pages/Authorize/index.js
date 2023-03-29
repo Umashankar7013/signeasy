@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AuthorizeButton } from "../../components/AuthorizeButton";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
@@ -19,6 +19,7 @@ const Authorize = () => {
     success: false,
   });
   const redirectUri = "https://signeasy.vercel.app/Authorize";
+  const outputSearchParams = useRef({});
 
   const revokeHandler = async ({ url, name }) => {
     await axios({
@@ -54,9 +55,6 @@ const Authorize = () => {
   };
 
   const popupObserver = (popup) => {
-    let flag = false;
-    var searchParams;
-    console.log(popup, "popup");
     if (!popup) {
       return;
     }
@@ -69,20 +67,15 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
-      searchParams = new URL(currentUrl).searchParams;
-      const status = searchParams.get("status");
+      outputSearchParams.current = new URL(currentUrl).searchParams;
+      const status = outputSearchParams.current.get("status");
       if (status === "success") {
         flag = true;
-        console.log(searchParams, "inside");
-        // popup.close();
+        console.log(outputSearchParams, "inside");
+        popup.close();
         timer && clearInterval(timer);
       }
     }, 500);
-    console.log(flag, "flag");
-    if (flag) {
-      console.log(searchParams, "ouput");
-      return searchParams;
-    }
   };
 
   useEffect(() => {
@@ -114,9 +107,9 @@ const Authorize = () => {
     //     timer && clearInterval(timer);
     //   }
     // }, 500);
-    const data = popupObserver(hubspotPopup);
-    console.log(data, "data");
-  }, [hubspotPopup]);
+    popupObserver(hubspotPopup);
+    console.log(outputSearchParams, "data");
+  }, [hubspotPopup, outputSearchParams]);
 
   useEffect(() => {
     if (!signeasyPopup) {
