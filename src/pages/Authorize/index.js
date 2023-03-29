@@ -76,8 +76,6 @@ const Authorize = () => {
         "uma"
       );
       if (status === "success") {
-        flag = true;
-        console.log(outputSearchParams, "inside");
         popup.close();
         timer && clearInterval(timer);
       }
