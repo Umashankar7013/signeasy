@@ -75,6 +75,7 @@ const Authorize = () => {
       if (status === "success") {
         flag = true;
         outputSearchParams = { ...searchParams };
+        console.log(outputSearchParams, "inside");
         popup.close();
         timer && clearInterval(timer);
       }
