@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
+import { AuthLabels } from "../../components/AuthLabels";
 import { AuthorizeButton } from "../../components/AuthorizeButton";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
@@ -108,20 +109,11 @@ const Authorize = () => {
       <div className="md:flex w-[100%] justify-around">
         {/* // HubSpot */}
         <div className="flex flex-col items-center">
-          <div className="border-[1px] p-[12px] rounded-[8px] mt-[70px]">
-            <ImageWithBasePath
-              src="hubSpotIcon"
-              height={50}
-              width={50}
-              alt=""
-            />
-          </div>
-          <div className="text-[30px] font-inter font-bold pt-[30px]">
-            HubSpot
-          </div>
-          <div className="text-[13px] pt-[60px] font-[600] pb-[30px] text-gray-400 font-inter">
-            WE NEED PERMISSION TO ACCESS YOUR ACCOUNTS
-          </div>
+          <AuthLabels
+            imageName={"hubSpotIcon"}
+            title="HubSpot"
+            imageClass="p-[12px]"
+          />
           {hubSpotAuth?.success ? (
             <RevokeButton
               onClick={() =>
@@ -135,23 +127,14 @@ const Authorize = () => {
             <AuthorizeButton onClick={hubSpotAuthHandler} />
           )}
         </div>
-
         {/* // signeasy */}
         {hubSpotAuth?.success && (
           <div className="flex flex-col items-center">
-            <ImageWithBasePath
-              src="signeasyIcon"
-              height={75}
-              width={75}
-              alt=""
-              className="border-[1px] rounded-[8px] mt-[70px]"
+            <AuthLabels
+              imageName={"signeasyIcon"}
+              imageDetails={{ height: 75, width: 75 }}
+              title="Signeasy"
             />
-            <div className="text-[30px] font-inter font-bold pt-[30px]">
-              Signeasy
-            </div>
-            <div className="text-[13px] pt-[60px] font-[600] pb-[30px] text-gray-400 font-inter">
-              WE NEED PERMISSION TO ACCESS YOUR ACCOUNTS
-            </div>
             {signeasyAuth?.success ? (
               <RevokeButton
                 onClick={() =>
