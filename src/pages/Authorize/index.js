@@ -1,8 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { AuthorizeButton } from "../../components/AuthorizeButton";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import { RevokeButton } from "../../components/RevokeButton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { popupHandler } from "../../utils/functions";
 
 const Authorize = () => {
   const [hubspotPopup, setHubspotPopup] = useState(null);
@@ -15,24 +18,7 @@ const Authorize = () => {
   const [signeasyAuth, setSigneasyAuth] = useLocalStorage("signeasyAuth", {
     success: false,
   });
-  const redirectUri = "https://signeasy.vercel.app";
-
-  const popupHandler = async ({ url }) => {
-    let popup;
-    if (window) {
-      const width = 1000;
-      const height = 700;
-      const left = window.screenX + (window.outerWidth - width) / 2;
-      const top = window.screenY + (window.outerHeight - height) / 2.5;
-      const title = "auth";
-      popup = window.open(
-        url,
-        title,
-        `width=${width},height=${height},left=${left},top=${top},modal=yes`
-      );
-    }
-    return popup || {};
-  };
+  const redirectUri = "https://signeasy.vercel.app/Authorize";
 
   const revokeHandler = async ({ url, name }) => {
     await axios({
@@ -67,35 +53,68 @@ const Authorize = () => {
     setSigneasyPopup(popup);
   };
 
-  useEffect(() => {
-    if (!hubspotPopup) {
+  const popupObserver = (popup) => {
+    let flag = false;
+    let outputSearchParams;
+    console.log(popup, "popup");
+    if (!popup) {
       return;
     }
     const timer = setInterval(() => {
-      if (!hubspotPopup) {
+      if (!popup) {
         timer && clearInterval(timer);
         return;
       }
-      const currentUrl = hubspotPopup.location.href;
+      const currentUrl = popup.location.href;
       if (!currentUrl) {
         return;
       }
+      console.log(currentUrl, "curent");
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
-      const userId = searchParams.get("hubspot_user_id");
-      const portalId = searchParams.get("hubspot_portal_id");
       if (status === "success") {
-        setHubspotAuth((prev) => ({
-          ...prev,
-          success: true,
-          userId,
-          portalId,
-        }));
-        hubspotPopup.close();
-        setHubspotPopup(null);
+        flag = true;
+        outputSearchParams = { ...searchParams };
+        popup.close();
         timer && clearInterval(timer);
       }
     }, 500);
+    if (flag) {
+      return outputSearchParams;
+    }
+  };
+
+  useEffect(() => {
+    // if (!hubspotPopup) {
+    //   return;
+    // }
+    // const timer = setInterval(() => {
+    //   if (!hubspotPopup) {
+    //     timer && clearInterval(timer);
+    //     return;
+    //   }
+    //   const currentUrl = hubspotPopup.location.href;
+    //   if (!currentUrl) {
+    //     return;
+    //   }
+    //   const searchParams = new URL(currentUrl).searchParams;
+    //   const status = searchParams.get("status");
+    //   const userId = searchParams.get("hubspot_user_id");
+    //   const portalId = searchParams.get("hubspot_portal_id");
+    //   if (status === "success") {
+    //     setHubspotAuth((prev) => ({
+    //       ...prev,
+    //       success: true,
+    //       userId,
+    //       portalId,
+    //     }));
+    //     hubspotPopup.close();
+    //     setHubspotPopup(null);
+    //     timer && clearInterval(timer);
+    //   }
+    // }, 500);
+    const data = popupObserver(hubspotPopup);
+    console.log(data, "data");
   }, [hubspotPopup]);
 
   useEffect(() => {
@@ -151,29 +170,16 @@ const Authorize = () => {
             WE NEED PERMISSION TO ACCESS YOUR ACCOUNTS
           </div>
           {hubSpotAuth?.success ? (
-            <div>
-              <div className="text-[green] font-inter text-center pb-[10px]">
-                Authorized Succesfully
-              </div>
-              <PrimaryButton
-                title="Revoke"
-                className="w-[250px] border-[red]"
-                titleClassName="py-[5px] text-[red]"
-                onClick={() =>
-                  revokeHandler({
-                    url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/revoke",
-                    name: "hubspot",
-                  })
-                }
-              />
-            </div>
-          ) : (
-            <PrimaryButton
-              title="Authorize"
-              className="w-[250px] border-[#1088E7]"
-              titleClassName="py-[5px] text-[#1088E7]"
-              onClick={hubSpotAuthHandler}
+            <RevokeButton
+              onClick={() =>
+                revokeHandler({
+                  url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/revoke",
+                  name: "hubspot",
+                })
+              }
             />
+          ) : (
+            <AuthorizeButton onClick={hubSpotAuthHandler} />
           )}
         </div>
 
@@ -194,28 +200,15 @@ const Authorize = () => {
               WE NEED PERMISSION TO ACCESS YOUR ACCOUNTS
             </div>
             {signeasyAuth?.success ? (
-              <div>
-                <div className="text-[green] font-inter text-center pb-[10px]">
-                  Authorized Succesfully
-                </div>
-                <PrimaryButton
-                  title="Revoke"
-                  className="w-[250px] border-[red]"
-                  titleClassName="py-[5px] text-[red]"
-                  onClick={() =>
-                    revokeHandler({
-                      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/revoke",
-                    })
-                  }
-                />
-              </div>
-            ) : (
-              <PrimaryButton
-                title="Authorize"
-                className="w-[250px] border-[#1088E7]"
-                titleClassName="py-[5px] text-[#1088E7]"
-                onClick={signeasyAuthHandler}
+              <RevokeButton
+                onClick={() =>
+                  revokeHandler({
+                    url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/revoke",
+                  })
+                }
               />
+            ) : (
+              <AuthorizeButton onClick={signeasyAuthHandler} />
             )}
           </div>
         )}
