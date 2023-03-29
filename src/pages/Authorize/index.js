@@ -80,6 +80,7 @@ const Authorize = () => {
       }
     }, 500);
     if (flag) {
+      console.log(outputSearchParams, "ouput");
       return outputSearchParams;
     }
   };
