@@ -76,6 +76,7 @@ const Authorize = () => {
         console.log(searchParams, "inside");
         popup.close();
         timer && clearInterval(timer);
+        return;
       }
     }, 500);
     if (flag) {
