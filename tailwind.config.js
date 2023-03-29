@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
+        lexend: ["Lexend Deca", " sans-serif"],
       },
     },
   },

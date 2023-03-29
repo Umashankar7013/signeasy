@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import { popupHandler } from "../../utils/functions";
 
 const Home = () => {
   const router = useRouter();
@@ -30,7 +31,9 @@ const Home = () => {
         }
         className="bg-[#1088E7] px-[14px] py-[10px] mt-[30px]"
         titleClassName="text-white"
-        onClick={() => router.push("/Authorize")}
+        onClick={() =>
+          popupHandler({ url: "http://localhost:3000/ChooseTemplate" })
+        }
       />
     </div>
   );
