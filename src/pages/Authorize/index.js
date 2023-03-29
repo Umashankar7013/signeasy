@@ -19,7 +19,6 @@ const Authorize = () => {
     success: false,
   });
   const redirectUri = "https://signeasy.vercel.app/Authorize";
-  const [outputSearchParams, setOutputSearchParams] = useState(null);
 
   const revokeHandler = async ({ url, name }) => {
     await axios({
@@ -54,7 +53,7 @@ const Authorize = () => {
     setSigneasyPopup(popup);
   };
 
-  const popupObserver = ({ popup, setAuthState }) => {
+  const popupObserver = ({ popup, name }) => {
     if (!popup) {
       return;
     }
@@ -69,12 +68,21 @@ const Authorize = () => {
       }
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
+      const userId = searchParams?.get("hubspot_user_id");
+      const portalId = searchParams?.get("hubspot_portal_id");
       if (status === "success") {
-        setAuthState((prev) => ({
-          ...prev,
-          success: true,
-        }));
-        setOutputSearchParams(searchParams);
+        if (name === "hubspot") {
+          setHubspotAuth((prev) => ({
+            ...prev,
+            success: true,
+            userId,
+            portalId,
+          }));
+          setHubspotPopup(null);
+        } else {
+          setSigneasyAuth((prev) => ({ ...prev, success: true }));
+          setSigneasyPopup(null);
+        }
         popup.close();
         timer && clearInterval(timer);
       }
@@ -82,28 +90,12 @@ const Authorize = () => {
   };
 
   useEffect(() => {
-    popupObserver({ popup: hubspotPopup, setAuthState: setHubspotAuth });
-    console.log(hubSpotAuth, "hub");
-    if (hubSpotAuth?.success) {
-      const userId = outputSearchParams?.get("hubspot_user_id");
-      const portalId = outputSearchParams?.get("hubspot_portal_id");
-      setHubspotAuth((prev) => ({
-        ...prev,
-        userId,
-        portalId,
-      }));
-      setHubspotPopup(null);
-      setOutputSearchParams(null);
-    }
-  }, [hubspotPopup, outputSearchParams]);
+    popupObserver({ popup: hubspotPopup, name: "hubspot" });
+  }, [hubspotPopup]);
 
   useEffect(() => {
-    popupObserver({ popup: signeasyPopup, setAuthState: setSigneasyAuth });
-    if (signeasyAuth?.success) {
-      setSigneasyPopup(null);
-      setOutputSearchParams(null);
-    }
-  }, [signeasyPopup, outputSearchParams]);
+    popupObserver({ popup: signeasyPopup });
+  }, [signeasyPopup]);
 
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
