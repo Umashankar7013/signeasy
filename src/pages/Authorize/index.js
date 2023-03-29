@@ -19,7 +19,7 @@ const Authorize = () => {
     success: false,
   });
   const redirectUri = "https://signeasy.vercel.app/Authorize";
-  const outputSearchParams = useRef(null);
+  const [outputSearchParams, setOutputSearchParams] = useState(null);
 
   const revokeHandler = async ({ url, name }) => {
     await axios({
@@ -67,15 +67,10 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
-      outputSearchParams.current = new URL(currentUrl).searchParams;
-      const status = outputSearchParams.current.get("status");
-      console.log(
-        outputSearchParams,
-        outputSearchParams.current.get("status"),
-        status === "success",
-        "uma"
-      );
+      const searchParams = new URL(currentUrl).searchParams;
+      const status = searchParams.get("status");
       if (status === "success") {
+        setOutputSearchParams(searchParams);
         popup.close();
         timer && clearInterval(timer);
       }
@@ -112,9 +107,9 @@ const Authorize = () => {
     //   }
     // }, 500);
     popupObserver(hubspotPopup);
-    if (outputSearchParams?.current) {
-      const userId = outputSearchParams?.current.get("hubspot_user_id");
-      const portalId = outputSearchParams?.current.get("hubspot_portal_id");
+    if (outputSearchParams) {
+      const userId = outputSearchParams?.get("hubspot_user_id");
+      const portalId = outputSearchParams?.get("hubspot_portal_id");
       setHubspotAuth((prev) => ({
         ...prev,
         success: true,
