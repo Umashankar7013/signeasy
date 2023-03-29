@@ -83,6 +83,7 @@ const Authorize = () => {
 
   useEffect(() => {
     popupObserver({ popup: hubspotPopup, setAuthState: setHubspotAuth });
+    console.log(hubSpotAuth, "hub");
     if (hubSpotAuth?.success) {
       const userId = outputSearchParams?.get("hubspot_user_id");
       const portalId = outputSearchParams?.get("hubspot_portal_id");
