@@ -72,6 +72,7 @@ const Authorize = () => {
       console.log(
         outputSearchParams,
         outputSearchParams.current.get("status"),
+        status === "success",
         "uma"
       );
       if (status === "success") {
