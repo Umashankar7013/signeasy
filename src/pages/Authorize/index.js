@@ -69,6 +69,11 @@ const Authorize = () => {
       }
       outputSearchParams.current = new URL(currentUrl).searchParams;
       const status = outputSearchParams.current.get("status");
+      console.log(
+        outputSearchParams,
+        outputSearchParams.current.get("status"),
+        "uma"
+      );
       if (status === "success") {
         flag = true;
         console.log(outputSearchParams, "inside");
