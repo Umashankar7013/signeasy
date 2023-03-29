@@ -74,9 +74,8 @@ const Authorize = () => {
       if (status === "success") {
         flag = true;
         console.log(searchParams, "inside");
-        popup.close();
+        // popup.close();
         timer && clearInterval(timer);
-        return;
       }
     }, 500);
     console.log(flag, "flag");
