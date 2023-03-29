@@ -122,7 +122,7 @@ const Authorize = () => {
       }));
     }
     console.log(outputSearchParams, "data");
-  }, [hubspotPopup, outputSearchParams]);
+  }, [hubspotPopup]);
 
   useEffect(() => {
     if (!signeasyPopup) {
