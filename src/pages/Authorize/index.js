@@ -54,7 +54,7 @@ const Authorize = () => {
     setSigneasyPopup(popup);
   };
 
-  const popupObserver = (popup) => {
+  const popupObserver = ({ popup, setAuthState }) => {
     if (!popup) {
       return;
     }
@@ -70,6 +70,10 @@ const Authorize = () => {
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       if (status === "success") {
+        setAuthState((prev) => ({
+          ...prev,
+          success: true,
+        }));
         setOutputSearchParams(searchParams);
         popup.close();
         timer && clearInterval(timer);
@@ -78,74 +82,27 @@ const Authorize = () => {
   };
 
   useEffect(() => {
-    // if (!hubspotPopup) {
-    //   return;
-    // }
-    // const timer = setInterval(() => {
-    //   if (!hubspotPopup) {
-    //     timer && clearInterval(timer);
-    //     return;
-    //   }
-    //   const currentUrl = hubspotPopup.location.href;
-    //   if (!currentUrl) {
-    //     return;
-    //   }
-    //   const searchParams = new URL(currentUrl).searchParams;
-    //   const status = searchParams.get("status");
-    // const userId = searchParams.get("hubspot_user_id");
-    // const portalId = searchParams.get("hubspot_portal_id");
-    //   if (status === "success") {
-    //     setHubspotAuth((prev) => ({
-    //       ...prev,
-    //       success: true,
-    //       userId,
-    //       portalId,
-    //     }));
-    //     hubspotPopup.close();
-    //     setHubspotPopup(null);
-    //     timer && clearInterval(timer);
-    //   }
-    // }, 500);
-    popupObserver(hubspotPopup);
-    if (outputSearchParams) {
+    popupObserver({ popup: hubspotPopup, setAuthState: setHubspotAuth });
+    if (hubSpotAuth?.success) {
       const userId = outputSearchParams?.get("hubspot_user_id");
       const portalId = outputSearchParams?.get("hubspot_portal_id");
       setHubspotAuth((prev) => ({
         ...prev,
-        success: true,
         userId,
         portalId,
       }));
+      setHubspotPopup(null);
+      setOutputSearchParams(null);
     }
-    console.log(outputSearchParams, "data");
   }, [hubspotPopup, outputSearchParams]);
 
   useEffect(() => {
-    if (!signeasyPopup) {
-      return;
+    popupObserver({ popup: signeasyPopup, setAuthState: setSigneasyAuth });
+    if (signeasyAuth?.success) {
+      setSigneasyPopup(null);
+      setOutputSearchParams(null);
     }
-    const timer = setInterval(() => {
-      if (!signeasyPopup) {
-        timer && clearInterval(timer);
-        return;
-      }
-      const currentUrl = signeasyPopup.location.href;
-      if (!currentUrl) {
-        return;
-      }
-      const searchParams = new URL(currentUrl).searchParams;
-      const status = searchParams.get("status");
-      if (status === "success") {
-        setSigneasyAuth((prev) => ({
-          ...prev,
-          success: true,
-        }));
-        signeasyPopup.close();
-        setSigneasyPopup(null);
-        timer && clearInterval(timer);
-      }
-    }, 500);
-  }, [signeasyPopup]);
+  }, [signeasyPopup, outputSearchParams]);
 
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
