@@ -97,8 +97,8 @@ const Authorize = () => {
     //   }
     //   const searchParams = new URL(currentUrl).searchParams;
     //   const status = searchParams.get("status");
-    //   const userId = searchParams.get("hubspot_user_id");
-    //   const portalId = searchParams.get("hubspot_portal_id");
+    // const userId = searchParams.get("hubspot_user_id");
+    // const portalId = searchParams.get("hubspot_portal_id");
     //   if (status === "success") {
     //     setHubspotAuth((prev) => ({
     //       ...prev,
@@ -113,6 +113,8 @@ const Authorize = () => {
     // }, 500);
     popupObserver(hubspotPopup);
     if (outputSearchParams?.current) {
+      const userId = outputSearchParams?.current.get("hubspot_user_id");
+      const portalId = outputSearchParams?.current.get("hubspot_portal_id");
       setHubspotAuth((prev) => ({
         ...prev,
         success: true,
@@ -121,7 +123,7 @@ const Authorize = () => {
       }));
     }
     console.log(outputSearchParams, "data");
-  }, [hubspotPopup]);
+  }, [hubspotPopup, outputSearchParams]);
 
   useEffect(() => {
     if (!signeasyPopup) {
