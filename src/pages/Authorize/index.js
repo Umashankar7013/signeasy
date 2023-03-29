@@ -55,7 +55,7 @@ const Authorize = () => {
 
   const popupObserver = (popup) => {
     let flag = false;
-    let outputSearchParams;
+    var searchParams;
     console.log(popup, "popup");
     if (!popup) {
       return;
@@ -69,20 +69,18 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
-      console.log(currentUrl, "curent");
-      const searchParams = new URL(currentUrl).searchParams;
+      searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       if (status === "success") {
         flag = true;
-        outputSearchParams = { ...searchParams };
-        console.log(outputSearchParams, "inside");
+        console.log(searchParams, "inside");
         popup.close();
         timer && clearInterval(timer);
       }
     }, 500);
     if (flag) {
-      console.log(outputSearchParams, "ouput");
-      return outputSearchParams;
+      console.log(searchParams, "ouput");
+      return searchParams;
     }
   };
 
