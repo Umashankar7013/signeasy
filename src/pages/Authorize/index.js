@@ -19,7 +19,7 @@ const Authorize = () => {
   const [signeasyAuth, setSigneasyAuth] = useLocalStorage("signeasyAuth", {
     success: false,
   });
-  const redirectUri = "https://signeasy.vercel.app/Authorize";
+  const redirectUri = "https://signeasy.vercel.app/authorize";
 
   const revokeHandler = async ({ url, name }) => {
     await axios({

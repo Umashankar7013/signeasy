@@ -16,13 +16,8 @@ export const PrimaryButton = ({
       )}
       onClick={onClick}
     >
-      <div>{image}</div>
-      <div
-        className={classNames(
-          "text-[18px] font-[400] leading-[24px]",
-          titleClassName
-        )}
-      >
+      <div className="flex items-center">{image}</div>
+      <div className={classNames("font-[400] leading-[24px]", titleClassName)}>
         {title}
       </div>
     </div>

@@ -32,7 +32,8 @@ const Home = () => {
         className="bg-[#1088E7] px-[14px] py-[10px] mt-[30px]"
         titleClassName="text-white"
         onClick={() =>
-          popupHandler({ url: "http://localhost:3000/ChooseTemplate" })
+          // popupHandler({ url: "http://localhost:3000/templates" })
+          router.push("/signature")
         }
       />
     </div>

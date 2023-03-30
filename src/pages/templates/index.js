@@ -6,8 +6,9 @@ import {
 } from "@ant-design/icons";
 import classNames from "classnames";
 import { RadioButton } from "../../components/RadioButton";
+import { useRouter } from "next/router";
 
-const ChooseTemplate = () => {
+const Templates = () => {
   const templateData = [
     {
       templateName: "Sales Non-disclosure Agreement",
@@ -38,6 +39,7 @@ const ChooseTemplate = () => {
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [filteredData, setFilteredData] = useState(templateData);
   const selectedHeader = useRef("");
+  const router = useRouter();
 
   const searchHandler = (text) => {
     if (text.length === 0) {
@@ -85,7 +87,7 @@ const ChooseTemplate = () => {
         {headerData?.map((item, index) => (
           <div
             className={classNames(
-              "flex items-center py-[12px]",
+              "flex items-center py-[12px] cursor-pointer",
               selectedHeader.current === item && "bg-gray-300",
               index === 0 && "flex-1 justify-start",
               index === 1 && "flex-[0.6] justify-center",
@@ -119,7 +121,6 @@ const ChooseTemplate = () => {
                   fontSize: "11px",
                   padding: "0px",
                   margin: "0px",
-
                   color: selectedHeader.current === item ? "#3F8FAB" : "gray",
                 }}
               />
@@ -133,7 +134,7 @@ const ChooseTemplate = () => {
             key={index}
             className={classNames(
               "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px] py-[10px]",
-              index === filteredData?.length - 1 && "drop-shadow-lg"
+              index === filteredData?.length - 1 && "shadow-lg"
             )}
           >
             <div className="flex flex-1 items-center ml-[10px]">
@@ -166,14 +167,15 @@ const ChooseTemplate = () => {
         ))}
       </div>
       <div className="flex justify-between items-center pt-[30px]">
-        <div className="font-lexend font-bold">Cancel</div>
+        <div className="font-lexend font-bold cursor-pointer">Cancel</div>
         <div
           className={classNames(
-            "px-[40px] py-[8px] rounded-[4px] font-lexend font-bold",
+            "px-[40px] py-[8px] rounded-[4px] font-lexend font-bold cursor-pointer",
             selectedTemplate !== ""
               ? "bg-orange-300 text-[white]"
               : "bg-[#D9D9D9] text-[gray]"
           )}
+          onClick={() => router.push("/SendForSignature")}
         >
           Next
         </div>
@@ -182,4 +184,4 @@ const ChooseTemplate = () => {
   );
 };
 
-export default ChooseTemplate;
+export default Templates;
