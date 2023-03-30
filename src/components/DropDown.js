@@ -50,6 +50,7 @@ export const DropDown = ({
                   changeFun(item, userIndex);
                   setShowDropDown(false);
                 }}
+                key={index}
               >
                 {item}
               </div>

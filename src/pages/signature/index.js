@@ -61,7 +61,10 @@ function Signature() {
           Add HubSpot contacts as recipients for this envelope.
         </div>
         {signersData?.map((item, index) => (
-          <div className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] w-[70%] mt-[14px] ml-[17px]">
+          <div
+            className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] w-[70%] mt-[14px] ml-[17px]"
+            key={index}
+          >
             <div className="flex justify-between items-center">
               <div className="font-lexend font-[500] text-[14px] text-[#374659]">
                 {"<Role name>"}
