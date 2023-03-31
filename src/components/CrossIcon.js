@@ -6,7 +6,6 @@ export const CrossIcon = () => {
       src="crossIcon"
       height={20}
       width={20}
-      alt=""
       className="cursor-pointer"
     />
   );

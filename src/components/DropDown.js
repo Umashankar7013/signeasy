@@ -39,7 +39,7 @@ export const DropDown = ({
             className="ovarallPop fixed inset-0"
             onClick={() => setShowDropDown(false)}
           ></div>
-          <div className="bg-[white] mt-[5px] rounded-[5px] absolute w-[100%] shadow-2xl">
+          <div className="bg-[white] z-40 mt-[5px] rounded-[5px] absolute w-[100%] shadow-2xl">
             {dropDownData?.map((item, index) => (
               <div
                 className={classNames(

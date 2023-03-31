@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { popupHandler } from "../../utils/functions";
@@ -25,7 +25,6 @@ const Home = () => {
             src="enableIcon"
             height={18}
             width={18}
-            alt=""
             className="mr-[8px]"
           />
         }
@@ -33,7 +32,7 @@ const Home = () => {
         titleClassName="text-white"
         onClick={() =>
           // popupHandler({ url: "http://localhost:3000/templates" })
-          router.push("/signature")
+          router.push("/templates")
         }
       />
     </div>

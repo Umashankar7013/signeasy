@@ -1,53 +1,32 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  SearchOutlined,
   CaretUpOutlined,
   CaretDownOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import classNames from "classnames";
 import { RadioButton } from "../../components/RadioButton";
 import { useRouter } from "next/router";
+import { PrimaryButton } from "../../components/PrimaryButton";
+import { SearchBar } from "../../components/SearchBar";
+import { getApi } from "../../api/apiMethods";
 
 const Templates = () => {
-  const templateData = [
-    {
-      templateName: "Sales Non-disclosure Agreement",
-      name: "Uma",
-      date: "1/23/2023",
-      time: "9:49:10 PM",
-    },
-    {
-      templateName: "Healthcare Discharge Form",
-      name: "Shankar",
-      date: "1/23/2023",
-      time: "9:08:40 PM",
-    },
-    {
-      templateName: "Agreement Form",
-      name: "Joy",
-      date: "12/5/2022",
-      time: "12:48:01 AM",
-    },
-    {
-      templateName: "NDA_1",
-      name: "Dinesh",
-      date: "11/28/2022",
-      time: "12:55:58 PM",
-    },
-  ];
   const headerData = ["TEMPLATE NAME", "OWNER", "LAST CHANGE"];
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [filteredData, setFilteredData] = useState(templateData);
+  const [filteredData, setFilteredData] = useState();
   const selectedHeader = useRef("");
   const router = useRouter();
+  const templateData = useRef();
+  const [loading, setLoading] = useState(true);
 
   const searchHandler = (text) => {
     if (text.length === 0) {
-      setFilteredData(templateData);
+      setFilteredData(templateData?.current);
       return;
     } else {
-      const sortedData = templateData.filter((item) =>
-        item?.templateName?.toLowerCase().includes(text)
+      const sortedData = templateData?.current.filter((item) =>
+        item?.name?.toLowerCase().includes(text)
       );
       setFilteredData([...sortedData]);
     }
@@ -55,12 +34,12 @@ const Templates = () => {
 
   const sortHandler = () => {
     const templateUtils = {
-      "TEMPLATE NAME": "templateName",
+      "TEMPLATE NAME": "name",
       OWNER: "name",
       "LAST CHANGE": "date",
     };
     const sortKey = templateUtils?.[selectedHeader?.current];
-    const sortedData = templateData.sort((a, b) => {
+    const sortedData = templateData?.current.sort((a, b) => {
       if (a?.[sortKey] > b?.[sortKey]) return 1;
       else if (a?.[sortKey] < b?.[sortKey]) return -1;
       else if (a?.[sortKey] === b?.[sortKey]) return 0;
@@ -69,20 +48,45 @@ const Templates = () => {
     setFilteredData([...sortedData]);
   };
 
-  return (
+  const dateHandler = ({ timestamp = "" }) => {
+    const date = new Date(timestamp);
+    const modifiedTime = date.toLocaleString("en-US");
+    return modifiedTime?.split(",");
+  };
+
+  const getTemplatesHandler = async () => {
+    const data = await getApi({
+      endUrl: "hubspot-card/templates",
+      params: {
+        hubspot_user_id: "49792722",
+        hubspot_portal_id: "24050503",
+      },
+    });
+    templateData.current = data?.data;
+    setFilteredData(data?.data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getTemplatesHandler();
+  }, []);
+
+  return loading ? (
+    <div className="flex h-[100vh] w-[100vw] justify-center items-center">
+      <LoadingOutlined />
+    </div>
+  ) : (
     <div className="w-[100%] px-[50px]">
+      {/* Header */}
       <div className="font-lexend pt-[20px]">
         Pick a template to send to your customer and attach to this conatct
       </div>
-      <div className="border-[1px] w-fit flex items-center py-[10px] px-[8px] rounded-[4px] my-[20px] bg-gray-100">
-        <input
-          placeholder="Search"
-          style={{ outline: "none" }}
-          className="font-lexend bg-gray-100"
-          onChange={(event) => searchHandler(event?.target?.value)}
-        />
-        <SearchOutlined style={{ color: "#3F8FAB", fontSize: "18px" }} />
-      </div>
+      {/* Search bar */}
+      <SearchBar
+        className="w-fit"
+        onChange={(event) => searchHandler(event?.target?.value)}
+      />
+      {/* Table headers */}
       <div className="flex w-[100%] justify-around items-center bg-gray-100 border-[1px] border-[#D9D9D9]">
         {headerData?.map((item, index) => (
           <div
@@ -128,12 +132,13 @@ const Templates = () => {
           </div>
         ))}
       </div>
+      {/* Table data */}
       <div className="w-[100%] flex flex-col">
         {filteredData?.map((template, index) => (
           <div
             key={index}
             className={classNames(
-              "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px] py-[10px]",
+              "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px]",
               index === filteredData?.length - 1 && "shadow-lg"
             )}
           >
@@ -141,44 +146,48 @@ const Templates = () => {
               <div
                 onClick={() =>
                   setSelectedTemplate((prev) =>
-                    prev === template?.templateName
-                      ? ""
-                      : template?.templateName
+                    prev === template?.name ? "" : template?.name
                   )
                 }
               >
                 <RadioButton
-                  isActive={template?.templateName === selectedTemplate}
-                  isDisabled={template?.templateName === undefined}
+                  isActive={template?.name === selectedTemplate}
+                  isDisabled={template?.name === undefined}
                 />
               </div>
               <div className="pl-[30px] font-lexend font-medium">
-                {template?.templateName}
+                {template?.name}
               </div>
             </div>
             <div className="flex flex-[0.6] justify-center font-lexend">
-              {template?.name}
+              {template?.ownerName || "uma"}
             </div>
-            <div className="flex flex-col flex-[0.5] items-center">
-              <div className="font-lexend">{template?.date}</div>
-              <div className="font-lexend">{template?.time}</div>
+            <div className="flex flex-col flex-[0.5] justify-center items-center">
+              <div className="font-lexend">
+                {dateHandler({ timestamp: template?.modified_time })[0]}
+              </div>
+              <div className="font-lexend">
+                {dateHandler({ timestamp: template?.modified_time })[1]}
+              </div>
             </div>
           </div>
         ))}
       </div>
+      {/* Bottom Buttons */}
       <div className="flex justify-between items-center pt-[30px]">
         <div className="font-lexend font-bold cursor-pointer">Cancel</div>
-        <div
+        <PrimaryButton
+          title=" Next"
           className={classNames(
-            "px-[40px] py-[8px] rounded-[4px] font-lexend font-bold cursor-pointer",
-            selectedTemplate !== ""
-              ? "bg-orange-300 text-[white]"
-              : "bg-[#D9D9D9] text-[gray]"
+            "px-[40px] py-[10px]",
+            selectedTemplate !== "" ? "bg-[#ee8162]" : "bg-[#D9D9D9]"
           )}
-          onClick={() => router.push("/SendForSignature")}
-        >
-          Next
-        </div>
+          titleClassName={classNames(
+            "font-lexend font-bold",
+            selectedTemplate !== "" ? "text-[white]" : "text-[gray]"
+          )}
+          onClick={() => router.push("/signature")}
+        />
       </div>
     </div>
   );

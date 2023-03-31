@@ -8,13 +8,13 @@ export const Input = ({
   className = "w-[70%]",
   limit,
   enableDelete = false,
-  isManditory = false,
+  required = false,
   value,
 }) => {
   return (
     <div>
       <div className="font-lexend font-[500] text-[14px] leading-[17px] text-[#374659]">
-        {`${title} ${isManditory ? "*" : ""}`}
+        {`${title} ${required ? "*" : ""}`}
       </div>
       <div
         className={classNames(
@@ -29,6 +29,7 @@ export const Input = ({
           )}
           onChange={onChange}
           value={value}
+          required={required}
         />
         {enableDelete && (
           <div className="mr-[10px]">

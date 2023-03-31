@@ -10,7 +10,7 @@ export const RadioButton = ({ isActive, isDisabled = false }) => {
     >
       <div
         className={classNames(
-          "h-[25px] w-[25px] rounded-full border-[1px] flex justify-center items-center",
+          "h-[25px] w-[25px] rounded-full border-[1.5px] flex justify-center items-center",
           isActive && "border-[#3F8FAB]",
           isDisabled && "bg-gray-100"
         )}

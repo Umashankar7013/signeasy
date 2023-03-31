@@ -20,7 +20,6 @@ export const AuthLabels = ({
           src={imageName}
           height={imageDetails.height}
           width={imageDetails.width}
-          alt=""
         />
       </div>
       <div className="text-[30px] font-inter font-bold pt-[30px]">{title}</div>
