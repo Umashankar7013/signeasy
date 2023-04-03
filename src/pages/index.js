@@ -25,8 +25,7 @@ export default function SigneasyApp() {
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-yellow-200"
         titleClassName="font-lexend"
         onClick={() =>
-          // popupHandler({ url: "https://signeasy.vercel.app/signature" })
-          router.push("/signature")
+          popupHandler({ url: "https://signeasy.vercel.app/signature" })
         }
       />
     </div>
