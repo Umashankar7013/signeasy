@@ -218,11 +218,11 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
           title="Next"
           className={classNames(
             "px-[40px] py-[10px]",
-            selectedTemplate !== "" ? "bg-[#ee8162]" : "bg-[#D9D9D9]"
+            selectedTemplate !== "" ? "bg-[#ee8162]" : "bg-[#ebf0f5]"
           )}
           titleClassName={classNames(
             "font-lexend font-bold text-[14px]",
-            selectedTemplate !== "" ? "text-[white]" : "text-[gray]"
+            selectedTemplate !== "" ? "text-[white]" : "text-[#b3c0d2]"
           )}
           onClick={() => router.push("/signature")}
         />
