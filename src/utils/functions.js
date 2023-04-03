@@ -1,8 +1,8 @@
 export const popupHandler = async ({ url }) => {
   let popup;
   if (window) {
-    const width = 1000;
-    const height = 700;
+    const width = window.outerWidth - 350;
+    const height = window.outerHeight - 150;
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2.5;
     const title = "auth";
@@ -13,4 +13,10 @@ export const popupHandler = async ({ url }) => {
     );
   }
   return popup || {};
+};
+
+export const dateHandler = ({ timestamp = "" }) => {
+  const date = new Date(timestamp);
+  const modifiedTime = date.toLocaleString("en-US");
+  return modifiedTime?.split(",");
 };

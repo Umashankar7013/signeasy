@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { popupHandler } from "../utils/functions";
+import { DEPLOYMENT_URL } from "../constants/constants";
 
 export default function SigneasyApp() {
   const router = useRouter();
@@ -16,16 +17,21 @@ export default function SigneasyApp() {
         title="Templates page"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[orange]"
         titleClassName="font-lexend"
-        onClick={() =>
-          popupHandler({ url: "https://signeasy.vercel.app/templates" })
-        }
+        onClick={() => popupHandler({ url: `${DEPLOYMENT_URL}templates` })}
       />
       <PrimaryButton
         title="Signature page"
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-yellow-200"
         titleClassName="font-lexend"
+        onClick={() => popupHandler({ url: `${DEPLOYMENT_URL}signature` })}
+      />
+      <PrimaryButton
+        title="Documents page"
+        className="w-fit px-[20px] py-[10px] mt-[10px] bg-red-500"
+        titleClassName="font-lexend"
         onClick={() =>
-          popupHandler({ url: "https://signeasy.vercel.app/signature" })
+          // popupHandler({ url: `${DEPLOYMENT_URL}signature` })
+          router.push("/documents")
         }
       />
     </div>

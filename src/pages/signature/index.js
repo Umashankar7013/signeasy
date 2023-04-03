@@ -81,7 +81,8 @@ function Signature() {
               <Input title="Email" required={true} className="w-[100%]" />
             </div>
           </div>
-          <div className="border-b-[1px] pt-[30px]"></div>
+          {/* Two step verification */}
+          {/* <div className="border-b-[1px] pt-[30px]"></div>
           <div className="w-[50%] mt-[30px]">
             <DropDown
               dropDownData={verificationTypeData}
@@ -102,7 +103,7 @@ function Signature() {
               </div>
               <PhoneNumberInput />
             </div>
-          )}
+          )} */}
         </div>
       ))}
       <div
