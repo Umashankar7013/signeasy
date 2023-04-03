@@ -1,55 +1,60 @@
-import axios from "axios";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { deleteApi } from "../../api/apiMethods";
 import { AuthLabels } from "../../components/AuthLabels";
 import { AuthorizeButton } from "../../components/AuthorizeButton";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
-import { PrimaryButton } from "../../components/PrimaryButton";
 import { RevokeButton } from "../../components/RevokeButton";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { AUTH_BASE_URL, AUTH_REDIRECTION_URL } from "../../constants/constants";
 import { popupHandler } from "../../utils/functions";
 
 const Authorize = () => {
   const [hubspotPopup, setHubspotPopup] = useState(null);
   const [signeasyPopup, setSigneasyPopup] = useState(null);
-  const [hubSpotAuth, setHubspotAuth] = useLocalStorage("hubSpotAuth", {
+  const [hubSpotAuth, setHubspotAuth] = useState({
     success: false,
     userId: "",
     portalId: "",
   });
-  const [signeasyAuth, setSigneasyAuth] = useLocalStorage("signeasyAuth", {
+  const [signeasyAuth, setSigneasyAuth] = useState({
     success: false,
   });
-  const redirectUri = "https://signeasy.vercel.app/Authorize";
+  const [revokeLoader, setRevokeLoader] = useState({
+    hubspot: false,
+    signeasy: false,
+  });
 
-  const revokeHandler = async ({ url, name }) => {
-    await axios({
-      method: "delete",
-      url,
-      params: {
-        hubspot_user_id: hubSpotAuth?.userId,
-        hubspot_portal_id: hubSpotAuth?.portalId,
-      },
-    }).then((response) => {
-      if (response?.data?.is_success) {
-        if (name === "hubspot") {
-          setHubspotAuth((prev) => ({ ...prev, success: false }));
-        } else {
-          setSigneasyAuth((prev) => ({ ...prev, success: false }));
-        }
+  const revokeHandler = async ({ endUrl, name }) => {
+    if (name === "hubspot") {
+      setRevokeLoader((prev) => ({ ...prev, hubspot: true }));
+    } else {
+      setRevokeLoader((prev) => ({ ...prev, signeasy: true }));
+    }
+    const params = {
+      hubspot_user_id: hubSpotAuth?.userId,
+      hubspot_portal_id: hubSpotAuth?.portalId,
+    };
+    const data = await deleteApi({ endUrl, params });
+    if (data?.is_success) {
+      if (name === "hubspot") {
+        setHubspotAuth((prev) => ({ ...prev, success: false }));
+        setRevokeLoader((prev) => ({ ...prev, hubspot: false }));
+      } else {
+        setSigneasyAuth((prev) => ({ ...prev, success: false }));
+        setRevokeLoader((prev) => ({ ...prev, signeasy: false }));
       }
-    });
+    }
   };
 
   const hubSpotAuthHandler = async () => {
     const popup = await popupHandler({
-      url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/sign-in?redirect_uri=${redirectUri}/`,
+      url: `${AUTH_BASE_URL}hubspot/sign-in?redirect_uri=${AUTH_REDIRECTION_URL}/`,
     });
     setHubspotPopup(popup);
   };
 
   const signeasyAuthHandler = async () => {
     const popup = await popupHandler({
-      url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/sign-in?redirect_uri=${redirectUri}&hubspot_user_id=${hubSpotAuth?.userId}&hubspot_portal_id=${hubSpotAuth?.portalId}`,
+      url: `${AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${AUTH_REDIRECTION_URL}&hubspot_user_id=${hubSpotAuth?.userId}&hubspot_portal_id=${hubSpotAuth?.portalId}`,
     });
     setSigneasyPopup(popup);
   };
@@ -104,7 +109,7 @@ const Authorize = () => {
         <div className="text-[24px] pr-[20px] font-inter font-[500]">
           Authorize
         </div>
-        <ImageWithBasePath src="openLockIcon" height={30} width={30} alt="" />
+        <ImageWithBasePath src="openLockIcon" height={30} width={30} />
       </div>
       <div className="md:flex w-[100%] justify-around">
         {/* // HubSpot */}
@@ -118,10 +123,11 @@ const Authorize = () => {
             <RevokeButton
               onClick={() =>
                 revokeHandler({
-                  url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/hubspot/revoke",
+                  endUrl: "hubspot/revoke",
                   name: "hubspot",
                 })
               }
+              loading={revokeLoader?.hubspot}
             />
           ) : (
             <AuthorizeButton onClick={hubSpotAuthHandler} />
@@ -139,9 +145,10 @@ const Authorize = () => {
               <RevokeButton
                 onClick={() =>
                   revokeHandler({
-                    url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/oauth/signeasy/revoke",
+                    endUrl: "signeasy/revoke",
                   })
                 }
+                loading={revokeLoader?.signeasy}
               />
             ) : (
               <AuthorizeButton onClick={signeasyAuthHandler} />

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
 
@@ -24,13 +24,12 @@ const Home = () => {
             src="enableIcon"
             height={18}
             width={18}
-            alt=""
             className="mr-[8px]"
           />
         }
         className="bg-[#1088E7] px-[14px] py-[10px] mt-[30px]"
         titleClassName="text-white"
-        onClick={() => router.push("/Authorize")}
+        onClick={() => router.push("/authorize")}
       />
     </div>
   );
