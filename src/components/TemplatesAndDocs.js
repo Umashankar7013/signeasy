@@ -20,7 +20,23 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
   const [filteredData, setFilteredData] = useState();
   const selectedHeader = useRef("");
   const router = useRouter();
-  const templateData = useRef();
+  const templateData = useRef([
+    {
+      name: "Test Document 1",
+      ownerName: "uma",
+      modified_time: 23451234,
+    },
+    {
+      name: "Test Document 2",
+      ownerName: "joy",
+      modified_time: 23451234,
+    },
+    {
+      name: "Test Document 3",
+      ownerName: "Dinesh",
+      modified_time: 23451234,
+    },
+  ]);
   const [loading, setLoading] = useState(true);
 
   const searchHandler = (text) => {
@@ -63,8 +79,8 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
           hubspot_portal_id: portalId,
         },
       });
-      templateData.current = data?.data;
-      setFilteredData(data?.data);
+      //   templateData.current = data?.data;
+      setFilteredData(templateData?.current);
       setLoading(false);
     } else {
       console.log("Not able to access the window.");
@@ -109,7 +125,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
               index === 0 && "flex-1 justify-start",
               index === 1
                 ? headerData?.length === 2
-                  ? "flex-[0.5] justify-center"
+                  ? "flex-[0.4] justify-center"
                   : "flex-[0.7] justify-center"
                 : "",
               index === 2 && "flex-[0.5] justify-center"

@@ -76,7 +76,6 @@ const Authorize = () => {
       const status = searchParams.get("status");
       const userId = searchParams?.get("hubspot_user_id");
       const portalId = searchParams?.get("hubspot_portal_id");
-      console.log(userId, portalId);
       if (status === "success") {
         if (name === "hubspot") {
           setHubspotAuth((prev) => ({
