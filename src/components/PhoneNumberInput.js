@@ -11,15 +11,13 @@ export const PhoneNumberInput = ({ onChange = () => {} }) => {
           marginLeft: -10,
           fontFamily: ["Lexend Deca", " sans-serif"],
         }}
-        // inputStyle={{
-        //   backgroundColor: "#F6F8FA",
-        //   height: 40,
-        //   marginLeft: 15,
-        //   fontFamily: ["Lexend Deca", " sans-serif"],
-        // }}
+        inputStyle={{
+          fontFamily: ["Lexend Deca", " sans-serif"],
+        }}
         buttonStyle={{
           backgroundColor: "#F6F8FA",
-          padding: 10,
+          padding: 7,
+          borderRadius: "3px",
         }}
         searchStyle={{
           backgroundColor: "red",
@@ -28,11 +26,10 @@ export const PhoneNumberInput = ({ onChange = () => {} }) => {
       />
       <style jsx global>{`
         .react-tel-input .form-control {
-          background: red;
-        }
-        .react-tel-input .flag-dropdown {
-          position: relative;
-          width: fit;
+          background: #f6f8fa;
+          margin-left: 55px;
+          padding-left: 10px;
+          border-radius: 3px;
         }
       `}</style>
     </>
