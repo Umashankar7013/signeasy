@@ -6,7 +6,7 @@ export const SearchBar = ({ className = "", onChange = () => {} }) => {
   return (
     <div
       className={classNames(
-        "border-[1px] flex items-center py-[10px] px-[8px] rounded-[4px] my-[20px] bg-gray-100",
+        "border-[1px] flex items-center py-[10px] px-[8px] rounded-[4px] my-[20px] bg-[#f6f8fa]",
         className
       )}
     >

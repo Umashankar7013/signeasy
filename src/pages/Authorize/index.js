@@ -5,18 +5,17 @@ import { AuthorizeButton } from "../../components/AuthorizeButton";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { RevokeButton } from "../../components/RevokeButton";
 import { AUTH_BASE_URL, AUTH_REDIRECTION_URL } from "../../constants/constants";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { popupHandler } from "../../utils/functions";
 
 const Authorize = () => {
   const [hubspotPopup, setHubspotPopup] = useState(null);
   const [signeasyPopup, setSigneasyPopup] = useState(null);
-  const [hubSpotAuth, setHubspotAuth] = useLocalStorage("hubSpotAuth", {
+  const [hubSpotAuth, setHubspotAuth] = useState({
     success: false,
     userId: "",
     portalId: "",
   });
-  const [signeasyAuth, setSigneasyAuth] = useLocalStorage("signeasyAuth", {
+  const [signeasyAuth, setSigneasyAuth] = useState({
     success: false,
   });
   const [revokeLoader, setRevokeLoader] = useState({

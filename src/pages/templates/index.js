@@ -25,10 +25,10 @@ const Templates = () => {
       setFilteredData(templateData?.current);
       return;
     } else {
-      const sortedData = templateData?.current.filter((item) =>
+      const sortedData = templateData?.current?.filter((item) =>
         item?.name?.toLowerCase().includes(text)
       );
-      setFilteredData([...sortedData]);
+      sortedData && setFilteredData([...sortedData]);
     }
   };
 
@@ -39,13 +39,12 @@ const Templates = () => {
       "LAST CHANGE": "date",
     };
     const sortKey = templateUtils?.[selectedHeader?.current];
-    const sortedData = templateData?.current.sort((a, b) => {
+    const sortedData = templateData?.current?.sort((a, b) => {
       if (a?.[sortKey] > b?.[sortKey]) return 1;
       else if (a?.[sortKey] < b?.[sortKey]) return -1;
       else if (a?.[sortKey] === b?.[sortKey]) return 0;
     });
-
-    setFilteredData([...sortedData]);
+    sortedData && setFilteredData([...sortedData]);
   };
 
   const dateHandler = ({ timestamp = "" }) => {
@@ -55,16 +54,24 @@ const Templates = () => {
   };
 
   const getTemplatesHandler = async () => {
-    const data = await getApi({
-      endUrl: "hubspot-card/templates",
-      params: {
-        hubspot_user_id: "49792722",
-        hubspot_portal_id: "24050503",
-      },
-    });
-    templateData.current = data?.data;
-    setFilteredData(data?.data);
-    setLoading(false);
+    if (window) {
+      const currentUrl = window.location.href;
+      const searchParams = new URL(currentUrl).searchParams;
+      const userId = searchParams?.get("hubspot_user_id");
+      const portalId = searchParams?.get("hubspot_portal_id");
+      const data = await getApi({
+        endUrl: "hubspot-card/templates",
+        params: {
+          hubspot_user_id: userId,
+          hubspot_portal_id: portalId,
+        },
+      });
+      templateData.current = data?.data;
+      setFilteredData(data?.data);
+      setLoading(false);
+    } else {
+      console.log("Not able to access the window.");
+    }
   };
 
   useEffect(() => {
@@ -87,12 +94,12 @@ const Templates = () => {
         onChange={(event) => searchHandler(event?.target?.value)}
       />
       {/* Table headers */}
-      <div className="flex w-[100%] justify-around items-center bg-gray-100 border-[1px] border-[#D9D9D9]">
+      <div className="flex w-[100%] justify-around items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
         {headerData?.map((item, index) => (
           <div
             className={classNames(
               "flex items-center py-[12px] cursor-pointer",
-              selectedHeader.current === item && "bg-gray-300",
+              selectedHeader.current === item && "bg-[#ebf0f5]",
               index === 0 && "flex-1 justify-start",
               index === 1 && "flex-[0.6] justify-center",
               index === 2 && "flex-[0.5] justify-center"
