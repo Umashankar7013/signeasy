@@ -126,9 +126,9 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
               index === 1
                 ? headerData?.length === 2
                   ? "flex-[0.4] justify-center"
-                  : "flex-[0.7] justify-center"
+                  : "flex-[0.6] justify-center"
                 : "",
-              index === 2 && "flex-[0.5] justify-center"
+              index === 2 && "flex-[0.4] justify-center"
             )}
             key={index}
             onClick={() => {
