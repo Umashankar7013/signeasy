@@ -15,19 +15,19 @@ import { dateHandler } from "../utils/functions";
 const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
   const headerData = showOwner
     ? ["TEMPLATE NAME", "OWNER", "LAST CHANGE"]
-    : ["TEMPLATE NAME", "LAST CHANGE"];
+    : ["DOCUMENT NAME", "LAST CHANGE"];
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [filteredData, setFilteredData] = useState();
   const selectedHeader = useRef("");
   const router = useRouter();
   const templateData = useRef([
     {
-      name: "Test Document 1",
+      name: "Test Document 2",
       ownerName: "uma",
       modified_time: 23451234,
     },
     {
-      name: "Test Document 2",
+      name: "Test Document 1",
       ownerName: "joy",
       modified_time: 23451234,
     },
@@ -54,8 +54,9 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
   const sortHandler = () => {
     const templateUtils = {
       "TEMPLATE NAME": "name",
-      OWNER: "name",
-      "LAST CHANGE": "date",
+      "DOCUMENT NAME": "name",
+      OWNER: "ownerName",
+      "LAST CHANGE": "modified_time",
     };
     const sortKey = templateUtils?.[selectedHeader?.current];
     const sortedData = templateData?.current?.sort((a, b) => {
@@ -79,7 +80,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
           hubspot_portal_id: portalId,
         },
       });
-      //   templateData.current = data?.data;
+      data && (templateData.current = data?.data);
       setFilteredData(templateData?.current);
       setLoading(false);
     } else {
@@ -96,7 +97,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
       <LoadingOutlined />
     </div>
   ) : (
-    <div className="w-[100%] px-[50px]">
+    <div className="w-[100%] px-[20px] md:px-[50px]">
       {/* Header */}
       <div className="font-lexend text-[14px] pt-[20px]">
         {`Pick a ${
@@ -120,7 +121,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
         {headerData?.map((item, index) => (
           <div
             className={classNames(
-              "flex items-center py-[12px] cursor-pointer",
+              "flex items-center py-[12px] cursor-pointer text-center",
               selectedHeader.current === item && "bg-[#ebf0f5]",
               index === 0 && "flex-1 justify-start",
               index === 1
@@ -139,7 +140,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
             <div
               className={classNames(
                 "font-lexend font-medium text-[14px]",
-                index === 0 && "pl-[60px] w-fit"
+                index === 0 && "md:pl-[60px] pl-[47px]"
               )}
             >
               {item}
@@ -188,7 +189,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
                   isDisabled={template?.name === undefined}
                 />
               </div>
-              <div className="pl-[30px] text-[14px] font-lexend font-medium">
+              <div className="md:pl-[30px] pl-[15px] text-[14px] font-lexend font-medium">
                 {template?.name}
               </div>
             </div>

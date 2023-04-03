@@ -5,7 +5,7 @@ export const Input = ({
   title,
   placeholder,
   onChange = () => {},
-  className = "w-[70%]",
+  className = "md:w-[70%]",
   limit,
   enableDelete = false,
   required = false,
@@ -37,7 +37,7 @@ export const Input = ({
           </div>
         )}
       </div>
-      <div className="flex justify-end w-[70%] font-lexend font-[500] leading-[15px] text-[#8297B3] text-[12px]">
+      <div className="flex justify-end md:w-[70%] font-lexend font-[500] leading-[15px] text-[#8297B3] text-[12px]">
         {limit}
       </div>
     </div>

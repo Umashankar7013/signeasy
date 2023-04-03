@@ -5,7 +5,7 @@ export const TextArea = ({
   title,
   placeholder,
   onChange = () => {},
-  className = "w-[70%]",
+  className = "md:w-[70%] w-[100%]",
   limit,
   required = false,
   value,
@@ -24,7 +24,7 @@ export const TextArea = ({
         onChange={onChange}
         value={value}
       />
-      <div className="flex justify-end w-[70%] font-lexend font-[500] leading-[15px] text-[#8297B3] text-[12px]">
+      <div className="flex justify-end md:w-[70%] font-lexend font-[500] leading-[15px] text-[#8297B3] text-[12px]">
         {limit}
       </div>
     </div>

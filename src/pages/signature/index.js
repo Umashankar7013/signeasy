@@ -37,7 +37,7 @@ function Signature() {
         text1="1. Review documents in your envelope"
         text2=" All documents in this envelope are part of your chosen template."
       />
-      <div className="p-[16px] ml-[17px] border-[1px] mt-[14px] border-[#E0E3EA] rounded-[3px] w-[70%]">
+      <div className="p-[16px] ml-[17px] border-[1px] mt-[14px] border-[#E0E3EA] rounded-[3px] md:w-[70%]">
         <div className="font-lexend font-[500] leading-[17px] text-[14px]">
           Healthcare discharge form.pdf
         </div>
@@ -56,7 +56,7 @@ function Signature() {
       />
       {signersData?.map((item, index) => (
         <div
-          className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] w-[70%] mt-[14px] ml-[17px]"
+          className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] md:w-[70%] mt-[14px] ml-[17px]"
           key={index}
         >
           <div className="flex justify-between items-center">
@@ -161,7 +161,6 @@ function Signature() {
             );
           }}
           style={{
-            width: "70%",
             backgroundColor: "#F6F8FA",
             fontFamily: ["Lexend Deca", " sans-serif"],
             borderColor: "#CDD6E1",
@@ -169,6 +168,7 @@ function Signature() {
             paddingTop: 2,
             paddingLeft: 10,
           }}
+          className="md:w-[70%]"
         />
         <style jsx global>{`
           .react-multi-email > input {
@@ -183,14 +183,14 @@ function Signature() {
   );
 
   return (
-    <div className="h-[100vh] w-[100vw] px-[30px]">
+    <div className="h-[100vh] w-[100vw] px-[20px] md:px-[30px]">
       <form>
         <Step1 />
         <Step2 />
         <Step3 />
         <Step4 />
         {/* Bottom Buttons */}
-        <div className="flex justify-between mt-[40px] w-[90%] pb-[50px]">
+        <div className="flex justify-between mt-[40px] md:w-[90%] pb-[50px]">
           <PrimaryButton
             title="Back"
             image={

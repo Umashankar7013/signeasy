@@ -13,7 +13,7 @@ export const SearchBar = ({ className = "", onChange = () => {} }) => {
       <input
         placeholder="Search"
         style={{ outline: "none" }}
-        className="font-lexend text-[14px] bg-gray-100"
+        className="font-lexend text-[14px] bg-[#f6f8fa]"
         onChange={onChange}
       />
       <SearchOutlined style={{ color: "#3F8FAB", fontSize: "18px" }} />
