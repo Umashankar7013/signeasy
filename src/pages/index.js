@@ -29,7 +29,10 @@ export default function SigneasyApp() {
         title="Documents page"
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-red-500"
         titleClassName="font-lexend"
-        onClick={() => popupHandler({ url: `${DEPLOYMENT_URL}documents` })}
+        onClick={() =>
+          // popupHandler({ url: `${DEPLOYMENT_URL}documents` })
+          router.push("/documents")
+        }
       />
     </div>
   );

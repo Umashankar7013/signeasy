@@ -20,6 +20,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
   const [filteredData, setFilteredData] = useState();
   const selectedHeader = useRef("");
   const router = useRouter();
+  const inputFileRef = useRef(null);
   const templateData = useRef([
     {
       name: "Test Document 2",
@@ -88,6 +89,14 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
     }
   };
 
+  const uploadDocHandler = () => {
+    var form = new FormData();
+    // form.append("file", this.state.file);
+    // YourAjaxLib.doUpload("/yourEndpoint/", form).then((result) =>
+    //   console.log(result)
+    // );
+  };
+
   useEffect(() => {
     getTemplatesHandler();
   }, []);
@@ -111,8 +120,21 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
           onChange={(event) => searchHandler(event?.target?.value)}
         />
         {uploadDocs && (
-          <div className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]">
-            Upload document
+          <div>
+            {/* Upload document */}
+            <input
+              ref={inputFileRef}
+              type="file"
+              className="hidden"
+              onChange={(event) => console.log(event.target.files[0])}
+            />
+            <div
+              value="Choose Files!"
+              onClick={() => inputFileRef.current.click()}
+              className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
+            >
+              Upload document
+            </div>
           </div>
         )}
       </div>
