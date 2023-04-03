@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { PrimaryButton } from "../components/PrimaryButton";
-import Home from "./Home";
 import { popupHandler } from "../utils/functions";
 
 export default function SigneasyApp() {
@@ -26,7 +25,8 @@ export default function SigneasyApp() {
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-yellow-200"
         titleClassName="font-lexend"
         onClick={() =>
-          popupHandler({ url: "https://signeasy.vercel.app/signature" })
+          // popupHandler({ url: "https://signeasy.vercel.app/signature" })
+          router.push("/signature")
         }
       />
     </div>
