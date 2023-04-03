@@ -85,7 +85,7 @@ const Templates = () => {
   ) : (
     <div className="w-[100%] px-[50px]">
       {/* Header */}
-      <div className="font-lexend pt-[20px]">
+      <div className="font-lexend text-[14px] pt-[20px]">
         Pick a template to send to your customer and attach to this conatct
       </div>
       {/* Search bar */}
@@ -112,7 +112,7 @@ const Templates = () => {
           >
             <div
               className={classNames(
-                "font-lexend font-medium",
+                "font-lexend font-medium text-[14px]",
                 index === 0 && "pl-[60px] w-fit"
               )}
             >
@@ -162,18 +162,18 @@ const Templates = () => {
                   isDisabled={template?.name === undefined}
                 />
               </div>
-              <div className="pl-[30px] font-lexend font-medium">
+              <div className="pl-[30px] text-[14px] font-lexend font-medium">
                 {template?.name}
               </div>
             </div>
-            <div className="flex flex-[0.6] justify-center font-lexend">
+            <div className="flex flex-[0.6] text-[14px] justify-center font-lexend">
               {template?.ownerName || "uma"}
             </div>
-            <div className="flex flex-col flex-[0.5] justify-center items-center">
+            <div className="flex flex-col flex-[0.5] text-[14px] justify-center items-center">
               <div className="font-lexend">
                 {dateHandler({ timestamp: template?.modified_time })[0]}
               </div>
-              <div className="font-lexend">
+              <div className="font-lexend text-[14px]">
                 {dateHandler({ timestamp: template?.modified_time })[1]}
               </div>
             </div>
@@ -182,15 +182,17 @@ const Templates = () => {
       </div>
       {/* Bottom Buttons */}
       <div className="flex justify-between items-center pt-[30px]">
-        <div className="font-lexend font-bold cursor-pointer">Cancel</div>
+        <div className="font-lexend font-bold cursor-pointer text-[14px]">
+          Cancel
+        </div>
         <PrimaryButton
-          title=" Next"
+          title="Next"
           className={classNames(
             "px-[40px] py-[10px]",
             selectedTemplate !== "" ? "bg-[#ee8162]" : "bg-[#D9D9D9]"
           )}
           titleClassName={classNames(
-            "font-lexend font-bold",
+            "font-lexend font-bold text-[14px]",
             selectedTemplate !== "" ? "text-[white]" : "text-[gray]"
           )}
           onClick={() => router.push("/signature")}
