@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import { SearchBar } from "../../components/SearchBar";
 import { RadioButton } from "../../components/RadioButton";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import classNames from "classnames";
+import { dateHandler } from "../../utils/functions";
 
 function Documents() {
   const itemsData = useRef([
@@ -160,7 +162,7 @@ function Documents() {
       </div>
 
       {/* Table headers */}
-      {/* <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
+      <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
         {headerData?.map((item, index) => (
           <div
             className={classNames(
@@ -171,8 +173,8 @@ function Documents() {
                 ? headerData?.length === 2
                   ? "flex-[0.4] justify-center"
                   : "flex-[0.6] justify-center"
-                : "",
-              index === 2 && "flex-[0.4] justify-center"
+                : ""
+              // index === 2 && "flex-[0.4] justify-center"
             )}
             key={index}
             onClick={() => {
@@ -208,7 +210,7 @@ function Documents() {
             </div>
           </div>
         ))}
-      </div> */}
+      </div>
 
       {/* Table data */}
       <div className="w-[100%] flex flex-col">
