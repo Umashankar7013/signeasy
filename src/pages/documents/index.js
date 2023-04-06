@@ -117,17 +117,16 @@ function Documents() {
     var form = new FormData();
     form.append("file", file);
     form.append("name", file?.name);
-    await axios({
+    const data = await axios({
       method: "post",
       url: "https://api.signeasy.com/v3/original",
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken)}`,
         "Content-Type": "multipart/form-data",
       },
-      data: form,
-    })
-      .then((response) => console.log(response, "uploaded succesFully"))
-      .catch((error) => console.log(error, "Error"));
+      body: form,
+    });
+    console.log(data, "data");
   };
 
   useEffect(() => {
