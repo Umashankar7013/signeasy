@@ -160,7 +160,7 @@ function Documents() {
       </div>
 
       {/* Table headers */}
-      <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
+      {/* <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
         {headerData?.map((item, index) => (
           <div
             className={classNames(
@@ -208,10 +208,10 @@ function Documents() {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       {/* Table data */}
-      {/* <div className="w-[100%] flex flex-col">
+      <div className="w-[100%] flex flex-col">
         {filteredData?.map((template, index) => (
           <div
             key={index}
@@ -248,10 +248,10 @@ function Documents() {
             </div>
           </div>
         ))}
-      </div> */}
+      </div>
 
       {/* Bottom Buttons */}
-      {/* <div className="flex justify-between items-center pt-[30px]">
+      <div className="flex justify-between items-center pt-[30px]">
         <div className="font-lexend font-bold cursor-pointer text-[14px]">
           Cancel
         </div>
@@ -271,7 +271,7 @@ function Documents() {
           )}
           onClick={() => router.push("/signature")}
         />
-      </div> */}
+      </div>
     </div>
   );
 }
