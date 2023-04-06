@@ -26,9 +26,9 @@ export default function SigneasyApp() {
         title="Signature page"
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-yellow-200"
         titleClassName="font-lexend"
-        onClick={() =>
-          // () => popupHandler({ url: `${DEPLOYMENT_URL}signature` })
-          router.push("/signature")
+        onClick={
+          () => popupHandler({ url: `${DEPLOYMENT_URL}signature` })
+          // router.push("/signature")
         }
       />
       <PrimaryButton
