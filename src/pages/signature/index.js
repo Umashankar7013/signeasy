@@ -15,9 +15,10 @@ import { useRouter } from "next/router";
 import { AppContext } from "../_app";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 function Signature() {
-  const { selectedItem, docParams } = useContext(AppContext);
+  const { selectedItem, docParams, JWTtoken } = useContext(AppContext);
   const [signersData, setSignersData] = useLocalStorage("signersData", [
     {
       first_name: docParams?.firstName || "",
@@ -58,6 +59,7 @@ function Signature() {
     const data = await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
+      headers: { "x-access-token": JWTtoken },
       body: {
         sources: [
           {
@@ -68,11 +70,13 @@ function Signature() {
           },
         ],
         recipients: signersData,
-        redirect_url: "https://signeasy.vercel.app/signature",
+        redirect_url: "https://signeasy.vercel.app",
         embedded_signing: true,
         is_ordered: false,
       },
-    });
+    })
+      .then((res) => console.log(res, "res"))
+      .catch((error) => console.log(error, "Error"));
     const currentUrl = window.location.href;
     console.log(currentUrl, data, "uma");
     // const searchParams = new URL(currentUrl).searchParams;
