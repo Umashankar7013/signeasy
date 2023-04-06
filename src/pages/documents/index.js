@@ -160,7 +160,7 @@ function Documents() {
       </div>
 
       {/* Table headers */}
-      {/* <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
+      <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
         {headerData?.map((item, index) => (
           <div
             className={classNames(
@@ -208,7 +208,7 @@ function Documents() {
             </div>
           </div>
         ))}
-      </div> */}
+      </div>
 
       {/* Table data */}
       {/* <div className="w-[100%] flex flex-col">
