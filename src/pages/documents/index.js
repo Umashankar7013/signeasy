@@ -114,7 +114,7 @@ function Documents() {
   };
 
   const uploadDocHandler = async (file) => {
-    console.log(file);
+    console.log(file, JWTtoken, jwt_decode(JWTtoken));
     var form = new FormData();
     form.append("file", file);
     form.append("name", file?.name);
