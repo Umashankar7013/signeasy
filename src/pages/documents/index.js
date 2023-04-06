@@ -72,6 +72,8 @@ function Documents() {
       showOwner={false}
       paramFilteredData={filteredData}
       paramItemsData={itemsData.current}
+      itemsGetFun={getTemplatesHandler}
+      token={JWTtoken}
     />
   );
 }

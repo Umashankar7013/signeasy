@@ -11,6 +11,7 @@ import { PrimaryButton } from "./PrimaryButton";
 import { SearchBar } from "./SearchBar";
 import { getApi } from "../api/apiMethods";
 import { dateHandler } from "../utils/functions";
+import axios from "axios";
 
 const TemplatesAndDocs = ({
   uploadDocs = false,
@@ -18,6 +19,7 @@ const TemplatesAndDocs = ({
   paramItemsData,
   paramFilteredData,
   itemsGetFun = () => {},
+  token = "",
 }) => {
   const headerData = showOwner
     ? ["TEMPLATE NAME", "OWNER", "LAST CHANGE"]
@@ -57,10 +59,21 @@ const TemplatesAndDocs = ({
     sortedData && setFilteredData([...sortedData]);
   };
 
-  const uploadDocHandler = (file) => {
+  const uploadDocHandler = async (file) => {
     console.log(file);
     var form = new FormData();
-    // form.append("file", this.state.file);
+    form.append("file", file);
+    const data = await axios({
+      method: "post",
+      url: "https://api.signeasy.com/v3/original/",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        data: {
+          file: form,
+          name: file?.name,
+        },
+      },
+    }).then((response) => console.log(response, "uploaded succesFully"));
     // YourAjaxLib.doUpload("/yourEndpoint/", form).then((result) =>
     //   console.log(result)
     // );
@@ -160,7 +173,7 @@ const TemplatesAndDocs = ({
             )}
           >
             <div
-              className="flex flex-1 items-center ml-[10px]"
+              className="flex flex-1 items-center ml-[10px] cursor-pointer"
               onClick={() =>
                 setSelectedItem((prev) =>
                   prev === template?.id ? "" : template?.id
