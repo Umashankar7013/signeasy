@@ -25,7 +25,6 @@ function Signature() {
   const [emails, setEmails] = useState([]);
   const router = useRouter();
   const selectedItem = router?.query?.selectedItem;
-  console.log(selectedItem);
 
   const verificationTypeHandler = (type, index) => {
     setSignersData((prev) => {
@@ -43,7 +42,7 @@ function Signature() {
       />
       <div className="p-[16px] ml-[17px] border-[1px] mt-[14px] border-[#E0E3EA] rounded-[3px] md:w-[70%]">
         <div className="font-lexend font-[500] leading-[17px] text-[14px]">
-          {/* {selectedItem?.name} */}
+          {selectedItem?.name}
         </div>
         {/* <div className="pt-[6px] font-lexend font-[300] leading-[15px] text-[12px] text-[#9DABC0]">
           1 pages
