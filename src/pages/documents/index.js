@@ -117,6 +117,7 @@ function Documents() {
     var form = new FormData();
     form.append("file", file);
     form.append("name", file?.name);
+    console.log(form, "form data");
     const data = await axios({
       method: "post",
       url: "https://api.signeasy.com/v3/original",
