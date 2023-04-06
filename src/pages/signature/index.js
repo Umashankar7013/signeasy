@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 import { AppContext } from "../_app";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken } = useContext(AppContext);
@@ -54,7 +53,8 @@ function Signature() {
     console.log("first");
   };
 
-  const editHandler = async () => {
+  const editHandler = async (e) => {
+    e.preventDefault();
     console.log("edit");
     const data = await axios({
       method: "post",
@@ -70,7 +70,7 @@ function Signature() {
           },
         ],
         recipients: signersData,
-        redirect_url: "https://signeasy.vercel.app",
+        redirect_url: "https://signeasy.vercel.app/signature",
         embedded_signing: true,
         is_ordered: false,
       },
@@ -283,7 +283,7 @@ function Signature() {
               type="submit"
               value="Edit in Signeasy"
               className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
-              onClick={editHandler}
+              onClick={(e) => editHandler(e)}
             />
             <input
               type="submit"
