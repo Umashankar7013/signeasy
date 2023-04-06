@@ -85,7 +85,7 @@ function Signature() {
         name: selectedItem?.name,
         envelope_id: data?.data?.data?.pending_file_id,
         object_type: docParams?.objectType,
-        object_id: docParams?.objectId,
+        object_id: Number(docParams?.objectId),
       },
     });
     console.log(data1);
