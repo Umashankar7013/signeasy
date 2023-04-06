@@ -132,7 +132,10 @@ function Documents() {
     };
     fetch("https://api.signeasy.com/v3/original/", requestOptions)
       .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then((result) => {
+        console.log(result);
+        getTemplatesHandler();
+      })
       .catch((error) => console.log("error", error));
   };
 
