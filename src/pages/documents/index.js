@@ -269,7 +269,10 @@ function Documents() {
               : "text-[#b3c0d2]"
           )}
           onClick={() =>
-            router.push({ pathname: "/signature", query: { selectedItem } })
+            router.push({
+              pathname: "/signature",
+              query: { selectedItem: JSON.stringify(selectedItem) },
+            })
           }
         />
       </div>
