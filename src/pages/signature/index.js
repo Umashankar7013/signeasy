@@ -312,26 +312,18 @@ function Signature() {
             titleClassName="pl-[10px] font-bold text-[#ee8162] text-[14px]"
           />
           <div className="flex">
-            {loading?.edit ? (
-              <LoadingOutlined />
-            ) : (
-              <input
-                type="submit"
-                value="Edit in Signeasy"
-                className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
-                onClick={(e) => editHandler(e)}
-              />
-            )}
-            {loading?.submit ? (
-              <LoadingOutlined />
-            ) : (
-              <input
-                type="submit"
-                value="Send for signature"
-                className="border-[1px] px-[15px] ml-[10px] cursor-pointer rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
-                onClick={(e) => submitHandler(e)}
-              />
-            )}
+            <input
+              type="submit"
+              value="Edit in Signeasy"
+              className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
+              onClick={(e) => editHandler(e)}
+            />
+            <input
+              type="submit"
+              value="Send for signature"
+              className="border-[1px] px-[15px] ml-[10px] cursor-pointer rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
+              onClick={(e) => submitHandler(e)}
+            />
           </div>
         </div>
       </form>
