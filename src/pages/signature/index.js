@@ -12,7 +12,7 @@ import { TextArea } from "../../components/TextArea";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 
-function Signature() {
+function Signature({ router }) {
   const [signersData, setSignersData] = useState([
     {
       verificationType: undefined,
@@ -22,6 +22,8 @@ function Signature() {
     verificationType: undefined,
   };
   const [emails, setEmails] = useState([]);
+  const selectedItem = router.params.selectedItem;
+  console.log(selectedItem, "uma");
 
   const verificationTypeHandler = (type, index) => {
     setSignersData((prev) => {

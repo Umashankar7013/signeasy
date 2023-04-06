@@ -137,7 +137,6 @@ function Documents() {
       <div className="font-lexend text-[14px] pt-[20px]">
         Pick a document to send to your customer and attach to this conatct
       </div>
-
       {/* Search bar */}
       <div className="flex items-center justify-between">
         <SearchBar
@@ -160,7 +159,6 @@ function Documents() {
           </div>
         </div>
       </div>
-
       {/* Table headers */}
       <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
         {headerData?.map((item, index) => (
@@ -251,7 +249,6 @@ function Documents() {
           </div>
         ))}
       </div>
-
       {/* Bottom Buttons */}
       <div className="flex justify-between items-center pt-[30px]">
         <div className="font-lexend font-bold cursor-pointer text-[14px]">
@@ -271,7 +268,7 @@ function Documents() {
               ? "text-[white]"
               : "text-[#b3c0d2]"
           )}
-          onClick={() => router.push("/signature")}
+          onClick={() => router.push("/signature", selectedItem)}
         />
       </div>
     </div>
