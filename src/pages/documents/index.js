@@ -2,8 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import TemplatesAndDocs from "../../components/TemplatesAndDocs";
 import { getApi } from "../../api/apiMethods";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { LoadingOutlined } from "@ant-design/icons";
+import {
+  CaretDownOutlined,
+  CaretUpOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { useRouter } from "next/router";
+import { SearchBar } from "../../components/SearchBar";
+import { RadioButton } from "../../components/RadioButton";
+import { PrimaryButton } from "../../components/PrimaryButton";
 
 function Documents() {
   const itemsData = useRef([
