@@ -48,10 +48,6 @@ function Documents() {
   const router = useRouter();
   const inputFileRef = useRef(null);
 
-  if (!window) {
-    return <div></div>;
-  }
-
   const getTemplatesHandler = async () => {
     if (window) {
       const currentUrl = window.location.href;
