@@ -268,7 +268,9 @@ function Documents() {
               ? "text-[white]"
               : "text-[#b3c0d2]"
           )}
-          onClick={() => router.push("/signature", selectedItem)}
+          onClick={() =>
+            router.push({ pathname: "/signature", query: { selectedItem } })
+          }
         />
       </div>
     </div>
