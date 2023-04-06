@@ -131,7 +131,6 @@ function Documents() {
     })
       .then((res) => console.log(res, "data"))
       .catch((error) => console.log(error, "Error"));
-    console.log(data, "data");
   };
 
   useEffect(() => {
