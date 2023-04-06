@@ -115,7 +115,8 @@ function Documents() {
   const uploadDocHandler = async (file) => {
     console.log(file);
     var form = new FormData();
-    form.append("file", file, file?.name);
+    form.append("file", file);
+    form.append("name", file?.name);
     await axios({
       method: "post",
       url: "https://api.signeasy.com/v3/original",
@@ -123,10 +124,7 @@ function Documents() {
         Authorization: `Bearer ${jwt_decode(JWTtoken)}`,
         "Content-Type": "multipart/form-data",
       },
-      data: {
-        file: form,
-        name: file?.name,
-      },
+      data: form,
     })
       .then((response) => console.log(response, "uploaded succesFully"))
       .catch((error) => console.log(error, "Error"));
