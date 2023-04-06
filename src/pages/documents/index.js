@@ -118,21 +118,16 @@ function Documents() {
     form.append("file", file);
     const data = await axios({
       method: "post",
-      url: "https://api.signeasy.com/v3/original/",
+      url: "https://api.signeasy.com/v3/original",
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken)}`,
       },
       data: {
-        file: form,
         name: file?.name,
       },
     })
       .then((response) => console.log(response, "uploaded succesFully"))
       .catch((error) => console.log(error, "Error"));
-
-    // YourAjaxLib.doUpload("/yourEndpoint/", form).then((result) =>
-    //   console.log(result)
-    // );
   };
 
   useEffect(() => {
