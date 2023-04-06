@@ -50,6 +50,7 @@ function Documents() {
 
   const getTemplatesHandler = async () => {
     if (window) {
+      console.log("inside");
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
       const authId = searchParams?.get("authId");
@@ -147,7 +148,7 @@ function Documents() {
       <LoadingOutlined />
     </div>
   ) : (
-    <div className="w-[100%] px-[20px] md:px-[50px]">
+    <div className="w-[100%] pb-[30px] px-[20px] md:px-[50px]">
       {/* Header */}
       <div className="font-lexend text-[14px] pt-[20px]">
         Pick a document to send to your customer and attach to this conatct
