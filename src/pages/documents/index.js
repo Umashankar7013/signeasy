@@ -272,7 +272,7 @@ function Documents() {
             router.push({
               pathname: "/signature",
               query: {
-                selectedItem: JSON.stringify(selectedItem),
+                selectedItem: JSON?.stringify(selectedItem),
               },
             })
           }
