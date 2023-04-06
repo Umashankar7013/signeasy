@@ -127,6 +127,7 @@ function Documents() {
         "Content-Type": "multipart/form-data",
       },
       body: form,
+      redirect: "follow",
     })
       .then((res) => console.log(res, "data"))
       .catch((error) => console.log(error, "Error"));
