@@ -237,7 +237,7 @@ function Signature() {
                   <CrossIcon />
                 </div>
               </div>
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[17px] w-[100%]">
+              <div className="grid gap-x-[10px] gap-y-[10px] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[17px] w-[100%]">
                 <div className="w-[100%]">
                   <Input
                     title="First name"
@@ -256,7 +256,7 @@ function Signature() {
                     clearFun={clearInputHandler}
                   />
                 </div>
-                <div className="ml-[10px] w-[100%]">
+                <div className="w-[100%]">
                   <Input
                     title="Last name"
                     required={true}
@@ -274,7 +274,7 @@ function Signature() {
                     clearFun={clearInputHandler}
                   />
                 </div>
-                <div className="ml-[10px] w-[100%]">
+                <div className="w-[100%]">
                   <Input
                     title="Email"
                     required={true}
