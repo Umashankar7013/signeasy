@@ -118,7 +118,7 @@ function Documents() {
     form.append("file", file);
     form.append("name", file?.name);
     console.log(form, "form data");
-    const data = await axios({
+    fetch({
       method: "post",
       url: "https://api.signeasy.com/v3/original",
       headers: {
@@ -126,7 +126,9 @@ function Documents() {
         "Content-Type": "multipart/form-data",
       },
       body: form,
-    });
+    })
+      .then((res) => console.log(res, "data"))
+      .catch((error) => console.log(error, "Error"));
     console.log(data, "data");
   };
 
