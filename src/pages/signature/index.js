@@ -74,7 +74,7 @@ function Signature() {
       },
     });
     const currentUrl = window.location.href;
-    console.log(currentUrl);
+    console.log(currentUrl, data, "uma");
     // const searchParams = new URL(currentUrl).searchParams;
   };
 
