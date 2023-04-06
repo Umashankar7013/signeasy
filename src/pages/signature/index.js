@@ -4,7 +4,7 @@ import { DropDown } from "../../components/DropDown";
 import { Input } from "../../components/Input";
 import { PlusIcon } from "../../components/PlusIcon";
 import { PrimaryButton } from "../../components/PrimaryButton";
-import { LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined, LoadingOutlined } from "@ant-design/icons";
 import { PhoneNumberInput } from "../../components/PhoneNumberInput";
 import { FormHeaderLables } from "../../components/FormHeaderLables";
 import { verificationTypeData } from "../../constants/constants";
@@ -27,6 +27,7 @@ function Signature() {
       recipient_id: 1,
     },
   ]);
+  const [loading, setLoading] = useState({ edit: false, submit: false });
 
   const signer = {
     first_name: "",
@@ -56,7 +57,7 @@ function Signature() {
 
   const editHandler = async (e) => {
     e.preventDefault();
-    console.log("edit");
+    setLoading((prev) => ({ ...prev, edit: true }));
     const data = await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
@@ -88,8 +89,8 @@ function Signature() {
         object_id: Number(docParams?.objectId),
       },
     });
-    console.log(data1);
-    // popupHandler({ url: data?.data?.data?.url });
+    setLoading((prev) => ({ ...prev, edit: false }));
+    popupHandler({ url: data?.data?.data?.url });
   };
 
   const Step1 = () => (
@@ -291,7 +292,7 @@ function Signature() {
           <div className="flex">
             <input
               type="submit"
-              value="Edit in Signeasy"
+              value={loading?.edit ? <LoadingOutlined /> : "Edit in Signeasy"}
               className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
               onClick={(e) => editHandler(e)}
             />
