@@ -123,7 +123,7 @@ function Documents() {
       method: "post",
       url: "https://api.signeasy.com/v3/original",
       headers: {
-        Authorization: `Bearer ${jwt_decode(JWTtoken)}`,
+        Authorization: `Bearer ${JWTtoken}`,
         "Content-Type": "multipart/form-data",
       },
       body: form,
