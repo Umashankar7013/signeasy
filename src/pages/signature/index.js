@@ -24,13 +24,9 @@ function Signature() {
   };
   const [emails, setEmails] = useState([]);
   const router = useRouter();
-  const selectedItem = router?.query?.selectedItem;
-  console.log(
-    JSON.parse(selectedItem),
-    typeof JSON.parse(selectedItem),
-    selectedItem?.name,
-    "sel"
-  );
+  const selectedItem =
+    Object.keys(router?.query?.selectedItem).length > 0 &&
+    JSON.parse(router?.query?.selectedItem);
 
   const verificationTypeHandler = (type, index) => {
     setSignersData((prev) => {
