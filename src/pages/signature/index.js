@@ -121,7 +121,7 @@ function Signature() {
         text1="1. Review documents in your envelope"
         text2=" All documents in this envelope are part of your chosen template."
       />
-      <div className="p-[16px] ml-[17px] border-[1px] mt-[14px] border-[#E0E3EA] rounded-[3px] md:w-[70%]">
+      <div className="p-[16px] ml-[17px] border-[1px] mt-[14px] border-[#E0E3EA] rounded-[3px]">
         <div className="font-lexend font-[500] leading-[17px] text-[14px]">
           {selectedItem?.name}
         </div>
@@ -182,7 +182,7 @@ function Signature() {
             paddingTop: 2,
             paddingLeft: 10,
           }}
-          className="md:w-[70%]"
+          className=""
         />
         <style jsx global>{`
           .react-multi-email > input {
@@ -208,7 +208,7 @@ function Signature() {
           />
           {signersData?.map((item, index) => (
             <div
-              className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] md:w-[70%] mt-[14px] ml-[17px]"
+              className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] mt-[14px] ml-[17px]"
               key={index}
             >
               <div className="flex justify-between items-center">
