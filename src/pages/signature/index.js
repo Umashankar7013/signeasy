@@ -77,7 +77,19 @@ function Signature() {
       },
     }).catch((error) => console.log(error, "Error"));
     console.log(data);
-    // popupHandler({ url: data?.data?.data?.url });
+    const data1 = await axios({
+      method: "post",
+      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
+      headers: { "x-access-token": JWTtoken },
+      data: {
+        name: selectedItem?.name,
+        envelope_id: data?.data?.data?.pending_file_id,
+        object_type: docParams?.objectType,
+        object_id: docParams?.objectId,
+      },
+    });
+    console.log(data1);
+    popupHandler({ url: data?.data?.data?.url });
   };
 
   const Step1 = () => (
