@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CrossIcon } from "../../components/CrossIcon";
 import { DropDown } from "../../components/DropDown";
 import { Input } from "../../components/Input";
@@ -25,7 +25,16 @@ function Signature() {
   };
   const [emails, setEmails] = useState([]);
   const router = useRouter();
-  const { selectedItem } = useContext(AppContext);
+  const { selectedItem, docParams } = useContext(AppContext);
+
+  useEffect(() => {
+    if (
+      docParams?.firstName !== "" ||
+      docParams?.lastName !== "" ||
+      docParams?.email !== ""
+    ) {
+    }
+  }, []);
 
   const verificationTypeHandler = (type, index) => {
     setSignersData((prev) => {
@@ -79,7 +88,10 @@ function Signature() {
           </div>
           <div className="flex pt-[17px] w-[100%]">
             <div className="w-[100%]">
-              <Input title="Name" required={true} className="w-[100%]" />
+              <Input title="first name" required={true} className="w-[100%]" />
+            </div>
+            <div className="ml-[10px] w-[100%]">
+              <Input title="last name" required={true} className="w-[100%]" />
             </div>
             <div className="ml-[10px] w-[100%]">
               <Input title="Email" required={true} className="w-[100%]" />

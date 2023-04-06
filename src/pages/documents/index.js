@@ -34,14 +34,15 @@ function Documents() {
   ]);
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
-  const [docParams, setDocParams] = useLocalStorage("docParams", {
-    authId: "",
-    objectId: "",
-    objectType: "",
-  });
-  const [JWTtoken, setJWTtoken] = useLocalStorage("JWTtoken", "");
   const headerData = ["DOCUMENT NAME", "LAST CHANGE"];
-  const { selectedItem, setSelectedItem } = useContext(AppContext);
+  const {
+    selectedItem,
+    setSelectedItem,
+    docParams,
+    setDocParams,
+    JWTtoken,
+    setJWTtoken,
+  } = useContext(AppContext);
   const selectedHeader = useRef("");
   const router = useRouter();
   const inputFileRef = useRef(null);
@@ -53,7 +54,18 @@ function Documents() {
       const authId = searchParams?.get("authId");
       const objectId = searchParams?.get("object_id");
       const objectType = searchParams?.get("object_type");
-      setDocParams((prev) => ({ ...prev, authId, objectId, objectType }));
+      const firstName = searchParams?.get("first_name");
+      const lastName = searchParams?.get("last_name");
+      const email = searchParams?.get("email");
+      setDocParams((prev) => ({
+        ...prev,
+        authId,
+        objectId,
+        objectType,
+        firstName,
+        lastName,
+        email,
+      }));
       const data = await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       });
@@ -64,7 +76,6 @@ function Documents() {
           "x-access-token": data?.token,
         },
       });
-      console.log(docsData, "docsData");
       docsData && (itemsData.current = docsData?.data?.files);
       setFilteredData(itemsData?.current);
       setLoading(false);
