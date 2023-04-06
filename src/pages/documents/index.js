@@ -116,13 +116,14 @@ function Documents() {
     console.log(file);
     var form = new FormData();
     form.append("file", file);
-    const data = await axios({
+    await axios({
       method: "post",
       url: "https://api.signeasy.com/v3/original",
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken)}`,
       },
       data: {
+        file: form,
         name: file?.name,
       },
     })
