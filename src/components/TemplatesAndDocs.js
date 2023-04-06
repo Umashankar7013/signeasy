@@ -12,6 +12,7 @@ import { SearchBar } from "./SearchBar";
 import { getApi } from "../api/apiMethods";
 import { dateHandler } from "../utils/functions";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const TemplatesAndDocs = ({
   uploadDocs = false,
@@ -67,7 +68,7 @@ const TemplatesAndDocs = ({
       method: "post",
       url: "https://api.signeasy.com/v3/original/",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${jwt_decode(token)}`,
       },
       data: {
         file: form,
