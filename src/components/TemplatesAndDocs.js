@@ -68,12 +68,15 @@ const TemplatesAndDocs = ({
       url: "https://api.signeasy.com/v3/original/",
       headers: {
         Authorization: `Bearer ${token}`,
-        data: {
-          file: form,
-          name: file?.name,
-        },
       },
-    }).then((response) => console.log(response, "uploaded succesFully"));
+      data: {
+        file: form,
+        name: file?.name,
+      },
+    })
+      .then((response) => console.log(response, "uploaded succesFully"))
+      .catch((error) => console.log(error, "Error"));
+
     // YourAjaxLib.doUpload("/yourEndpoint/", form).then((result) =>
     //   console.log(result)
     // );
