@@ -75,9 +75,8 @@ function Signature() {
         embedded_signing: true,
         is_ordered: false,
       },
-    })
-      .then((res) => popupHandler({ url: res?.data?.url }))
-      .catch((error) => console.log(error, "Error"));
+    }).catch((error) => console.log(error, "Error"));
+    popupHandler({ url: data?.data?.url });
     // const searchParams = new URL(currentUrl).searchParams;
   };
 
