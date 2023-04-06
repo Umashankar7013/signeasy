@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import TemplatesAndDocs from "../../components/TemplatesAndDocs";
+// import TemplatesAndDocs from "../../components/TemplatesAndDocs";
 import { getApi } from "../../api/apiMethods";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import {
