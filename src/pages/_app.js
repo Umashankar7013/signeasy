@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import "../../styles/globals.css";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const AppContext = createContext();
 
