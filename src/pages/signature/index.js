@@ -51,8 +51,21 @@ function Signature() {
     });
   };
 
-  const submitHandler = () => {
-    console.log("first");
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setLoading((prev) => ({ ...prev, edit: true }));
+    const data = await axios({
+      method: "post",
+      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/send-envelope",
+      headers: { "x-access-token": JWTtoken },
+      data: {
+        original_file_id: selectedItem?.id,
+        recipients: signersData,
+        embedded_signing: 1,
+        is_ordered: 1,
+      },
+    }).catch((error) => console.log(error, "Error"));
+    console.log(data);
   };
 
   const editHandler = async (e) => {
@@ -291,7 +304,7 @@ function Signature() {
           />
           <div className="flex">
             {loading?.edit ? (
-              <div className="flex justify-center items-center">
+              <div className="">
                 <LoadingOutlined />
               </div>
             ) : (
@@ -306,7 +319,7 @@ function Signature() {
               type="submit"
               value="Send for signature"
               className="border-[1px] px-[15px] ml-[10px] cursor-pointer rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
-              onClick={submitHandler}
+              onClick={(e) => submitHandler(e)}
             />
           </div>
         </div>
