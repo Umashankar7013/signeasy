@@ -13,6 +13,7 @@ import { PrimaryButton } from "../../components/PrimaryButton";
 import classNames from "classnames";
 import { dateHandler } from "../../utils/functions";
 import { AppContext } from "../_app";
+import jwt_decode from "jwt-decode";
 
 function Documents() {
   const itemsData = useRef([
