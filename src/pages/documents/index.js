@@ -49,9 +49,9 @@ function Documents() {
         },
       });
       console.log(docsData, "docsData");
-      // data && (itemsData.current = data?.data);
-      // setFilteredData(itemsData?.current);
-      // setLoading(false);
+      docsData && (itemsData.current = docsData?.data?.files);
+      setFilteredData(itemsData?.current);
+      setLoading(false);
     } else {
       console.log("Not able to access the window.");
     }

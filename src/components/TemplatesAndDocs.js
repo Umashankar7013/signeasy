@@ -22,7 +22,7 @@ const TemplatesAndDocs = ({
   const headerData = showOwner
     ? ["TEMPLATE NAME", "OWNER", "LAST CHANGE"]
     : ["DOCUMENT NAME", "LAST CHANGE"];
-  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [selectedItem, setSelectedItem] = useState(0);
   const [filteredData, setFilteredData] = useState(paramFilteredData);
   const selectedHeader = useRef("");
   const router = useRouter();
@@ -57,27 +57,6 @@ const TemplatesAndDocs = ({
     sortedData && setFilteredData([...sortedData]);
   };
 
-  // const getTemplatesHandler = async () => {
-  //   if (window) {
-  //     const currentUrl = window.location.href;
-  //     const searchParams = new URL(currentUrl).searchParams;
-  //     const userId = searchParams?.get("hubspot_user_id");
-  //     const portalId = searchParams?.get("hubspot_portal_id");
-  //     const data = await getApi({
-  //       endUrl: "hubspot-card/templates",
-  //       params: {
-  //         hubspot_user_id: userId,
-  //         hubspot_portal_id: portalId,
-  //       },
-  //     });
-  //     data && (itemsData.current = data?.data);
-  //     setFilteredData(itemsData?.current);
-  //     setLoading(false);
-  //   } else {
-  //     console.log("Not able to access the window.");
-  //   }
-  // };
-
   const uploadDocHandler = (file) => {
     console.log(file);
     var form = new FormData();
@@ -86,10 +65,6 @@ const TemplatesAndDocs = ({
     //   console.log(result)
     // );
   };
-
-  // useEffect(() => {
-  //   getTemplatesHandler();
-  // }, []);
 
   return (
     <div className="w-[100%] px-[20px] md:px-[50px]">
@@ -187,14 +162,14 @@ const TemplatesAndDocs = ({
             <div
               className="flex flex-1 items-center ml-[10px]"
               onClick={() =>
-                setSelectedTemplate((prev) =>
-                  prev === template?.name ? "" : template?.name
+                setSelectedItem((prev) =>
+                  prev === template?.id ? "" : template?.id
                 )
               }
             >
               <div>
                 <RadioButton
-                  isActive={template?.name === selectedTemplate}
+                  isActive={template?.id === selectedItem}
                   isDisabled={template?.name === undefined}
                 />
               </div>
@@ -209,10 +184,10 @@ const TemplatesAndDocs = ({
             )}
             <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
               <div className="font-lexend">
-                {dateHandler({ timestamp: template?.modified_time })[0]}
+                {dateHandler({ timestamp: template?.last_modified_time })[0]}
               </div>
               <div className="font-lexend text-[14px]">
-                {dateHandler({ timestamp: template?.modified_time })[1]}
+                {dateHandler({ timestamp: template?.last_modified_time })[1]}
               </div>
             </div>
           </div>
@@ -230,11 +205,11 @@ const TemplatesAndDocs = ({
           title="Next"
           className={classNames(
             "px-[40px] py-[10px]",
-            selectedTemplate !== "" ? "bg-[#ee8162]" : "bg-[#ebf0f5]"
+            selectedItem !== "" ? "bg-[#ee8162]" : "bg-[#ebf0f5]"
           )}
           titleClassName={classNames(
             "font-lexend font-bold text-[14px]",
-            selectedTemplate !== "" ? "text-[white]" : "text-[#b3c0d2]"
+            selectedItem !== "" ? "text-[white]" : "text-[#b3c0d2]"
           )}
           onClick={() => router.push("/signature")}
         />
