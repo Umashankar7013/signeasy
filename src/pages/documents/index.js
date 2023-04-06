@@ -49,7 +49,7 @@ function Documents() {
   const inputFileRef = useRef(null);
 
   if (!window) {
-    return null;
+    return <div></div>;
   }
 
   const getTemplatesHandler = async () => {
@@ -118,7 +118,6 @@ function Documents() {
   };
 
   const uploadDocHandler = async (file) => {
-    console.log(JWTtoken, jwt_decode(JWTtoken));
     var formdata = new FormData();
     formdata.append("file", file);
     formdata.append("name", file?.name);
