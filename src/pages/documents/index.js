@@ -31,9 +31,7 @@ function Documents() {
     objectType: "",
   });
   const [JWTtoken, setJWTtoken] = useLocalStorage("JWTtoken", "");
-  const headerData = showOwner
-    ? ["TEMPLATE NAME", "OWNER", "LAST CHANGE"]
-    : ["DOCUMENT NAME", "LAST CHANGE"];
+  const headerData = ["DOCUMENT NAME", "LAST CHANGE"];
   const [selectedItem, setSelectedItem] = useState({});
   const selectedHeader = useRef("");
   const router = useRouter();
@@ -254,10 +252,7 @@ function Documents() {
       </div>
       {/* Bottom Buttons */}
       <div className="flex justify-between items-center pt-[30px]">
-        <div
-          className="font-lexend font-bold cursor-pointer text-[14px]"
-          onClick={itemsGetFun}
-        >
+        <div className="font-lexend font-bold cursor-pointer text-[14px]">
           Cancel
         </div>
         <PrimaryButton
