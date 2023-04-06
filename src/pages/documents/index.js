@@ -134,9 +134,7 @@ function Documents() {
     <div className="w-[100%] px-[20px] md:px-[50px]">
       {/* Header */}
       <div className="font-lexend text-[14px] pt-[20px]">
-        {`Pick a ${
-          uploadDocs ? "document" : "template"
-        } to send to your customer and attach to this conatct`}
+        {`Pick a document to send to your customer and attach to this conatct`}
       </div>
       {/* Search bar */}
       <div className="flex items-center justify-between">
