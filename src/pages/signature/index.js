@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { AppContext } from "../_app";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import axios from "axios";
+import { popupHandler } from "../../utils/functions";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken } = useContext(AppContext);
@@ -75,10 +76,8 @@ function Signature() {
         is_ordered: false,
       },
     })
-      .then((res) => console.log(res, "res"))
+      .then((res) => popupHandler({ url: res?.data?.url }))
       .catch((error) => console.log(error, "Error"));
-    const currentUrl = window.location.href;
-    console.log(currentUrl, data, "uma");
     // const searchParams = new URL(currentUrl).searchParams;
   };
 
