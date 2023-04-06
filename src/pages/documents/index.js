@@ -144,24 +144,22 @@ function Documents() {
           className="w-fit"
           onChange={(event) => searchHandler(event?.target?.value)}
         />
-        {uploadDocs && (
-          <div>
-            {/* Upload document */}
-            <input
-              ref={inputFileRef}
-              type="file"
-              className="hidden"
-              onChange={(event) => uploadDocHandler(event.target.files[0])}
-            />
-            <div
-              value="Choose Files!"
-              onClick={() => inputFileRef.current.click()}
-              className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
-            >
-              Upload document
-            </div>
+        <div>
+          {/* Upload document */}
+          <input
+            ref={inputFileRef}
+            type="file"
+            className="hidden"
+            onChange={(event) => uploadDocHandler(event.target.files[0])}
+          />
+          <div
+            value="Choose Files!"
+            onClick={() => inputFileRef.current.click()}
+            className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
+          >
+            Upload document
           </div>
-        )}
+        </div>
       </div>
       {/* Table headers */}
       <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
@@ -241,11 +239,6 @@ function Documents() {
                 {template?.name}
               </div>
             </div>
-            {showOwner && (
-              <div className="flex flex-[0.6] text-[14px] justify-center font-lexend">
-                {template?.ownerName || "uma"}
-              </div>
-            )}
             <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
               <div className="font-lexend">
                 {dateHandler({ timestamp: template?.last_modified_time })[0]}
