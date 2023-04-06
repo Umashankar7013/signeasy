@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { getApi } from "../../api/apiMethods";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import {
@@ -12,6 +12,7 @@ import { RadioButton } from "../../components/RadioButton";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import classNames from "classnames";
 import { dateHandler } from "../../utils/functions";
+import { AppContext } from "../_app";
 
 function Documents() {
   const itemsData = useRef([
@@ -40,7 +41,7 @@ function Documents() {
   });
   const [JWTtoken, setJWTtoken] = useLocalStorage("JWTtoken", "");
   const headerData = ["DOCUMENT NAME", "LAST CHANGE"];
-  const [selectedItem, setSelectedItem] = useState({});
+  const { selectedItem, setSelectedItem } = useContext(AppContext);
   const selectedHeader = useRef("");
   const router = useRouter();
   const inputFileRef = useRef(null);
@@ -271,9 +272,6 @@ function Documents() {
           onClick={() =>
             router.push({
               pathname: "/signature",
-              query: {
-                selectedItem: JSON?.stringify(selectedItem),
-              },
             })
           }
         />

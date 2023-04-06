@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { CrossIcon } from "../../components/CrossIcon";
 import { DropDown } from "../../components/DropDown";
 import { Input } from "../../components/Input";
@@ -12,6 +12,7 @@ import { TextArea } from "../../components/TextArea";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import { useRouter } from "next/router";
+import { AppContext } from "../_app";
 
 function Signature() {
   const [signersData, setSignersData] = useState([
@@ -24,9 +25,7 @@ function Signature() {
   };
   const [emails, setEmails] = useState([]);
   const router = useRouter();
-  const selectedItem =
-    router?.query?.selectedItem !== "{}" &&
-    JSON.parse(router?.query?.selectedItem);
+  const { selectedItem } = useContext(AppContext);
 
   const verificationTypeHandler = (type, index) => {
     setSignersData((prev) => {
