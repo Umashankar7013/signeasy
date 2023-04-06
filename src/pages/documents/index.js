@@ -134,7 +134,7 @@ function Documents() {
     <div className="w-[100%] px-[20px] md:px-[50px]">
       {/* Header */}
       <div className="font-lexend text-[14px] pt-[20px]">
-        {`Pick a document to send to your customer and attach to this conatct`}
+        Pick a document to send to your customer and attach to this conatct
       </div>
       {/* Search bar */}
       <div className="flex items-center justify-between">
@@ -151,7 +151,6 @@ function Documents() {
             onChange={(event) => uploadDocHandler(event.target.files[0])}
           />
           <div
-            value="Choose Files!"
             onClick={() => inputFileRef.current.click()}
             className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
           >
@@ -257,11 +256,15 @@ function Documents() {
           title="Next"
           className={classNames(
             "px-[40px] py-[10px]",
-            selectedItem !== "" ? "bg-[#ee8162]" : "bg-[#ebf0f5]"
+            Object.keys(selectedItem)?.length > 0
+              ? "bg-[#ee8162]"
+              : "bg-[#ebf0f5]"
           )}
           titleClassName={classNames(
             "font-lexend font-bold text-[14px]",
-            selectedItem !== "" ? "text-[white]" : "text-[#b3c0d2]"
+            Object.keys(selectedItem)?.length > 0
+              ? "text-[white]"
+              : "text-[#b3c0d2]"
           )}
           onClick={() => router.push("/signature")}
         />
