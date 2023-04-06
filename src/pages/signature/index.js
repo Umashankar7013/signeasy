@@ -65,7 +65,17 @@ function Signature() {
         is_ordered: 1,
       },
     }).catch((error) => console.log(error, "Error"));
-    console.log(data);
+    const data1 = await axios({
+      method: "post",
+      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
+      headers: { "x-access-token": JWTtoken },
+      data: {
+        name: selectedItem?.name,
+        envelope_id: data?.data?.data?.pending_file_id,
+        object_type: docParams?.objectType,
+        object_id: Number(docParams?.objectId),
+      },
+    });
   };
 
   const editHandler = async (e) => {
@@ -90,7 +100,6 @@ function Signature() {
         is_ordered: false,
       },
     }).catch((error) => console.log(error, "Error"));
-    console.log(data);
     const data1 = await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
@@ -304,9 +313,7 @@ function Signature() {
           />
           <div className="flex">
             {loading?.edit ? (
-              <div className="">
-                <LoadingOutlined />
-              </div>
+              <LoadingOutlined />
             ) : (
               <input
                 type="submit"
@@ -315,12 +322,16 @@ function Signature() {
                 onClick={(e) => editHandler(e)}
               />
             )}
-            <input
-              type="submit"
-              value="Send for signature"
-              className="border-[1px] px-[15px] ml-[10px] cursor-pointer rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
-              onClick={(e) => submitHandler(e)}
-            />
+            {loading?.submit ? (
+              <LoadingOutlined />
+            ) : (
+              <input
+                type="submit"
+                value="Send for signature"
+                className="border-[1px] px-[15px] ml-[10px] cursor-pointer rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
+                onClick={(e) => submitHandler(e)}
+              />
+            )}
           </div>
         </div>
       </form>
