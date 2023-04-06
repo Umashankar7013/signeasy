@@ -119,7 +119,10 @@ function Documents() {
     formdata.append("file", file);
     formdata.append("name", file?.name);
     let myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${JWTtoken}`);
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
+    );
 
     let requestOptions = {
       method: "POST",
