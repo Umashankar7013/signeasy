@@ -115,7 +115,7 @@ function Documents() {
   const uploadDocHandler = async (file) => {
     console.log(file);
     var form = new FormData();
-    form.append("file", file);
+    form.append("file", file, file?.name);
     await axios({
       method: "post",
       url: "https://api.signeasy.com/v3/original",
