@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import TemplatesAndDocs from "../../components/TemplatesAndDocs";
 import { getApi } from "../../api/apiMethods";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { LoadingOutlined } from "@ant-design/icons";
 
 function Documents() {
   const itemsData = useRef([
@@ -60,7 +61,19 @@ function Documents() {
   useEffect(() => {
     getTemplatesHandler();
   }, []);
-  return <TemplatesAndDocs uploadDocs={true} showOwner={false} />;
+
+  return loading ? (
+    <div className="flex h-[100vh] w-[100vw] justify-center items-center">
+      <LoadingOutlined />
+    </div>
+  ) : (
+    <TemplatesAndDocs
+      uploadDocs={true}
+      showOwner={false}
+      paramFilteredData={filteredData}
+      paramItemsData={itemsData.current}
+    />
+  );
 }
 
 export default Documents;
