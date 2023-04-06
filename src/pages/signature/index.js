@@ -77,8 +77,7 @@ function Signature() {
       },
     }).catch((error) => console.log(error, "Error"));
     console.log(data, data?.data?.url);
-    popupHandler({ url: data?.data?.data?.url });
-    // const searchParams = new URL(currentUrl).searchParams;
+    // popupHandler({ url: data?.data?.data?.url });
   };
 
   const Step1 = () => (
