@@ -290,12 +290,18 @@ function Signature() {
             titleClassName="pl-[10px] font-bold text-[#ee8162] text-[14px]"
           />
           <div className="flex">
-            <input
-              type="submit"
-              value={loading?.edit ? <LoadingOutlined /> : "Edit in Signeasy"}
-              className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
-              onClick={(e) => editHandler(e)}
-            />
+            {loading?.edit ? (
+              <div className="flex justify-center items-center">
+                <LoadingOutlined />
+              </div>
+            ) : (
+              <input
+                type="submit"
+                value="Edit in Signeasy"
+                className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
+                onClick={(e) => editHandler(e)}
+              />
+            )}
             <input
               type="submit"
               value="Send for signature"
