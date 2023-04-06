@@ -12,40 +12,29 @@ import { SearchBar } from "./SearchBar";
 import { getApi } from "../api/apiMethods";
 import { dateHandler } from "../utils/functions";
 
-const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
+const TemplatesAndDocs = ({
+  uploadDocs = false,
+  showOwner = true,
+  paramItemsData,
+  paramFilteredData,
+  itemsGetFun = () => {},
+}) => {
   const headerData = showOwner
     ? ["TEMPLATE NAME", "OWNER", "LAST CHANGE"]
     : ["DOCUMENT NAME", "LAST CHANGE"];
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [filteredData, setFilteredData] = useState();
+  const [filteredData, setFilteredData] = useState(paramFilteredData);
   const selectedHeader = useRef("");
   const router = useRouter();
   const inputFileRef = useRef(null);
-  const templateData = useRef([
-    {
-      name: "Test Document 2",
-      ownerName: "uma",
-      modified_time: 23451234,
-    },
-    {
-      name: "Test Document 1",
-      ownerName: "joy",
-      modified_time: 23451234,
-    },
-    {
-      name: "Test Document 3",
-      ownerName: "Dinesh",
-      modified_time: 23451234,
-    },
-  ]);
-  const [loading, setLoading] = useState(true);
+  const itemsData = useRef(paramItemsData);
 
   const searchHandler = (text) => {
     if (text.length === 0) {
-      setFilteredData(templateData?.current);
+      setFilteredData(itemsData?.current);
       return;
     } else {
-      const sortedData = templateData?.current?.filter((item) =>
+      const sortedData = itemsData?.current?.filter((item) =>
         item?.name?.toLowerCase().includes(text)
       );
       sortedData && setFilteredData([...sortedData]);
@@ -60,7 +49,7 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
       "LAST CHANGE": "modified_time",
     };
     const sortKey = templateUtils?.[selectedHeader?.current];
-    const sortedData = templateData?.current?.sort((a, b) => {
+    const sortedData = itemsData?.current?.sort((a, b) => {
       if (a?.[sortKey] > b?.[sortKey]) return 1;
       else if (a?.[sortKey] < b?.[sortKey]) return -1;
       else if (a?.[sortKey] === b?.[sortKey]) return 0;
@@ -68,26 +57,26 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
     sortedData && setFilteredData([...sortedData]);
   };
 
-  const getTemplatesHandler = async () => {
-    if (window) {
-      const currentUrl = window.location.href;
-      const searchParams = new URL(currentUrl).searchParams;
-      const userId = searchParams?.get("hubspot_user_id");
-      const portalId = searchParams?.get("hubspot_portal_id");
-      const data = await getApi({
-        endUrl: "hubspot-card/templates",
-        params: {
-          hubspot_user_id: userId,
-          hubspot_portal_id: portalId,
-        },
-      });
-      data && (templateData.current = data?.data);
-      setFilteredData(templateData?.current);
-      setLoading(false);
-    } else {
-      console.log("Not able to access the window.");
-    }
-  };
+  // const getTemplatesHandler = async () => {
+  //   if (window) {
+  //     const currentUrl = window.location.href;
+  //     const searchParams = new URL(currentUrl).searchParams;
+  //     const userId = searchParams?.get("hubspot_user_id");
+  //     const portalId = searchParams?.get("hubspot_portal_id");
+  //     const data = await getApi({
+  //       endUrl: "hubspot-card/templates",
+  //       params: {
+  //         hubspot_user_id: userId,
+  //         hubspot_portal_id: portalId,
+  //       },
+  //     });
+  //     data && (itemsData.current = data?.data);
+  //     setFilteredData(itemsData?.current);
+  //     setLoading(false);
+  //   } else {
+  //     console.log("Not able to access the window.");
+  //   }
+  // };
 
   const uploadDocHandler = () => {
     var form = new FormData();
@@ -97,15 +86,11 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
     // );
   };
 
-  useEffect(() => {
-    getTemplatesHandler();
-  }, []);
+  // useEffect(() => {
+  //   getTemplatesHandler();
+  // }, []);
 
-  return loading ? (
-    <div className="flex h-[100vh] w-[100vw] justify-center items-center">
-      <LoadingOutlined />
-    </div>
-  ) : (
+  return (
     <div className="w-[100%] px-[20px] md:px-[50px]">
       {/* Header */}
       <div className="font-lexend text-[14px] pt-[20px]">
@@ -233,7 +218,10 @@ const TemplatesAndDocs = ({ uploadDocs = false, showOwner = true }) => {
       </div>
       {/* Bottom Buttons */}
       <div className="flex justify-between items-center pt-[30px]">
-        <div className="font-lexend font-bold cursor-pointer text-[14px]">
+        <div
+          className="font-lexend font-bold cursor-pointer text-[14px]"
+          onClick={itemsGetFun}
+        >
           Cancel
         </div>
         <PrimaryButton

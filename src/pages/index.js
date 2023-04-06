@@ -17,7 +17,10 @@ export default function SigneasyApp() {
         title="Templates page"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[orange]"
         titleClassName="font-lexend"
-        onClick={() => popupHandler({ url: `${DEPLOYMENT_URL}templates` })}
+        onClick={() =>
+          // popupHandler({ url: `${DEPLOYMENT_URL}templates` })
+          router.push("/templates")
+        }
       />
       <PrimaryButton
         title="Signature page"
@@ -29,9 +32,9 @@ export default function SigneasyApp() {
         title="Documents page"
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-red-500"
         titleClassName="font-lexend"
-        onClick={
-          () => popupHandler({ url: `${DEPLOYMENT_URL}documents` })
-          // router.push("/documents")
+        onClick={() =>
+          // popupHandler({ url: `${DEPLOYMENT_URL}documents` })
+          router.push("/documents")
         }
       />
     </div>

@@ -73,6 +73,7 @@ const Authorize = () => {
         return;
       }
       const searchParams = new URL(currentUrl).searchParams;
+      console.log(searchParams);
       const status = searchParams.get("status");
       const userId = searchParams?.get("hubspot_user_id");
       const portalId = searchParams?.get("hubspot_portal_id");
