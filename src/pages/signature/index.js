@@ -85,6 +85,7 @@ function Signature() {
       },
     });
     openNotification();
+    localStorage.clear();
     setTimeout(() => router.push("/documents"), 1000);
   };
 
