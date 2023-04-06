@@ -16,6 +16,7 @@ import { AppContext } from "../_app";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import axios from "axios";
 import { popupHandler } from "../../utils/functions";
+import { notification } from "antd";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken } = useContext(AppContext);
@@ -27,7 +28,14 @@ function Signature() {
       recipient_id: 1,
     },
   ]);
-  const [loading, setLoading] = useState({ edit: false, submit: false });
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement = "top") => {
+    api.info({
+      message: `Success`,
+      description: "Suucessfully sended the envelop to the signature.",
+      placement,
+    });
+  };
 
   const signer = {
     first_name: "",
@@ -76,6 +84,8 @@ function Signature() {
         object_id: Number(docParams?.objectId),
       },
     });
+    openNotification();
+    setTimeout(() => router.push("/documents"), 1000);
   };
 
   const editHandler = async (e) => {
@@ -199,6 +209,7 @@ function Signature() {
   return (
     <div className="h-[100vh] w-[100vw] px-[20px] md:px-[30px]">
       <form>
+        {contextHolder}
         <Step1 />
         {/* <Step2 /> */}
         <div>
@@ -297,7 +308,7 @@ function Signature() {
         <Step3 />
         <Step4 />
         {/* Bottom Buttons */}
-        <div className="flex justify-between mt-[40px] md:w-[90%] pb-[50px]">
+        <div className="flex justify-between mt-[40px] pb-[50px]">
           <PrimaryButton
             title="Back"
             image={
