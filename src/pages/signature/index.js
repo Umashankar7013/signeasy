@@ -76,8 +76,7 @@ function Signature() {
         is_ordered: false,
       },
     }).catch((error) => console.log(error, "Error"));
-    console.log(data, data?.data?.url);
-    // popupHandler({ url: data?.data?.data?.url });
+    popupHandler({ url: data?.data?.data?.url });
   };
 
   const Step1 = () => (
