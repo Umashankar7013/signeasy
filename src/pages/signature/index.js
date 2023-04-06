@@ -89,7 +89,7 @@ function Signature() {
       },
     });
     console.log(data1);
-    popupHandler({ url: data?.data?.data?.url });
+    // popupHandler({ url: data?.data?.data?.url });
   };
 
   const Step1 = () => (
