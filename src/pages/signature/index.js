@@ -54,8 +54,8 @@ function Signature() {
     console.log("first");
   };
 
-  const editHandler = async (e) => {
-    e.preventDefault();
+  const editHandler = async () => {
+    // e.preventDefault();
     console.log("edit");
     const data = await axios({
       method: "post",
@@ -76,6 +76,7 @@ function Signature() {
         is_ordered: false,
       },
     }).catch((error) => console.log(error, "Error"));
+    console.log(data);
     popupHandler({ url: data?.data?.url });
     // const searchParams = new URL(currentUrl).searchParams;
   };
@@ -281,7 +282,7 @@ function Signature() {
               type="submit"
               value="Edit in Signeasy"
               className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
-              onClick={(e) => editHandler(e)}
+              onClick={editHandler}
             />
             <input
               type="submit"
