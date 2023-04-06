@@ -45,7 +45,7 @@ function Documents() {
       const docsData = await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
-          Authorization: `Bearer ${data?.token}`,
+          "x-access-token": `Bearer ${data?.token}`,
         },
       });
       console.log(docsData, "docsData");
