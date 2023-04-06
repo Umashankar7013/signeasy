@@ -78,7 +78,8 @@ const TemplatesAndDocs = ({
   //   }
   // };
 
-  const uploadDocHandler = () => {
+  const uploadDocHandler = (file) => {
+    console.log(file);
     var form = new FormData();
     // form.append("file", this.state.file);
     // YourAjaxLib.doUpload("/yourEndpoint/", form).then((result) =>
@@ -111,7 +112,7 @@ const TemplatesAndDocs = ({
               ref={inputFileRef}
               type="file"
               className="hidden"
-              onChange={(event) => console.log(event.target.files[0])}
+              onChange={(event) => uploadDocHandler(event.target.files[0])}
             />
             <div
               value="Choose Files!"
@@ -183,14 +184,15 @@ const TemplatesAndDocs = ({
               index === filteredData?.length - 1 && "shadow-lg"
             )}
           >
-            <div className="flex flex-1 items-center ml-[10px]">
-              <div
-                onClick={() =>
-                  setSelectedTemplate((prev) =>
-                    prev === template?.name ? "" : template?.name
-                  )
-                }
-              >
+            <div
+              className="flex flex-1 items-center ml-[10px]"
+              onClick={() =>
+                setSelectedTemplate((prev) =>
+                  prev === template?.name ? "" : template?.name
+                )
+              }
+            >
+              <div>
                 <RadioButton
                   isActive={template?.name === selectedTemplate}
                   isDisabled={template?.name === undefined}
