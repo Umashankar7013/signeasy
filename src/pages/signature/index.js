@@ -85,7 +85,13 @@ function Signature() {
     });
     openNotification();
     localStorage.clear();
-    setTimeout(() => router.push("/documents"), 1000);
+    setTimeout(
+      () =>
+        router.push(
+          `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`
+        ),
+      1000
+    );
   };
 
   const editHandler = async (e) => {
