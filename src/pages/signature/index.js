@@ -60,7 +60,7 @@ function Signature() {
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
       headers: { "x-access-token": JWTtoken },
-      body: {
+      data: {
         sources: [
           {
             id: selectedItem?.id,
