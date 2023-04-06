@@ -10,6 +10,8 @@ export const Input = ({
   enableDelete = false,
   required = false,
   value,
+  index,
+  clearFun = () => {},
 }) => {
   return (
     <div>
@@ -32,7 +34,7 @@ export const Input = ({
           required={required}
         />
         {enableDelete && (
-          <div className="mr-[10px]">
+          <div className="mr-[10px]" onClick={() => clearFun(index, title)}>
             <CrossIcon />
           </div>
         )}
