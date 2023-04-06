@@ -271,7 +271,12 @@ function Documents() {
           onClick={() =>
             router.push({
               pathname: "/signature",
-              query: { selectedItem: JSON.stringify(selectedItem) },
+              query: {
+                selectedItem:
+                  Object.keys(selectedItem).length > 0
+                    ? JSON.stringify(selectedItem)
+                    : "",
+              },
             })
           }
         />
