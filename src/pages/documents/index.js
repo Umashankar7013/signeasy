@@ -221,11 +221,11 @@ function Documents() {
           >
             <div
               className="flex flex-1 items-center ml-[10px] cursor-pointer"
-              onClick={() =>
-                setSelectedItem((prev) =>
-                  prev?.id === template?.id ? {} : template?.id
-                )
-              }
+              // onClick={() =>
+              //   setSelectedItem((prev) =>
+              //     prev?.id === template?.id ? {} : template?.id
+              //   )
+              // }
             >
               <div>
                 <RadioButton
