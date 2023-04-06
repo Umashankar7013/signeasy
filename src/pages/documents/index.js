@@ -118,8 +118,6 @@ function Documents() {
     var formdata = new FormData();
     formdata.append("file", file);
     formdata.append("name", file?.name);
-    console.log(form, "form data");
-
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${JWTtoken}`);
 
