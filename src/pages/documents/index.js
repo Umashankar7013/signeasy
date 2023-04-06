@@ -114,23 +114,25 @@ function Documents() {
   };
 
   const uploadDocHandler = async (file) => {
-    console.log(file, JWTtoken, jwt_decode(JWTtoken));
-    var form = new FormData();
-    form.append("file", file);
-    form.append("name", file?.name);
+    console.log(JWTtoken, jwt_decode(JWTtoken));
+    var formdata = new FormData();
+    formdata.append("file", file);
+    formdata.append("name", file?.name);
     console.log(form, "form data");
-    fetch({
-      method: "post",
-      url: "https://api.signeasy.com/v3/original",
-      headers: {
-        Authorization: `Bearer ${JWTtoken}`,
-        "Content-Type": "multipart/form-data",
-      },
-      body: form,
+
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${JWTtoken}`);
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
       redirect: "follow",
-    })
-      .then((res) => console.log(res, "data"))
-      .catch((error) => console.log(error, "Error"));
+    };
+    fetch("https://api.signeasy.com/v3/original/", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   };
 
   useEffect(() => {

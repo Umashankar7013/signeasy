@@ -61,7 +61,6 @@ function Signature() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setLoading((prev) => ({ ...prev, edit: true }));
     const data = await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/send-envelope",
@@ -91,7 +90,6 @@ function Signature() {
 
   const editHandler = async (e) => {
     e.preventDefault();
-    setLoading((prev) => ({ ...prev, edit: true }));
     const data = await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
@@ -122,8 +120,7 @@ function Signature() {
         object_id: Number(docParams?.objectId),
       },
     });
-    setLoading((prev) => ({ ...prev, edit: false }));
-    popupHandler({ url: data?.data?.data?.url });
+    location.assign(data?.data?.data?.url);
   };
 
   const Step1 = () => (
