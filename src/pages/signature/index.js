@@ -7,7 +7,10 @@ import { PrimaryButton } from "../../components/PrimaryButton";
 import { LeftOutlined, LoadingOutlined } from "@ant-design/icons";
 import { PhoneNumberInput } from "../../components/PhoneNumberInput";
 import { FormHeaderLables } from "../../components/FormHeaderLables";
-import { verificationTypeData } from "../../constants/constants";
+import {
+  DEPLOYMENT_URL,
+  verificationTypeData,
+} from "../../constants/constants";
 import { TextArea } from "../../components/TextArea";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
@@ -36,14 +39,12 @@ function Signature() {
       placement,
     });
   };
-
   const signer = {
     first_name: "",
     last_name: "",
     email: "",
     recipient_id: signersData.length + 1,
   };
-
   const [emails, setEmails] = useState([]);
   const router = useRouter();
 
@@ -74,54 +75,75 @@ function Signature() {
     });
   };
 
+  const requiredFieldsCheckHandler = () => {
+    let flag = 0;
+    signersData.map((item) => {
+      if (
+        !(item.first_name !== "" && item.last_name !== "" && item.email !== "")
+      ) {
+        flag = 1;
+        return;
+      }
+    });
+    if (flag === 0) return true;
+    else return false;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    const data = await axios({
-      method: "post",
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/send-envelope",
-      headers: { "x-access-token": JWTtoken },
-      data: {
-        original_file_id: selectedItem?.id,
-        recipients: signersData,
-        embedded_signing: 1,
-        is_ordered: 1,
-      },
-    }).catch((error) => console.log(error, "Error"));
-    await envelopSaveHandler(data);
-    openNotification();
-    localStorage.clear();
-    setTimeout(
-      () =>
-        router.push(
-          `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`
-        ),
-      1000
-    );
+    if (requiredFieldsCheckHandler()) {
+      const data = await axios({
+        method: "post",
+        url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/send-envelope",
+        headers: { "x-access-token": JWTtoken },
+        data: {
+          original_file_id: selectedItem?.id,
+          recipients: signersData,
+          embedded_signing: 1,
+          is_ordered: 1,
+        },
+      }).catch((error) => console.log(error, "Error"));
+      await envelopSaveHandler(data);
+      openNotification();
+      localStorage.clear();
+      setTimeout(
+        () =>
+          location?.assign(
+            `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`
+          ),
+        1000
+      );
+    }
   };
 
   const editHandler = async (e) => {
     e.preventDefault();
-    const data = await axios({
-      method: "post",
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
-      headers: { "x-access-token": JWTtoken },
-      data: {
-        sources: [
-          {
-            id: selectedItem?.id,
-            type: "original",
-            source_id: 1,
-            name: "acme-contract",
-          },
-        ],
-        recipients: signersData,
-        redirect_url: "https://signeasy.vercel.app/signature",
-        embedded_signing: true,
-        is_ordered: false,
-      },
-    }).catch((error) => console.log(error, "Error"));
-    await envelopSaveHandler(data);
-    location.assign(data?.data?.data?.url);
+    if (requiredFieldsCheckHandler()) {
+      await axios({
+        method: "post",
+        url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
+        headers: { "x-access-token": JWTtoken },
+        data: {
+          sources: [
+            {
+              id: selectedItem?.id,
+              type: "original",
+              source_id: 1,
+              name: "acme-contract",
+            },
+          ],
+          recipients: signersData,
+          redirect_url: `${DEPLOYMENT_URL}signature`,
+          embedded_signing: true,
+          is_ordered: false,
+        },
+      })
+        .then(async (data) => {
+          await envelopSaveHandler(data);
+          location?.assign(data?.data?.data?.url);
+        })
+        .catch((error) => console.log(error, "Error"));
+    }
   };
 
   const Step1 = () => (

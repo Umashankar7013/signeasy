@@ -35,12 +35,10 @@ export default function SigneasyApp() {
         title="Documents page"
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-red-500"
         titleClassName="font-lexend"
-        onClick={
-          () =>
-            popupHandler({
-              url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-            })
-          // router.push("/documents")
+        onClick={() =>
+          popupHandler({
+            url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+          })
         }
       />
     </div>

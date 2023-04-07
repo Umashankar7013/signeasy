@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { getApi } from "../../api/apiMethods";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import {
   CaretDownOutlined,
   CaretUpOutlined,
@@ -47,6 +46,7 @@ function Documents() {
   const selectedHeader = useRef("");
   const router = useRouter();
   const inputFileRef = useRef(null);
+  const [browserWindow, setBrowserWindow] = useState();
 
   const getDocumentsHandler = async () => {
     if (window) {
@@ -141,6 +141,10 @@ function Documents() {
 
   useEffect(() => {
     getDocumentsHandler();
+  }, [browserWindow]);
+
+  useEffect(() => {
+    setBrowserWindow(window);
   }, []);
 
   return loading ? (
@@ -148,7 +152,7 @@ function Documents() {
       <LoadingOutlined />
     </div>
   ) : (
-    <div className="w-[100%] px-[20px] md:px-[50px]">
+    <div className="w-[100%] pb-[30px] px-[20px] md:px-[50px]">
       {/* Header */}
       <div className="font-lexend text-[14px] pt-[20px]">
         Pick a document to send to your customer and attach to this conatct
@@ -267,7 +271,7 @@ function Documents() {
       <div className="flex justify-between items-center pt-[30px]">
         <div
           className="font-lexend font-bold cursor-pointer text-[14px]"
-          onClick={() => router.back()}
+          onClick={() => window.close()}
         >
           Cancel
         </div>
