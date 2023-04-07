@@ -277,9 +277,11 @@ function Signature() {
     const pending_file_id = searchParams.get("pending_file_id");
     console.log(currentUrl, pending_file_id, "uma");
     if (pending_file_id !== "") {
+      console.log("inside");
       await envelopSaveHandler(pending_file_id);
       setLoading(false);
       openNotification({ message: "Success" });
+      localStorage.clear();
       setTimeout(() =>
         window.open(
           `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
