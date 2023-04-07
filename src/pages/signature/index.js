@@ -43,6 +43,7 @@ function Signature() {
     email: "",
     recipient_id: signersData.length + 1,
   };
+
   const [emails, setEmails] = useState([]);
   const router = useRouter();
 
@@ -59,6 +60,20 @@ function Signature() {
     });
   };
 
+  const envelopSaveHandler = async (data) => {
+    await axios({
+      method: "post",
+      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
+      headers: { "x-access-token": JWTtoken },
+      data: {
+        name: selectedItem?.name,
+        envelope_id: data?.data?.data?.pending_file_id,
+        object_type: docParams?.objectType,
+        object_id: Number(docParams?.objectId),
+      },
+    });
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const data = await axios({
@@ -72,17 +87,7 @@ function Signature() {
         is_ordered: 1,
       },
     }).catch((error) => console.log(error, "Error"));
-    const data1 = await axios({
-      method: "post",
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
-      headers: { "x-access-token": JWTtoken },
-      data: {
-        name: selectedItem?.name,
-        envelope_id: data?.data?.data?.pending_file_id,
-        object_type: docParams?.objectType,
-        object_id: Number(docParams?.objectId),
-      },
-    });
+    await envelopSaveHandler(data);
     openNotification();
     localStorage.clear();
     setTimeout(
@@ -115,17 +120,7 @@ function Signature() {
         is_ordered: false,
       },
     }).catch((error) => console.log(error, "Error"));
-    const data1 = await axios({
-      method: "post",
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
-      headers: { "x-access-token": JWTtoken },
-      data: {
-        name: selectedItem?.name,
-        envelope_id: data?.data?.data?.pending_file_id,
-        object_type: docParams?.objectType,
-        object_id: Number(docParams?.objectId),
-      },
-    });
+    await envelopSaveHandler(data);
     location.assign(data?.data?.data?.url);
   };
 
@@ -211,7 +206,7 @@ function Signature() {
   );
 
   return (
-    <div className="h-[100vh] w-[100vw] px-[20px] md:px-[30px]">
+    <div className="h-[100vh] w-[100vw] pb-[30px] px-[20px] md:px-[30px]">
       <form>
         {contextHolder}
         <Step1 />
@@ -325,6 +320,7 @@ function Signature() {
             }
             className="pl-[5px] py-[7px] pr-[15px] border-[#ee8162]"
             titleClassName="pl-[10px] font-bold text-[#ee8162] text-[14px]"
+            onClick={() => router.back()}
           />
           <div className="flex">
             <input

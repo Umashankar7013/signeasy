@@ -48,7 +48,7 @@ function Documents() {
   const router = useRouter();
   const inputFileRef = useRef(null);
 
-  const getTemplatesHandler = async () => {
+  const getDocumentsHandler = async () => {
     if (window) {
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
@@ -133,13 +133,13 @@ function Documents() {
       .then((response) => response.text())
       .then((result) => {
         console.log(result);
-        getTemplatesHandler();
+        getDocumentsHandler();
       })
       .catch((error) => console.log("error", error));
   };
 
   useEffect(() => {
-    getTemplatesHandler();
+    getDocumentsHandler();
   }, []);
 
   return loading ? (
@@ -243,12 +243,10 @@ function Documents() {
                 )
               }
             >
-              <div>
-                <RadioButton
-                  isActive={template?.id === selectedItem?.id}
-                  isDisabled={template?.name === undefined}
-                />
-              </div>
+              <RadioButton
+                isActive={template?.id === selectedItem?.id}
+                isDisabled={template?.name === undefined}
+              />
               <div className="md:pl-[30px] pl-[15px] text-[14px] font-lexend font-medium">
                 {template?.name}
               </div>
@@ -266,7 +264,10 @@ function Documents() {
       </div>
       {/* Bottom Buttons */}
       <div className="flex justify-between items-center pt-[30px]">
-        <div className="font-lexend font-bold cursor-pointer text-[14px]">
+        <div
+          className="font-lexend font-bold cursor-pointer text-[14px]"
+          onClick={() => router.back()}
+        >
           Cancel
         </div>
         <PrimaryButton
