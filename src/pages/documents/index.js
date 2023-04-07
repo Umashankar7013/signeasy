@@ -208,6 +208,7 @@ function Documents() {
                 type="file"
                 className="hidden"
                 onChange={(event) => uploadDocHandler(event.target.files[0])}
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.xml,.rtf,.txt,.html,.htm,.jpeg,.jpg,.png,.bmp,.gif,.tiff,.tif,.ods,.odt,.odp,.csv"
               />
               <div
                 onClick={() => inputFileRef.current.click()}
