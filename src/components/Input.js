@@ -12,6 +12,7 @@ export const Input = ({
   value,
   index,
   clearFun = () => {},
+  showError = false,
 }) => {
   return (
     <div>
@@ -20,7 +21,8 @@ export const Input = ({
       </div>
       <div
         className={classNames(
-          "flex h-[40px] justify-between items-center border-[1px] rounded-[3px] border-[#CDD6E1] bg-[#F6F8FA] mt-[3px]",
+          "flex h-[40px] justify-between items-center border-[1px] rounded-[3px] bg-[#F6F8FA] mt-[3px]",
+          showError ? "border-[red]" : "border-[#CDD6E1]",
           className
         )}
       >

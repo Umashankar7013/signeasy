@@ -47,6 +47,7 @@ function Signature() {
   };
   const [emails, setEmails] = useState([]);
   const router = useRouter();
+  const [emptyInput, setEmptyInput] = useState(false);
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -86,7 +87,10 @@ function Signature() {
       }
     });
     if (flag === 0) return true;
-    else return false;
+    else {
+      setEmptyInput(true);
+      return false;
+    }
   };
 
   const submitHandler = async (e) => {
@@ -274,6 +278,7 @@ function Signature() {
                     }
                     index={index}
                     clearFun={clearInputHandler}
+                    showError={emptyInput && item?.first_name === ""}
                   />
                 </div>
                 <div className="w-[100%]">
@@ -292,6 +297,7 @@ function Signature() {
                     }
                     index={index}
                     clearFun={clearInputHandler}
+                    showError={emptyInput && item?.last_name === ""}
                   />
                 </div>
                 <div className="w-[100%]">
@@ -310,6 +316,7 @@ function Signature() {
                     }
                     index={index}
                     clearFun={clearInputHandler}
+                    showError={emptyInput && item?.email === ""}
                   />
                 </div>
               </div>
