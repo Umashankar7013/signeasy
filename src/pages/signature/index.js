@@ -303,9 +303,8 @@ function Signature() {
   };
 
   useEffect(() => {
-    setWindowLocation(window);
-    fun();
-  }, [windowLocation]);
+    popupObserver();
+  }, [editPopUp]);
 
   return (
     <>
