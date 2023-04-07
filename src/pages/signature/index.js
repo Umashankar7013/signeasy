@@ -21,6 +21,7 @@ import axios from "axios";
 import { popupHandler } from "../../utils/functions";
 import { notification } from "antd";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
+import { getApi } from "../../api/apiMethods";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setJWTtoken, setDocParams } =
@@ -77,12 +78,11 @@ function Signature() {
     });
   };
 
-  const envelopSaveHandler = async (id, name) => {
-    console.log(selectedItem);
+  const envelopSaveHandler = async (id, name, token) => {
     await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
-      headers: { "x-access-token": JWTtoken },
+      headers: { "x-access-token": token },
       data: {
         name: name,
         envelope_id: id,
@@ -127,7 +127,8 @@ function Signature() {
         .then(async (data) => {
           await envelopSaveHandler(
             data?.data?.data?.pending_file_id,
-            selectedItem?.name
+            selectedItem?.name,
+            JWTtoken
           );
           openNotification({
             message: "Success",
@@ -277,43 +278,42 @@ function Signature() {
   const popupObserver = async () => {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
-    const authId = searchParams?.get("authId");
-    const objectId = searchParams?.get("object_id");
-    const objectType = searchParams?.get("object_type");
-    const firstName = searchParams?.get("first_name");
-    const lastName = searchParams?.get("last_name");
-    const email = searchParams?.get("email");
-    const docName = searchParams?.get("name");
-    setDocParams((prev) => ({
-      ...prev,
-      authId,
-      objectId,
-      objectType,
-      firstName,
-      lastName,
-      email,
-    }));
-    const data = await getApi({
-      endUrl: `set-up/auth?authId=${authId}`,
-    });
-    data && setJWTtoken(data?.token);
-
     const pending_file_id = searchParams.get("pending_file_id");
-
-    console.log(currentUrl, pending_file_id, "uma");
     if (pending_file_id) {
-      console.log("inside");
-      await envelopSaveHandler(pending_file_id, docName);
-      setLoading(false);
-      openNotification({ message: "Success" });
-      localStorage.clear();
-      setTimeout(() =>
-        window.open(
-          `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-          "_self"
-        )
-      ),
-        1000;
+      const authId = searchParams?.get("authId");
+      const objectId = searchParams?.get("object_id");
+      const objectType = searchParams?.get("object_type");
+      const firstName = searchParams?.get("first_name");
+      const lastName = searchParams?.get("last_name");
+      const email = searchParams?.get("email");
+      const docName = searchParams?.get("name");
+      setDocParams((prev) => ({
+        ...prev,
+        authId,
+        objectId,
+        objectType,
+        firstName,
+        lastName,
+        email,
+      }));
+      const data = await getApi({
+        endUrl: `set-up/auth?authId=${authId}`,
+      });
+      data && setJWTtoken(data?.token);
+      if (pending_file_id) {
+        await envelopSaveHandler(pending_file_id, docName, data?.token);
+        openNotification({ message: "Success" });
+        setTimeout(() => {
+          localStorage.clear();
+          setTimeout(() =>
+            window.open(
+              `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+              "_self"
+            )
+          ),
+            700;
+        }, 300);
+      }
     }
   };
 
