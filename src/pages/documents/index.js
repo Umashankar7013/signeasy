@@ -13,6 +13,7 @@ import classNames from "classnames";
 import { dateHandler } from "../../utils/functions";
 import { AppContext } from "../_app";
 import jwt_decode from "jwt-decode";
+import { notification } from "antd";
 
 function Documents() {
   const itemsData = useRef([
@@ -47,6 +48,18 @@ function Documents() {
   const router = useRouter();
   const inputFileRef = useRef(null);
   const [browserWindow, setBrowserWindow] = useState();
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = ({
+    placement = "top",
+    message = "",
+    description = "",
+  }) => {
+    api.info({
+      message: message,
+      description: description,
+      placement,
+    });
+  };
 
   const getDocumentsHandler = async () => {
     if (window) {
@@ -133,10 +146,19 @@ function Documents() {
     fetch("https://api.signeasy.com/v3/original/", requestOptions)
       .then((response) => response.text())
       .then((result) => {
-        console.log(result);
+        openNotification({
+          message: "Success",
+          description: "Successfully Uploaded the document.",
+        });
         getDocumentsHandler();
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        openNotification({
+          message: "Error",
+          description: error,
+        });
+        console.log("error", error);
+      });
   };
 
   useEffect(() => {
@@ -153,6 +175,7 @@ function Documents() {
     </div>
   ) : (
     <div className="w-[100%] pb-[30px] px-[20px] md:px-[50px]">
+      {contextHolder}
       {/* Header */}
       <div className="font-lexend text-[14px] pt-[20px]">
         Pick a document to send to your customer and attach to this conatct

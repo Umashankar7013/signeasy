@@ -16,7 +16,7 @@ export const popupHandler = async ({ url }) => {
 };
 
 export const dateHandler = ({ timestamp = "" }) => {
-  const date = new Date(timestamp);
+  const date = new Date(timestamp * 1000);
   const modifiedTime = date.toLocaleString("en-US");
   return modifiedTime?.split(",");
 };
