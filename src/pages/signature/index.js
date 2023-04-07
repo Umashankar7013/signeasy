@@ -176,8 +176,7 @@ function Signature() {
         },
       })
         .then(async (data) => {
-          const editPopUp = window?.open(data?.data?.data?.url, "_self");
-          setEditPopUp(editPopUp);
+          window?.open(data?.data?.data?.url, "_self");
         })
         .catch((error) => {
           openNotification({
@@ -273,35 +272,27 @@ function Signature() {
   );
 
   const popupObserver = async () => {
-    console.log(window.location.href, "location");
-    if (!editPopUp) {
-      return;
+    const currentUrl = window.location.href;
+    const searchParams = new URL(currentUrl).searchParams;
+    const pending_file_id = searchParams.get("pending_file_id");
+    console.log(currentUrl, pending_file_id, "uma");
+    if (pending_file_id) {
+      await envelopSaveHandler(pending_file_id);
+      setLoading(false);
+      openNotification({ message: "Success" });
+      setTimeout(() =>
+        window.open(
+          `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+          "_self"
+        )
+      ),
+        1000;
     }
-    const timer = setInterval(async () => {
-      if (!editPopUp) {
-        timer && clearInterval(timer);
-        return;
-      }
-      const currentUrl = `${DEPLOYMENT_URL}signature`;
-      if (!currentUrl) {
-        return;
-      }
-      const searchParams = new URL(currentUrl).searchParams;
-      const pending_file_id = searchParams.get("pending_file_id");
-      console.log(currentUrl, pending_file_id, "uma");
-      if (pending_file_id) {
-        await envelopSaveHandler(pending_file_id);
-        openNotification({ message: "Success" });
-        setLoading(false);
-        editPopUp.close();
-        timer && clearInterval(timer);
-      }
-    }, 500);
   };
 
   useEffect(() => {
     popupObserver();
-  }, [editPopUp, router.isReady]);
+  }, [router.isReady]);
 
   return (
     <>
