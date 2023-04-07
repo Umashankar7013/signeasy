@@ -78,7 +78,7 @@ function Signature() {
     });
   };
 
-  const envelopSaveHandler = async (id, name, token) => {
+  const envelopSaveHandler = async ({ id, name, token, type, url }) => {
     await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
@@ -89,7 +89,27 @@ function Signature() {
         object_type: docParams?.objectType,
         object_id: Number(docParams?.objectId),
       },
-    });
+    })
+      .then((response) => {
+        localStorage.clear();
+        if (type === "edit") {
+          openNotification({ message: "Success" });
+        } else {
+          openNotification({
+            message: "Success",
+            description: "Sucessfully sent the envelop to the signature.",
+          });
+        }
+        setTimeout(() => location?.assign(url), 500);
+      })
+      .catch((error) => {
+        openNotification({
+          message: "Error",
+          description: error.message,
+          type: "error",
+        });
+        setLoading(false);
+      });
   };
 
   const requiredFieldsCheckHandler = () => {
@@ -125,24 +145,13 @@ function Signature() {
         },
       })
         .then(async (data) => {
-          await envelopSaveHandler(
-            data?.data?.data?.pending_file_id,
-            selectedItem?.name,
-            JWTtoken
-          );
-          openNotification({
-            message: "Success",
-            description: "Sucessfully sent the envelop to the signature.",
+          await envelopSaveHandler({
+            id: data?.data?.data?.pending_file_id,
+            name: selectedItem?.name,
+            token: JWTtoken,
+            type: "submit",
+            url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
           });
-          localStorage.clear();
-          setTimeout(
-            () =>
-              location?.assign(
-                `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`
-              ),
-            1000
-          );
-          setLoading(false);
         })
         .catch((error) => {
           openNotification({
@@ -302,21 +311,19 @@ function Signature() {
         endUrl: `set-up/auth?authId=${authId}`,
       });
       data && setJWTtoken(data?.token);
-      await envelopSaveHandler(pending_file_id, docName, data?.token);
-      openNotification({ message: "Success" });
-      localStorage.clear();
-      setTimeout(() => {
-        window.open(
-          `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-          "_self"
-        );
-      }, 600);
+      await envelopSaveHandler({
+        id: pending_file_id,
+        name: docName,
+        token: data?.token,
+        type: "edit",
+        url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+      });
     }
   };
 
   useEffect(() => {
     popupObserver();
-  }, [router.isReady]);
+  }, []);
 
   return (
     <>
