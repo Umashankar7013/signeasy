@@ -126,7 +126,7 @@ function Signature() {
           await envelopSaveHandler(data);
           openNotification({
             message: "Success",
-            description: "Suucessfully sended the envelop to the signature.",
+            description: "Sucessfully sended the envelop to the signature.",
           });
           localStorage.clear();
           setTimeout(
