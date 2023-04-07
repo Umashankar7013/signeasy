@@ -174,7 +174,9 @@ function Signature() {
             },
           ],
           recipients: signersData,
-          redirect_url: `${DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&authId=${docParams?.authId}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`,
+          redirect_url: encodeURI(
+            `${DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&authId=${docParams?.authId}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+          ),
           embedded_signing: true,
           is_ordered: false,
         },
@@ -303,16 +305,13 @@ function Signature() {
       if (pending_file_id) {
         await envelopSaveHandler(pending_file_id, docName, data?.token);
         openNotification({ message: "Success" });
+        localStorage.clear();
         setTimeout(() => {
-          localStorage.clear();
-          setTimeout(() =>
-            window.open(
-              `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-              "_self"
-            )
-          ),
-            700;
-        }, 300);
+          window.open(
+            `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+            "_self"
+          );
+        }, 600);
       }
     }
   };
