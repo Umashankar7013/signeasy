@@ -302,17 +302,15 @@ function Signature() {
         endUrl: `set-up/auth?authId=${authId}`,
       });
       data && setJWTtoken(data?.token);
-      if (pending_file_id) {
-        await envelopSaveHandler(pending_file_id, docName, data?.token);
-        openNotification({ message: "Success" });
-        localStorage.clear();
-        setTimeout(() => {
-          window.open(
-            `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-            "_self"
-          );
-        }, 600);
-      }
+      await envelopSaveHandler(pending_file_id, docName, data?.token);
+      openNotification({ message: "Success" });
+      localStorage.clear();
+      setTimeout(() => {
+        window.open(
+          `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+          "_self"
+        );
+      }, 600);
     }
   };
 
