@@ -44,6 +44,7 @@ function Signature() {
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [editPopUp, setEditPopUp] = useState();
+  const [windowLocation, setWindowLocation] = useState();
 
   const openNotification = ({
     placement = "top",
@@ -297,10 +298,14 @@ function Signature() {
     }, 500);
   };
 
+  const fun = () => {
+    console.log(windowLocation.location.href);
+  };
+
   useEffect(() => {
-    console.log(location, "locatiob");
-    popupObserver();
-  }, [location]);
+    setWindowLocation(window);
+    fun();
+  }, [windowLocation]);
 
   return (
     <>
