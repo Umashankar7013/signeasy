@@ -77,14 +77,14 @@ function Signature() {
     });
   };
 
-  const envelopSaveHandler = async (data) => {
+  const envelopSaveHandler = async (id) => {
     await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
       headers: { "x-access-token": JWTtoken },
       data: {
         name: selectedItem?.name,
-        envelope_id: data?.data?.data?.pending_file_id,
+        envelope_id: id,
         object_type: docParams?.objectType,
         object_id: Number(docParams?.objectId),
       },
@@ -124,7 +124,7 @@ function Signature() {
         },
       })
         .then(async (data) => {
-          await envelopSaveHandler(data);
+          await envelopSaveHandler(data?.data?.data?.pending_file_id);
           openNotification({
             message: "Success",
             description: "Sucessfully sent the envelop to the signature.",
@@ -285,9 +285,9 @@ function Signature() {
         return;
       }
       const searchParams = new URL(currentUrl).searchParams;
-      console.log(currentUrl);
-      if ("success") {
-        await envelopSaveHandler(data);
+      const pending_file_id = searchParams.get("pending_file_id");
+      if (pending_file_id) {
+        await envelopSaveHandler(pending_file_id);
         openNotification({ message: "Success" });
         setLoading(false);
         editPopUp.close();
