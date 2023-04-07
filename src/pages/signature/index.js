@@ -273,6 +273,7 @@ function Signature() {
   );
 
   const popupObserver = async () => {
+    console.log(window.location.href, "location");
     if (!editPopUp) {
       return;
     }
@@ -281,7 +282,7 @@ function Signature() {
         timer && clearInterval(timer);
         return;
       }
-      const currentUrl = editPopUp.location.href;
+      const currentUrl = `${DEPLOYMENT_URL}signature`;
       if (!currentUrl) {
         return;
       }
@@ -298,13 +299,9 @@ function Signature() {
     }, 500);
   };
 
-  const fun = () => {
-    console.log(windowLocation.location.href);
-  };
-
   useEffect(() => {
     popupObserver();
-  }, [editPopUp]);
+  }, [editPopUp, router.isReady]);
 
   return (
     <>
