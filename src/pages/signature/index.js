@@ -286,7 +286,7 @@ function Signature() {
       }
       const searchParams = new URL(currentUrl).searchParams;
       const pending_file_id = searchParams.get("pending_file_id");
-      console.log(currentUrl, pending_file_id);
+      console.log(currentUrl, pending_file_id, "uma");
       if (pending_file_id) {
         await envelopSaveHandler(pending_file_id);
         openNotification({ message: "Success" });
@@ -298,8 +298,9 @@ function Signature() {
   };
 
   useEffect(() => {
+    console.log(location, "locatiob");
     popupObserver();
-  }, [editPopUp]);
+  }, [location]);
 
   return (
     <>
