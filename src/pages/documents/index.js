@@ -158,6 +158,11 @@ function Documents() {
       .then((response) => response.text())
       .then((result) => {
         setSelectedItem(JSON.parse(result));
+        openNotification({
+          message: "Success",
+          description: "Successfully uploaded the file.",
+          type: "error",
+        });
         router.push({
           pathname: "/signature",
         });

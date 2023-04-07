@@ -43,6 +43,7 @@ function Signature() {
   const router = useRouter();
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [editPopUp, setEditPopUp] = useState();
 
   const openNotification = ({
     placement = "top",
@@ -174,10 +175,8 @@ function Signature() {
         },
       })
         .then(async (data) => {
-          await envelopSaveHandler(data);
-          openNotification({ message: "Success" });
-          setLoading(false);
-          location?.assign(data?.data?.data?.url);
+          const editPopUp = window?.open(data?.data?.data?.url, "_self");
+          setEditPopUp(editPopUp);
         })
         .catch((error) => {
           openNotification({
@@ -271,6 +270,35 @@ function Signature() {
       </div>
     </div>
   );
+
+  const popupObserver = async () => {
+    if (!editPopUp) {
+      return;
+    }
+    const timer = setInterval(async () => {
+      if (!editPopUp) {
+        timer && clearInterval(timer);
+        return;
+      }
+      const currentUrl = editPopUp.location.href;
+      if (!currentUrl) {
+        return;
+      }
+      const searchParams = new URL(currentUrl).searchParams;
+      console.log(currentUrl);
+      if ("success") {
+        await envelopSaveHandler(data);
+        openNotification({ message: "Success" });
+        setLoading(false);
+        editPopUp.close();
+        timer && clearInterval(timer);
+      }
+    }, 500);
+  };
+
+  useEffect(() => {
+    popupObserver();
+  }, [editPopUp]);
 
   return (
     <>
