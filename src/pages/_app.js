@@ -5,7 +5,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 export const AppContext = createContext();
 
 function MyApp({ Component, pageProps }) {
-  const [selectedItem, setSelectedItem] = useState({});
+  const [selectedItem, setSelectedItem] = useLocalStorage("selectedItem", {});
   const [docParams, setDocParams] = useLocalStorage("docParams", {
     authId: "",
     objectId: "",
