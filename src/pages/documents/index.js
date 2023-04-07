@@ -50,6 +50,7 @@ function Documents() {
 
   const getDocumentsHandler = async () => {
     if (window) {
+      console.log(window, "inside");
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
       const authId = searchParams?.get("authId");
