@@ -13,12 +13,17 @@ export const useLocalStorage = (key, defaultValue) => {
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
-    if (key === "mealDate") console.log("here");
     setValue(getStorageValue(key, defaultValue));
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
+    if (key === "selectedItem") {
+      if (Object.keys(value)?.length > 0) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+    } else {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
   }, [key, value]);
 
   return [value, setValue];
