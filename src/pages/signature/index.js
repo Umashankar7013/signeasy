@@ -4,7 +4,11 @@ import { DropDown } from "../../components/DropDown";
 import { Input } from "../../components/Input";
 import { PlusIcon } from "../../components/PlusIcon";
 import { PrimaryButton } from "../../components/PrimaryButton";
-import { LeftOutlined, LoadingOutlined } from "@ant-design/icons";
+import {
+  LeftOutlined,
+  LoadingOutlined,
+  CheckCircleFilled,
+} from "@ant-design/icons";
 import { PhoneNumberInput } from "../../components/PhoneNumberInput";
 import { FormHeaderLables } from "../../components/FormHeaderLables";
 import {
@@ -45,6 +49,7 @@ function Signature() {
   const router = useRouter();
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const openNotification = ({
     placement = "top",
@@ -79,6 +84,7 @@ function Signature() {
   };
 
   const envelopSaveHandler = async ({ id, name, token, type, url }) => {
+    setLoading(true);
     await axios({
       method: "post",
       url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
@@ -93,14 +99,18 @@ function Signature() {
       .then((response) => {
         localStorage.clear();
         if (type === "edit") {
-          openNotification({ message: "Success" });
+          //openNotification({ message: "Success" });
+          setShowSuccessMessage(true);
+          setLoading(false);
         } else {
-          openNotification({
-            message: "Success",
-            description: "Sucessfully sent the envelop to the signature.",
-          });
+          // openNotification({
+          //   message: "Success",
+          //   description: "Sucessfully sent the envelop to the signature.",
+          // });
+          setShowSuccessMessage(true);
+          setLoading(false);
         }
-        setTimeout(() => location?.assign(url), 500);
+        //setTimeout(() => location?.assign(url), 500);
       })
       .catch((error) => {
         openNotification({
@@ -291,6 +301,7 @@ function Signature() {
     const searchParams = new URL(currentUrl).searchParams;
     const pending_file_id = searchParams.get("pending_file_id");
     if (pending_file_id) {
+      setLoading(true);
       const authId = searchParams?.get("authId");
       const objectId = searchParams?.get("object_id");
       const objectType = searchParams?.get("object_type");
@@ -334,141 +345,159 @@ function Signature() {
             <LoadingOutlined />
           </div>
         ) : (
-          <form>
-            <Step1 />
-            {/* <Step2 /> */}
-            <div>
-              <FormHeaderLables
-                text1="2. Invite signers"
-                text2="Add HubSpot contacts as recipients for this envelope."
-              />
-              {signersData?.map((item, index) => (
-                <div
-                  className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] mt-[14px] ml-[17px]"
-                  key={index}
-                >
-                  <div className="flex justify-between items-center">
-                    <div className="font-lexend font-[500] text-[14px] text-[#374659]">
-                      {"<Role name>"}
-                    </div>
-                    <div
-                      onClick={() => {
-                        setSignersData((prev) => {
-                          return prev.filter(
-                            (item, index1) => index !== index1
-                          );
-                        });
-                      }}
-                    >
-                      <CrossIcon />
-                    </div>
-                  </div>
-                  <div className="grid gap-x-[10px] gap-y-[10px] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[17px] w-[100%]">
-                    <div className="w-[100%]">
-                      <Input
-                        title="First name"
-                        required={true}
-                        className="w-[100%]"
-                        value={item?.first_name}
-                        enableDelete={item?.first_name !== ""}
-                        onChange={(event) =>
-                          setSignersData((prev) => {
-                            let previous = [...prev];
-                            previous[index].first_name = event.target.value;
-                            return previous;
-                          })
-                        }
-                        index={index}
-                        clearFun={clearInputHandler}
-                        showError={emptyInput && item?.first_name === ""}
-                      />
-                    </div>
-                    <div className="w-[100%]">
-                      <Input
-                        title="Last name"
-                        required={true}
-                        className="w-[100%]"
-                        value={item?.last_name}
-                        enableDelete={item?.last_name !== ""}
-                        onChange={(event) =>
-                          setSignersData((prev) => {
-                            let previous = [...prev];
-                            previous[index].last_name = event.target.value;
-                            return previous;
-                          })
-                        }
-                        index={index}
-                        clearFun={clearInputHandler}
-                        showError={emptyInput && item?.last_name === ""}
-                      />
-                    </div>
-                    <div className="w-[100%]">
-                      <Input
-                        title="Email"
-                        required={true}
-                        className="w-[100%]"
-                        value={item?.email}
-                        enableDelete={item?.email !== ""}
-                        onChange={(event) =>
-                          setSignersData((prev) => {
-                            let previous = [...prev];
-                            previous[index].email = event.target.value;
-                            return previous;
-                          })
-                        }
-                        index={index}
-                        clearFun={clearInputHandler}
-                        showError={emptyInput && item?.email === ""}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              <div
-                className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
-                onClick={() => setSignersData((prev) => [...prev, signer])}
-              >
-                <PlusIcon />
-                <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
-                  Add new recipient
-                </div>
-              </div>
-            </div>
-            <Step3 />
-            <Step4 />
-            {/* Bottom Buttons */}
-            <div className="flex justify-between mt-[40px] pb-[50px]">
-              <PrimaryButton
-                title="Back"
-                image={
-                  <LeftOutlined
+          <>
+            {showSuccessMessage ? (
+              <div className="grid h-screen place-items-center text-center">
+                <div className="flex items-center justify-center h-screen">
+                  <CheckCircleFilled
                     style={{
-                      fontSize: 12,
-                      color: "#ee8162",
+                      fontSize: 24,
+                      color: "green",
                     }}
                   />
-                }
-                className="pl-[5px] py-[7px] pr-[15px] border-[#ee8162]"
-                titleClassName="pl-[10px] font-bold text-[#ee8162] text-[14px]"
-                onClick={() => router.back()}
-              />
-              <div className="flex">
-                <input
-                  type="submit"
-                  value="Edit in Signeasy"
-                  className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
-                  onClick={(e) => editHandler(e)}
-                />
-                <input
-                  type="submit"
-                  value="Send for signature"
-                  className="border-[1px] px-[15px] ml-[10px] cursor-pointer rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
-                  onClick={(e) => submitHandler(e)}
-                />
+                  <div className="ml-[5px] text-[20px]">
+                    Sucessfully sent the document for the signature.
+                  </div>
+                </div>
               </div>
-            </div>
-          </form>
+            ) : (
+              <form>
+                <Step1 />
+                {/* <Step2 /> */}
+                <div>
+                  <FormHeaderLables
+                    text1="2. Invite signers"
+                    text2="Add HubSpot contacts as recipients for this envelope."
+                  />
+                  {signersData?.map((item, index) => (
+                    <div
+                      className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] mt-[14px] ml-[17px]"
+                      key={index}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="font-lexend font-[500] text-[14px] text-[#374659]">
+                          {"<Role name>"}
+                        </div>
+                        <div
+                          onClick={() => {
+                            setSignersData((prev) => {
+                              return prev.filter(
+                                (item, index1) => index !== index1
+                              );
+                            });
+                          }}
+                        >
+                          <CrossIcon />
+                        </div>
+                      </div>
+                      <div className="grid gap-x-[10px] gap-y-[10px] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[17px] w-[100%]">
+                        <div className="w-[100%]">
+                          <Input
+                            title="First name"
+                            required={true}
+                            className="w-[100%]"
+                            value={item?.first_name}
+                            enableDelete={item?.first_name !== ""}
+                            onChange={(event) =>
+                              setSignersData((prev) => {
+                                let previous = [...prev];
+                                previous[index].first_name = event.target.value;
+                                return previous;
+                              })
+                            }
+                            index={index}
+                            clearFun={clearInputHandler}
+                            showError={emptyInput && item?.first_name === ""}
+                          />
+                        </div>
+                        <div className="w-[100%]">
+                          <Input
+                            title="Last name"
+                            required={true}
+                            className="w-[100%]"
+                            value={item?.last_name}
+                            enableDelete={item?.last_name !== ""}
+                            onChange={(event) =>
+                              setSignersData((prev) => {
+                                let previous = [...prev];
+                                previous[index].last_name = event.target.value;
+                                return previous;
+                              })
+                            }
+                            index={index}
+                            clearFun={clearInputHandler}
+                            showError={emptyInput && item?.last_name === ""}
+                          />
+                        </div>
+                        <div className="w-[100%]">
+                          <Input
+                            title="Email"
+                            required={true}
+                            className="w-[100%]"
+                            value={item?.email}
+                            enableDelete={item?.email !== ""}
+                            onChange={(event) =>
+                              setSignersData((prev) => {
+                                let previous = [...prev];
+                                previous[index].email = event.target.value;
+                                return previous;
+                              })
+                            }
+                            index={index}
+                            clearFun={clearInputHandler}
+                            showError={emptyInput && item?.email === ""}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  <div
+                    className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
+                    onClick={() => setSignersData((prev) => [...prev, signer])}
+                  >
+                    <PlusIcon />
+                    <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
+                      Add new recipient
+                    </div>
+                  </div>
+                </div>
+                <Step3 />
+                <Step4 />
+                {/* Bottom Buttons */}
+                <div className="flex justify-between mt-[40px] pb-[50px]">
+                  <PrimaryButton
+                    title="Back"
+                    image={
+                      <LeftOutlined
+                        style={{
+                          fontSize: 12,
+                          color: "#ee8162",
+                        }}
+                      />
+                    }
+                    className="pl-[5px] py-[7px] pr-[15px] border-[#ee8162]"
+                    titleClassName="pl-[10px] font-bold text-[#ee8162] text-[14px]"
+                    onClick={() => router.back()}
+                  />
+                  <div className="flex">
+                    <input
+                      type="submit"
+                      value="Edit in Signeasy"
+                      className="border-[1px] px-[15px] cursor-pointer rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
+                      onClick={(e) => editHandler(e)}
+                    />
+                    <input
+                      type="submit"
+                      value="Send for signature"
+                      className="border-[1px] px-[15px] ml-[10px] cursor-pointer rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
+                      onClick={(e) => submitHandler(e)}
+                    />
+                  </div>
+                </div>
+              </form>
+            )}
+          </>
         )}
       </div>
     </>
