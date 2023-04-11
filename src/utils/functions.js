@@ -1,3 +1,5 @@
+import { ImageWithBasePath } from "../components/ImageWithBasePath";
+
 export const popupHandler = async ({ url, popUpWidth, popUpHeight }) => {
   let popup;
   if (window) {
