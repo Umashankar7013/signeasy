@@ -1,12 +1,12 @@
 import { ImageWithBasePath } from "../components/ImageWithBasePath";
 
-export const popupHandler = async ({ url, popUpWidth, popUpHeight }) => {
+export const popupHandler = async ({ url }) => {
   let popup;
   if (window) {
     const width = 800;
     const height = window.outerHeight - 200;
     const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2.5;
+    const top = window.screenY + (window.outerHeight - height) / 3.5;
     const title = "auth";
     popup = window.open(
       url,
