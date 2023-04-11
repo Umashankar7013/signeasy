@@ -40,11 +40,19 @@ const Authorize = () => {
       if (name === "hubspot") {
         setHubspotAuth((prev) => ({ ...prev, success: false }));
         setRevokeLoader((prev) => ({ ...prev, hubspot: false }));
-        openNotification({ api, message: "success" });
+        openNotification({
+          api,
+          message: "success",
+          description: "Authorization to hubspot revoked successfully",
+        });
       } else {
         setSigneasyAuth((prev) => ({ ...prev, success: false }));
         setRevokeLoader((prev) => ({ ...prev, signeasy: false }));
-        openNotification({ api, message: "success" });
+        openNotification({
+          api,
+          message: "success",
+          description: "Authhorization to signeasy revoked successfully",
+        });
       }
     }
   };
