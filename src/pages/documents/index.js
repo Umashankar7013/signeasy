@@ -15,6 +15,7 @@ import { AppContext } from "../_app";
 import jwt_decode from "jwt-decode";
 import { notification } from "antd";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
+import { Loader } from "../../components/Loader";
 
 function Documents() {
   const itemsData = useRef([
@@ -190,9 +191,7 @@ function Documents() {
     <>
       {contextHolder}
       {loading ? (
-        <div className="flex h-[100vh] w-[100vw] justify-center items-center">
-          <LoadingOutlined />
-        </div>
+        <Loader />
       ) : (
         <div className="w-[100%] pb-[30px] px-[20px] md:px-[50px]">
           {/* Header */}

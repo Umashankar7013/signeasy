@@ -7,6 +7,7 @@ import { RevokeButton } from "../../components/RevokeButton";
 import { AUTH_BASE_URL, AUTH_REDIRECTION_URL } from "../../constants/constants";
 import { openNotification, popupHandler } from "../../utils/functions";
 import { notification } from "antd";
+import { Loader } from "../../components/Loader";
 
 const Authorize = () => {
   const [hubspotPopup, setHubspotPopup] = useState(null);
@@ -130,9 +131,7 @@ const Authorize = () => {
   }, [signeasyAuth?.redirectionUrl]);
 
   return loading ? (
-    <div className="flex h-[100vh] w-[100vw] justify-center items-center">
-      <LoadingOutlined />
-    </div>
+    <Loader />
   ) : (
     <>
       {contextHolder}

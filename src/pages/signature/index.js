@@ -26,6 +26,7 @@ import { notification } from "antd";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { getApi } from "../../api/apiMethods";
 import { openNotification } from "../../utils/functions";
+import { Loader } from "../../components/Loader";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setJWTtoken, setDocParams } =
@@ -344,9 +345,7 @@ function Signature() {
       {contextHolder}
       <div className="h-[100vh] w-[100vw] pb-[30px] px-[20px] md:px-[30px]">
         {loading ? (
-          <div className="flex h-[100vh] w-[100vw] justify-center items-center">
-            <LoadingOutlined />
-          </div>
+          <Loader />
         ) : (
           <>
             {showSuccessMessage ? (
