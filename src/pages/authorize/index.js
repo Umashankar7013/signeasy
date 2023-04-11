@@ -18,6 +18,7 @@ const Authorize = () => {
   });
   const [signeasyAuth, setSigneasyAuth] = useState({
     success: false,
+    redirectionUrl: "",
   });
   const [revokeLoader, setRevokeLoader] = useState({
     hubspot: false,
@@ -84,11 +85,11 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
-      console.log(currentUrl);
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       const userId = searchParams?.get("hubspot_user_id");
       const portalId = searchParams?.get("hubspot_portal_id");
+      const redirectionUrl = searchParams?.get("redirect_to");
       if (status === "success") {
         if (name === "hubspot") {
           setHubspotAuth((prev) => ({
@@ -99,10 +100,14 @@ const Authorize = () => {
           }));
           setHubspotPopup(null);
         } else {
-          setSigneasyAuth((prev) => ({ ...prev, success: true }));
+          setSigneasyAuth((prev) => ({
+            ...prev,
+            success: true,
+            redirectionUrl,
+          }));
           setSigneasyPopup(null);
         }
-        // popup.close();
+        popup.close();
         timer && clearInterval(timer);
       }
     }, 500);
@@ -115,6 +120,12 @@ const Authorize = () => {
   useEffect(() => {
     popupObserver({ popup: signeasyPopup });
   }, [signeasyPopup]);
+
+  useEffect(() => {
+    if (signeasyAuth?.redirectionUrl !== "") {
+      location && location?.assign(signeasyAuth?.redirectionUrl);
+    }
+  }, [signeasyAuth?.redirectionUrl]);
 
   return (
     <>
