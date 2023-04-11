@@ -84,6 +84,7 @@ const Authorize = () => {
       if (!currentUrl) {
         return;
       }
+      console.log(currentUrl);
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       const userId = searchParams?.get("hubspot_user_id");
@@ -101,7 +102,7 @@ const Authorize = () => {
           setSigneasyAuth((prev) => ({ ...prev, success: true }));
           setSigneasyPopup(null);
         }
-        popup.close();
+        // popup.close();
         timer && clearInterval(timer);
       }
     }, 500);
