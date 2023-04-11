@@ -25,6 +25,7 @@ const Authorize = () => {
     signeasy: false,
   });
   const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState(false);
 
   const revokeHandler = async ({ endUrl, name }) => {
     if (name === "hubspot") {
@@ -105,6 +106,7 @@ const Authorize = () => {
             success: true,
             redirectionUrl,
           }));
+          setLoading(true);
           setSigneasyPopup(null);
         }
         popup.close();
@@ -127,7 +129,11 @@ const Authorize = () => {
     }
   }, [signeasyAuth?.redirectionUrl]);
 
-  return (
+  return loading ? (
+    <div className="flex h-[100vh] w-[100vw] justify-center items-center">
+      <LoadingOutlined />
+    </div>
+  ) : (
     <>
       {contextHolder}
       <div className="w-[100vw] h-[100vh] flex flex-col items-center">
