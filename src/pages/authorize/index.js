@@ -5,7 +5,8 @@ import { AuthorizeButton } from "../../components/AuthorizeButton";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { RevokeButton } from "../../components/RevokeButton";
 import { AUTH_BASE_URL, AUTH_REDIRECTION_URL } from "../../constants/constants";
-import { popupHandler } from "../../utils/functions";
+import { openNotification, popupHandler } from "../../utils/functions";
+import { notification } from "antd";
 
 const Authorize = () => {
   const [hubspotPopup, setHubspotPopup] = useState(null);
@@ -22,6 +23,7 @@ const Authorize = () => {
     hubspot: false,
     signeasy: false,
   });
+  const [api, contextHolder] = notification.useNotification();
 
   const revokeHandler = async ({ endUrl, name }) => {
     if (name === "hubspot") {
@@ -38,9 +40,11 @@ const Authorize = () => {
       if (name === "hubspot") {
         setHubspotAuth((prev) => ({ ...prev, success: false }));
         setRevokeLoader((prev) => ({ ...prev, hubspot: false }));
+        openNotification({ api, message: "success" });
       } else {
         setSigneasyAuth((prev) => ({ ...prev, success: false }));
         setRevokeLoader((prev) => ({ ...prev, signeasy: false }));
+        openNotification({ api, message: "success" });
       }
     }
   };
@@ -104,59 +108,62 @@ const Authorize = () => {
   }, [signeasyPopup]);
 
   return (
-    <div className="w-[100vw] h-[100vh] flex flex-col items-center">
-      <div className="flex items-start pt-[30px]">
-        <div className="text-[24px] pr-[20px] font-inter font-[500]">
-          Authorize
+    <>
+      {contextHolder}
+      <div className="w-[100vw] h-[100vh] flex flex-col items-center">
+        <div className="flex items-start pt-[30px]">
+          <div className="text-[24px] pr-[20px] font-inter font-[500]">
+            Authorize
+          </div>
+          <ImageWithBasePath src="openLockIcon" height={30} width={30} />
         </div>
-        <ImageWithBasePath src="openLockIcon" height={30} width={30} />
-      </div>
-      <div className="md:flex w-[100%] justify-around">
-        {/* // HubSpot */}
-        <div className="flex flex-col items-center">
-          <AuthLabels
-            imageName={"hubSpotIcon"}
-            title="HubSpot"
-            imageClass="p-[12px]"
-          />
-          {hubSpotAuth?.success ? (
-            <RevokeButton
-              onClick={() =>
-                revokeHandler({
-                  endUrl: "hubspot/revoke",
-                  name: "hubspot",
-                })
-              }
-              loading={revokeLoader?.hubspot}
-            />
-          ) : (
-            <AuthorizeButton onClick={hubSpotAuthHandler} />
-          )}
-        </div>
-        {/* // signeasy */}
-        {hubSpotAuth?.success && (
+        <div className="md:flex w-[100%] justify-around">
+          {/* // HubSpot */}
           <div className="flex flex-col items-center">
             <AuthLabels
-              imageName={"signeasyIcon"}
-              imageDetails={{ height: 75, width: 75 }}
-              title="Signeasy"
+              imageName={"hubSpotIcon"}
+              title="HubSpot"
+              imageClass="p-[12px]"
             />
-            {signeasyAuth?.success ? (
+            {hubSpotAuth?.success ? (
               <RevokeButton
                 onClick={() =>
                   revokeHandler({
-                    endUrl: "signeasy/revoke",
+                    endUrl: "hubspot/revoke",
+                    name: "hubspot",
                   })
                 }
-                loading={revokeLoader?.signeasy}
+                loading={revokeLoader?.hubspot}
               />
             ) : (
-              <AuthorizeButton onClick={signeasyAuthHandler} />
+              <AuthorizeButton onClick={hubSpotAuthHandler} />
             )}
           </div>
-        )}
+          {/* // signeasy */}
+          {hubSpotAuth?.success && (
+            <div className="flex flex-col items-center">
+              <AuthLabels
+                imageName={"signeasyIcon"}
+                imageDetails={{ height: 10, width: 74 }}
+                title="Signeasy"
+              />
+              {signeasyAuth?.success ? (
+                <RevokeButton
+                  onClick={() =>
+                    revokeHandler({
+                      endUrl: "signeasy/revoke",
+                    })
+                  }
+                  loading={revokeLoader?.signeasy}
+                />
+              ) : (
+                <AuthorizeButton onClick={signeasyAuthHandler} />
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

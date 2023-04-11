@@ -72,7 +72,6 @@ function Documents() {
 
   const getDocumentsHandler = async () => {
     if (window) {
-      console.log(window, "inside");
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
       const authId = searchParams?.get("authId");
@@ -297,7 +296,7 @@ function Documents() {
                     isActive={template?.id === selectedItem?.id}
                     isDisabled={template?.name === undefined}
                   />
-                  <div className="md:pl-[30px] pl-[15px] text-[14px] font-lexend font-medium">
+                  <div className="md:pl-[30px] pl-[15px] pr-[10px] text-[14px] font-lexend font-medium">
                     {template?.name}
                   </div>
                 </div>
@@ -321,14 +320,11 @@ function Documents() {
             ))}
           </div>
           {/* Bottom Buttons */}
-          <div
-            className="sticky 
-             bottom-0 bg-[#f6f8fa] py-[15px] px-[20px]"
-          >
+          <div className="sticky bottom-0 bg-[#f6f8fa] py-[15px] px-[20px]">
             <div className="flex justify-between items-center">
               <div
                 className="font-lexend font-bold cursor-pointer text-[14px]"
-                onClick={() => window.close()}
+                onClick={() => window && window.close()}
               >
                 Cancel
               </div>

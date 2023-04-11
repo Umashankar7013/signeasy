@@ -1,8 +1,8 @@
-export const popupHandler = async ({ url }) => {
+export const popupHandler = async ({ url, popUpWidth, popUpHeight }) => {
   let popup;
   if (window) {
-    const width = window.outerWidth - 350;
-    const height = window.outerHeight - 150;
+    const width = 800;
+    const height = window.outerHeight - 200;
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2.5;
     const title = "auth";
@@ -19,4 +19,24 @@ export const dateHandler = ({ timestamp = "" }) => {
   const date = new Date(timestamp * 1000);
   const modifiedTime = date.toLocaleString("en-US");
   return modifiedTime?.split(",");
+};
+
+export const openNotification = ({
+  placement = "top",
+  message = "",
+  description = "",
+  type = "success",
+  api,
+}) => {
+  api.info({
+    message: message,
+    description: description,
+    placement,
+    icon:
+      type === "success" ? (
+        <ImageWithBasePath src="successIcon" height={20} width={20} />
+      ) : (
+        <ImageWithBasePath src="errorIcon" height={20} width={20} />
+      ),
+  });
 };

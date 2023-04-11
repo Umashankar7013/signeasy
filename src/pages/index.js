@@ -13,15 +13,18 @@ export default function SigneasyApp() {
         titleClassName="font-lexend"
         onClick={() => router.push("/home")}
       />
-      {/* <PrimaryButton
+      <PrimaryButton
         title="Templates page"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[orange]"
         titleClassName="font-lexend"
-        onClick={() =>
-          // popupHandler({ url: `${DEPLOYMENT_URL}templates` })
-          router.push("/templates")
+        onClick={
+          () =>
+            popupHandler({
+              url: `${DEPLOYMENT_URL}templates`,
+            })
+          // router.push("/templates")
         }
-      /> */}
+      />
       <PrimaryButton
         title="Documents page"
         className="w-fit px-[20px] py-[10px] mt-[10px] bg-red-500"

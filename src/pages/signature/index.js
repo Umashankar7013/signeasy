@@ -22,10 +22,10 @@ import { useRouter } from "next/router";
 import { AppContext } from "../_app";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import axios from "axios";
-import { popupHandler } from "../../utils/functions";
 import { notification } from "antd";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { getApi } from "../../api/apiMethods";
+import { openNotification } from "../../utils/functions";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setJWTtoken, setDocParams } =
@@ -51,24 +51,24 @@ function Signature() {
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const openNotification = ({
-    placement = "top",
-    message = "",
-    description = "",
-    type = "success",
-  }) => {
-    api.info({
-      message: message,
-      description: description,
-      placement,
-      icon:
-        type === "success" ? (
-          <ImageWithBasePath src="successIcon" height={20} width={20} />
-        ) : (
-          <ImageWithBasePath src="errorIcon" height={20} width={20} />
-        ),
-    });
-  };
+  // const openNotification = ({
+  //   placement = "top",
+  //   message = "",
+  //   description = "",
+  //   type = "success",
+  // }) => {
+  //   api.info({
+  //     message: message,
+  //     description: description,
+  //     placement,
+  //     icon:
+  //       type === "success" ? (
+  //         <ImageWithBasePath src="successIcon" height={20} width={20} />
+  //       ) : (
+  //         <ImageWithBasePath src="errorIcon" height={20} width={20} />
+  //       ),
+  //   });
+  // };
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -117,6 +117,7 @@ function Signature() {
           message: "Error",
           description: error.message,
           type: "error",
+          api,
         });
         setLoading(false);
       });
@@ -168,6 +169,7 @@ function Signature() {
             message: "Error",
             description: error.message,
             type: "error",
+            api,
           });
           setLoading(false);
           console.log(error, "Error");
@@ -208,6 +210,7 @@ function Signature() {
             message: "Error",
             description: error.message,
             type: "error",
+            api,
           });
           setLoading(false);
           console.log(error, "Error");
@@ -219,7 +222,7 @@ function Signature() {
     <div>
       <FormHeaderLables
         text1="1. Review documents in your envelope"
-        text2=" All documents in this envelope are part of your chosen template."
+        text2=" All documents in this envelope are part of your choosen template."
       />
       <div className="p-[16px] ml-[17px] border-[1px] mt-[14px] border-[#E0E3EA] rounded-[3px]">
         <div className="font-lexend font-[500] leading-[17px] text-[14px]">
