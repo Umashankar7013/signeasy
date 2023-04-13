@@ -323,7 +323,13 @@ function Documents() {
             <div className="flex justify-between items-center">
               <div
                 className="font-lexend font-bold cursor-pointer text-[14px]"
-                onClick={() => window && window.close()}
+                onClick={() =>
+                  window &&
+                  window.parent.postMessage(
+                    JSON.stringify({ action: "DONE" }),
+                    "*"
+                  )
+                }
               >
                 Cancel
               </div>
