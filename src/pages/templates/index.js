@@ -142,7 +142,7 @@ function Templates() {
       });
       data && setJWTtoken(data?.token);
       const docsData = await getApi({
-        endUrl: "hubspot-card/documents",
+        endUrl: "hubspot-card/templates",
         headers: {
           "x-access-token": data?.token,
         },

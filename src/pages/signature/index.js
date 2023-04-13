@@ -197,7 +197,7 @@ function Signature() {
           ],
           recipients: signersData,
           redirect_url: encodeURI(
-            `${DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&authId=${docParams?.authId}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+            `${DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
           ),
           embedded_signing: true,
           is_ordered: false,
@@ -306,7 +306,7 @@ function Signature() {
     const pending_file_id = searchParams.get("pending_file_id");
     if (pending_file_id) {
       setLoading(true);
-      const authId = searchParams?.get("authId");
+      const JWTtoken = searchParams?.get("JWTtoken");
       const objectId = searchParams?.get("object_id");
       const objectType = searchParams?.get("object_type");
       const firstName = searchParams?.get("first_name");
@@ -315,21 +315,17 @@ function Signature() {
       const docName = searchParams?.get("name");
       setDocParams((prev) => ({
         ...prev,
-        authId,
+        authId: "",
         objectId,
         objectType,
         firstName,
         lastName,
         email,
       }));
-      const data = await getApi({
-        endUrl: `set-up/auth?authId=${authId}`,
-      });
-      data && setJWTtoken(data?.token);
       await envelopSaveHandler({
         id: pending_file_id,
         name: docName,
-        token: data?.token,
+        token: JWTtoken,
         type: "edit",
         url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
       });

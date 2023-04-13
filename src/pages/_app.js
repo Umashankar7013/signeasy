@@ -15,6 +15,11 @@ function MyApp({ Component, pageProps }) {
     email: "",
   });
   const [JWTtoken, setJWTtoken] = useLocalStorage("JWTtoken", "");
+  const [hubSpotAuth, setHubspotAuth] = useState({
+    success: false,
+    userId: "",
+    portalId: "",
+  });
   return (
     <AppContext.Provider
       value={{
@@ -24,6 +29,8 @@ function MyApp({ Component, pageProps }) {
         setDocParams,
         JWTtoken,
         setJWTtoken,
+        hubSpotAuth,
+        setHubspotAuth,
       }}
     >
       <Component {...pageProps} />

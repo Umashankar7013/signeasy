@@ -20,7 +20,7 @@ export default function SigneasyApp() {
         onClick={
           () =>
             popupHandler({
-              url: `${DEPLOYMENT_URL}templates`,
+              url: `${DEPLOYMENT_URL}templates?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
             })
           // router.push("/templates")
         }
@@ -31,7 +31,7 @@ export default function SigneasyApp() {
         titleClassName="font-lexend"
         onClick={() =>
           popupHandler({
-            url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+            url: `${DEPLOYMENT_URL}documents?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
           })
         }
       />
