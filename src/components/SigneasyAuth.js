@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { openNotification, popupHandler } from "../utils/functions";
-import { AUTH_REDIRECTION_URL } from "../constants/constants";
+import { AUTH_BASE_URL, AUTH_REDIRECTION_URL } from "../constants/constants";
 import { AuthLabels } from "./AuthLabels";
 import { RevokeButton } from "./RevokeButton";
 import { AuthorizeButton } from "./AuthorizeButton";
