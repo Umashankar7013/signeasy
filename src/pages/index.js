@@ -36,8 +36,8 @@ export default function SigneasyApp() {
         }
       />
       <PrimaryButton
-        title="Templates page"
-        className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[orange]"
+        title="signeasy Auth"
+        className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[yellow]"
         titleClassName="font-lexend"
         onClick={() => router.push("/oauth/signeasy")}
       />
