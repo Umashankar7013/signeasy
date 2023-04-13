@@ -8,7 +8,11 @@ const SigneasyAuthPage = () => {
   return (
     <>
       {contextHolder}
-      <SigneasyAuth api={api} redirectionUrl={SIGNEASY_REDIRECTION_URL} />
+      <SigneasyAuth
+        api={api}
+        redirectionUrl={SIGNEASY_REDIRECTION_URL}
+        onlySigneasy={true}
+      />
     </>
   );
 };

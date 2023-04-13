@@ -7,7 +7,7 @@ import { AuthorizeButton } from "./AuthorizeButton";
 import { deleteApi } from "../api/apiMethods";
 import { AppContext } from "../pages/_app";
 
-export const SigneasyAuth = ({ api, redirectionUrl }) => {
+export const SigneasyAuth = ({ api, redirectionUrl, onlySigneasy }) => {
   const { hubSpotAuth } = useContext(AppContext);
   const [signeasyPopup, setSigneasyPopup] = useState(null);
   const [signeasyAuth, setSigneasyAuth] = useState({
@@ -15,6 +15,7 @@ export const SigneasyAuth = ({ api, redirectionUrl }) => {
     redirectionUrl: "",
   });
   const [revokeLoader, setRevokeLoader] = useState(false);
+  const [hubspotCredentials, setHubspotCredentials] = useState(hubSpotAuth);
 
   const revokeHandler = async ({ endUrl }) => {
     setRevokeLoader(true);
@@ -36,7 +37,7 @@ export const SigneasyAuth = ({ api, redirectionUrl }) => {
 
   const signeasyAuthHandler = async () => {
     const popup = await popupHandler({
-      url: `${AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubSpotAuth?.userId}&hubspot_portal_id=${hubSpotAuth?.portalId}`,
+      url: `${AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubspotCredentials?.userId}&hubspot_portal_id=${hubspotCredentials?.portalId}`,
     });
     setSigneasyPopup(popup);
   };
@@ -71,11 +72,27 @@ export const SigneasyAuth = ({ api, redirectionUrl }) => {
   };
 
   useEffect(() => {
+    const currentUrl = window?.location?.href;
+    const searchParams = new URL(currentUrl).searchParams;
+    const userId = searchParams?.get("hubspot_user_id");
+    const portalId = searchParams?.get("hubspot_portal_id");
+    if (userId && portalId) {
+      setHubspotCredentials((prev) => ({
+        ...prev,
+        userId,
+        portalId,
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
     popupObserver({ popup: signeasyPopup });
   }, [signeasyPopup]);
 
   useEffect(() => {
-    if (signeasyAuth?.redirectionUrl !== "") {
+    if (onlySigneasy) {
+      window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
+    } else if (signeasyAuth?.redirectionUrl !== "") {
       location && location?.assign(signeasyAuth?.redirectionUrl);
     }
   }, [signeasyAuth?.redirectionUrl]);
