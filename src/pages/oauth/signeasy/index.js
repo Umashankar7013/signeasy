@@ -1,8 +1,16 @@
 import React from "react";
 import { SigneasyAuth } from "../../../components/SigneasyAuth";
+import { notification } from "antd";
+import { SIGNEASY_REDIRECTION_URL } from "../../../constants/constants";
 
 const SigneasyAuthPage = () => {
-  return <SigneasyAuth />;
+  const [api, contextHolder] = notification.useNotification();
+  return (
+    <>
+      {contextHolder}
+      <SigneasyAuth api={api} redirectionUrl={SIGNEASY_REDIRECTION_URL} />
+    </>
+  );
 };
 
 export default SigneasyAuthPage;

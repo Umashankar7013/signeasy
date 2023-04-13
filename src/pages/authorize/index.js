@@ -4,6 +4,7 @@ import { notification } from "antd";
 import { HubspotAuth } from "../../components/HubspotAuth";
 import { SigneasyAuth } from "../../components/SigneasyAuth";
 import { AppContext } from "../_app";
+import { AUTH_REDIRECTION_URL } from "../../constants/constants";
 
 const Authorize = () => {
   const [api, contextHolder] = notification.useNotification();
@@ -21,7 +22,9 @@ const Authorize = () => {
         </div>
         <div className="md:flex w-[100%] justify-around">
           <HubspotAuth api={api} />
-          {hubSpotAuth?.success && <SigneasyAuth api={api} />}
+          {hubSpotAuth?.success && (
+            <SigneasyAuth api={api} redirectionUrl={AUTH_REDIRECTION_URL} />
+          )}
         </div>
       </div>
     </>
