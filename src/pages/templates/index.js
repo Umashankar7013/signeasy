@@ -107,14 +107,8 @@ function Templates() {
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
   const headerData = ["TEMPLATE NAME", "OWNER", "LAST CHANGE"];
-  const {
-    selectedItem,
-    setSelectedItem,
-    docParams,
-    setDocParams,
-    JWTtoken,
-    setJWTtoken,
-  } = useContext(AppContext);
+  const { selectedItem, setSelectedItem, setDocParams, setJWTtoken } =
+    useContext(AppContext);
   const selectedHeader = useRef("");
   const router = useRouter();
   const [browserWindow, setBrowserWindow] = useState();
