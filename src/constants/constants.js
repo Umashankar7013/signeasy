@@ -9,9 +9,3 @@ export const DEPLOYMENT_URL = "https://signeasy.vercel.app/";
 export const AUTH_REDIRECTION_URL = `${DEPLOYMENT_URL}authorize`;
 
 export const SIGNEASY_REDIRECTION_URL = `${DEPLOYMENT_URL}oauth/signeasy`;
-
-export const verificationTypeData = [
-  "Not Required",
-  "SMS verification",
-  "Email verification",
-];
