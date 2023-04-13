@@ -65,9 +65,9 @@ export const SigneasyAuth = ({ api }) => {
         }));
         setLoading(true);
         setSigneasyPopup(null);
+        popup.close();
+        timer && clearInterval(timer);
       }
-      popup.close();
-      timer && clearInterval(timer);
     }, 500);
   };
 
