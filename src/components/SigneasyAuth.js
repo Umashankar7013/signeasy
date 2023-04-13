@@ -20,8 +20,8 @@ export const SigneasyAuth = ({ api, redirectionUrl, onlySigneasy }) => {
   const revokeHandler = async ({ endUrl }) => {
     setRevokeLoader(true);
     const params = {
-      hubspot_user_id: hubSpotAuth?.userId,
-      hubspot_portal_id: hubSpotAuth?.portalId,
+      hubspot_user_id: hubspotCredentials?.userId,
+      hubspot_portal_id: hubspotCredentials?.portalId,
     };
     const data = await deleteApi({ endUrl, params });
     if (data?.is_success) {
