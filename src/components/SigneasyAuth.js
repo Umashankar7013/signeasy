@@ -91,11 +91,12 @@ export const SigneasyAuth = ({ api, redirectionUrl, onlySigneasy }) => {
 
   useEffect(() => {
     if (onlySigneasy) {
-      window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
+      window &&
+        window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
     } else if (signeasyAuth?.redirectionUrl !== "") {
       location && location?.assign(signeasyAuth?.redirectionUrl);
     }
-  }, [signeasyAuth?.redirectionUrl]);
+  }, [signeasyAuth]);
 
   return (
     <>

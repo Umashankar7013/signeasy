@@ -1,20 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CrossIcon } from "../../components/CrossIcon";
-import { DropDown } from "../../components/DropDown";
 import { Input } from "../../components/Input";
 import { PlusIcon } from "../../components/PlusIcon";
 import { PrimaryButton } from "../../components/PrimaryButton";
-import {
-  LeftOutlined,
-  LoadingOutlined,
-  CheckCircleFilled,
-} from "@ant-design/icons";
-import { PhoneNumberInput } from "../../components/PhoneNumberInput";
+import { LeftOutlined, CheckCircleFilled } from "@ant-design/icons";
 import { FormHeaderLables } from "../../components/FormHeaderLables";
-import {
-  DEPLOYMENT_URL,
-  verificationTypeData,
-} from "../../constants/constants";
+import { DEPLOYMENT_URL } from "../../constants/constants";
 import { TextArea } from "../../components/TextArea";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
@@ -23,8 +14,6 @@ import { AppContext } from "../_app";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import axios from "axios";
 import { notification } from "antd";
-import { ImageWithBasePath } from "../../components/ImageWithBasePath";
-import { getApi } from "../../api/apiMethods";
 import { openNotification } from "../../utils/functions";
 import { Loader } from "../../components/Loader";
 
@@ -51,25 +40,6 @@ function Signature() {
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
-  // const openNotification = ({
-  //   placement = "top",
-  //   message = "",
-  //   description = "",
-  //   type = "success",
-  // }) => {
-  //   api.info({
-  //     message: message,
-  //     description: description,
-  //     placement,
-  //     icon:
-  //       type === "success" ? (
-  //         <ImageWithBasePath src="successIcon" height={20} width={20} />
-  //       ) : (
-  //         <ImageWithBasePath src="errorIcon" height={20} width={20} />
-  //       ),
-  //   });
-  // };
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {

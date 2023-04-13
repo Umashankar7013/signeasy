@@ -16,6 +16,7 @@ import jwt_decode from "jwt-decode";
 import { notification } from "antd";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { Loader } from "../../components/Loader";
+import { BottomButtons } from "../../components/BottomButtons";
 
 function Documents() {
   const itemsData = useRef([
@@ -320,40 +321,7 @@ function Documents() {
           </div>
           {/* Bottom Buttons */}
           <div className="sticky bottom-0 bg-[#f6f8fa] py-[15px] px-[20px]">
-            <div className="flex justify-between items-center">
-              <div
-                className="font-lexend font-bold cursor-pointer text-[14px]"
-                onClick={() =>
-                  window &&
-                  window.parent.postMessage(
-                    JSON.stringify({ action: "DONE" }),
-                    "*"
-                  )
-                }
-              >
-                Cancel
-              </div>
-              <PrimaryButton
-                title="Next"
-                className={classNames(
-                  "px-[40px] py-[10px]",
-                  Object.keys(selectedItem)?.length > 0
-                    ? "bg-[#ee8162]"
-                    : "bg-[#ebf0f5]"
-                )}
-                titleClassName={classNames(
-                  "font-lexend font-bold text-[14px]",
-                  Object.keys(selectedItem)?.length > 0
-                    ? "text-[white]"
-                    : "text-[#b3c0d2]"
-                )}
-                onClick={() =>
-                  router.push({
-                    pathname: "/signature",
-                  })
-                }
-              />
-            </div>
+            <BottomButtons />
           </div>
         </div>
       )}
