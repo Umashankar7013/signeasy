@@ -63,7 +63,6 @@ export const SigneasyAuth = ({ api }) => {
           success: true,
           redirectionUrl,
         }));
-        setLoading(true);
         setSigneasyPopup(null);
         popup.close();
         timer && clearInterval(timer);

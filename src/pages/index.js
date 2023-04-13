@@ -35,6 +35,12 @@ export default function SigneasyApp() {
           })
         }
       />
+      <PrimaryButton
+        title="Templates page"
+        className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[orange]"
+        titleClassName="font-lexend"
+        onClick={() => router.push("/oauth/signeasy")}
+      />
     </div>
   );
 }
