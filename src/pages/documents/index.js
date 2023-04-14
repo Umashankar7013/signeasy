@@ -13,23 +13,7 @@ import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
 
 function Documents() {
-  const itemsData = useRef([
-    {
-      name: "Test Document 2",
-      ownerName: "uma",
-      modified_time: 23451234,
-    },
-    {
-      name: "Test Document 1",
-      ownerName: "joy",
-      modified_time: 23451234,
-    },
-    {
-      name: "Test Document 3",
-      ownerName: "Dinesh",
-      modified_time: 23451234,
-    },
-  ]);
+  const itemsData = useRef([]);
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
   const headerData = ["DOCUMENT NAME", "LAST CHANGE"];

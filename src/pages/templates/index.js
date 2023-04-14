@@ -11,33 +11,13 @@ import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
 
 function Templates() {
-  const itemsData = useRef([
-    {
-      id: 1,
-      name: "Test Document 2",
-      ownerName: "uma Shankar",
-      modified_time: 23451234,
-    },
-    {
-      id: 2,
-      name: "Test Document 1",
-      ownerName: "joy",
-      modified_time: 23451234,
-    },
-    {
-      id: 3,
-      name: "Test Document 3",
-      ownerName: "Dinesh",
-      modified_time: 23451234,
-    },
-  ]);
+  const itemsData = useRef([]);
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
   const headerData = ["TEMPLATE NAME", "OWNER", "LAST CHANGE"];
   const { selectedItem, setSelectedItem, setDocParams, setJWTtoken } =
     useContext(AppContext);
   const selectedHeader = useRef("");
-  const router = useRouter();
   const [browserWindow, setBrowserWindow] = useState();
 
   const getTemplatesHandler = async () => {
@@ -69,7 +49,7 @@ function Templates() {
           "x-access-token": data?.token,
         },
       });
-      docsData && (itemsData.current = docsData?.data?.files);
+      docsData && (itemsData.current = docsData?.data);
       setFilteredData(itemsData?.current);
       setLoading(false);
     } else {
