@@ -102,7 +102,6 @@ export const SigneasyAuth = ({
 
   useEffect(() => {
     if (onlySigneasy) {
-      console.log("inside");
       window &&
         window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
     } else if (signeasyAuth?.redirectionUrl !== "") {
