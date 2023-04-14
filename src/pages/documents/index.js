@@ -1,20 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { getApi } from "../../api/apiMethods";
-import {
-  CaretDownOutlined,
-  CaretUpOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { SearchBar } from "../../components/SearchBar";
 import { RadioButton } from "../../components/RadioButton";
-import { PrimaryButton } from "../../components/PrimaryButton";
 import classNames from "classnames";
-import { dateHandler } from "../../utils/functions";
+import { dateHandler, openNotification } from "../../utils/functions";
 import { AppContext } from "../_app";
 import jwt_decode from "jwt-decode";
 import { notification } from "antd";
-import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
 
@@ -52,25 +46,6 @@ function Documents() {
   const inputFileRef = useRef(null);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
-
-  const openNotification = ({
-    placement = "top",
-    message = "",
-    description = "",
-    type = "success",
-  }) => {
-    api.info({
-      message: message,
-      description: description,
-      placement,
-      icon:
-        type === "success" ? (
-          <ImageWithBasePath src="successIcon" height={20} width={20} />
-        ) : (
-          <ImageWithBasePath src="errorIcon" height={20} width={20} />
-        ),
-    });
-  };
 
   const getDocumentsHandler = async () => {
     if (window) {
@@ -148,7 +123,6 @@ function Documents() {
       "Authorization",
       `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
     );
-
     let requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -160,9 +134,9 @@ function Documents() {
       .then((result) => {
         setSelectedItem(JSON.parse(result));
         openNotification({
+          api,
           message: "Success",
           description: "Successfully uploaded the file.",
-          type: "error",
         });
         router.push({
           pathname: "/signature",
@@ -175,6 +149,7 @@ function Documents() {
           message: "Error",
           description: error.message,
           type: "error",
+          api,
         });
         setLoading(false);
       });
