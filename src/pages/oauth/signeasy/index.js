@@ -12,6 +12,7 @@ const SigneasyAuthPage = () => {
         api={api}
         redirectionUrl={SIGNEASY_REDIRECTION_URL}
         onlySigneasy={true}
+        openInPopup={false}
       />
     </>
   );

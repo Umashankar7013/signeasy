@@ -7,7 +7,12 @@ import { AuthorizeButton } from "./AuthorizeButton";
 import { deleteApi } from "../api/apiMethods";
 import { AppContext } from "../pages/_app";
 
-export const SigneasyAuth = ({ api, redirectionUrl, onlySigneasy }) => {
+export const SigneasyAuth = ({
+  api,
+  redirectionUrl,
+  onlySigneasy,
+  openInPopup = true,
+}) => {
   const { hubSpotAuth } = useContext(AppContext);
   const [signeasyPopup, setSigneasyPopup] = useState(null);
   const [signeasyAuth, setSigneasyAuth] = useState({
@@ -36,9 +41,16 @@ export const SigneasyAuth = ({ api, redirectionUrl, onlySigneasy }) => {
   };
 
   const signeasyAuthHandler = async () => {
-    const popup = await popupHandler({
-      url: `${AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubspotCredentials?.userId}&hubspot_portal_id=${hubspotCredentials?.portalId}`,
-    });
+    let popup;
+    let url = `${AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubspotCredentials?.userId}&hubspot_portal_id=${hubspotCredentials?.portalId}`;
+    if (openInPopup) {
+      popup = await popupHandler({
+        url,
+      });
+    } else {
+      popup = window.open(url, "_self");
+    }
+
     setSigneasyPopup(popup);
   };
 

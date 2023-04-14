@@ -50,6 +50,7 @@ export const HubspotAuth = ({ api }) => {
       if (!currentUrl) {
         return;
       }
+      console.log(currentUrl);
       const searchParams = new URL(currentUrl).searchParams;
       const status = searchParams.get("status");
       const userId = searchParams?.get("hubspot_user_id");
