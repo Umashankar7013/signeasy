@@ -49,6 +49,7 @@ function Templates() {
           "x-access-token": data?.token,
         },
       });
+      console.log(docsData?.data);
       docsData && (itemsData.current = docsData?.data);
       setFilteredData(itemsData?.current);
       setLoading(false);
@@ -188,14 +189,14 @@ function Templates() {
               <div className="font-lexend">
                 {
                   dateHandler({
-                    timestamp: template?.last_modified_time,
+                    timestamp: template?.modified_time,
                   })[0]
                 }
               </div>
               <div className="font-lexend text-[14px]">
                 {
                   dateHandler({
-                    timestamp: template?.last_modified_time,
+                    timestamp: template?.modified_time,
                   })[1]
                 }
               </div>
