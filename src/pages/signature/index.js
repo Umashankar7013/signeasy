@@ -36,6 +36,8 @@ function Signature() {
     recipient_id: signersData.length + 1,
   };
   const [emails, setEmails] = useState([]);
+  const [emailSubject, setEmailSubject] = useLocalStorage("emailSubject", "");
+  const [message, setMessage] = useLocalStorage("message", "");
   const router = useRouter();
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -202,21 +204,6 @@ function Signature() {
         {/* <div className="pt-[6px] font-lexend font-[300] leading-[15px] text-[12px] text-[#9DABC0]">
           1 pages
         </div> */}
-      </div>
-    </div>
-  );
-
-  const Step3 = () => (
-    <div>
-      <FormHeaderLables
-        text1="3. Customize the message for your recipients"
-        text2=" Edit the subject and message for the email sent with your envelope."
-      />
-      <div className="mt-[14px] pl-[17px]">
-        <Input title="Email subject" limit={60} />
-        <div className="mt-[47px]">
-          <TextArea title="Message for signers" limit={200} />
-        </div>
       </div>
     </div>
   );
@@ -430,7 +417,36 @@ function Signature() {
                     </div>
                   </div>
                 </div>
-                <Step3 />
+                {/* Step3 */}
+                <div>
+                  <FormHeaderLables
+                    text1="3. Customize the message for your recipients"
+                    text2=" Edit the subject and message for the email sent with your envelope."
+                  />
+                  <div className="mt-[14px] pl-[17px]">
+                    <Input
+                      title="Email subject"
+                      limit={60 - emailSubject?.length}
+                      onChange={(e) => {
+                        e.target.value =
+                          e.target.value.match(/^([^]{0,60})/)[0];
+                        setEmailSubject(e.target.value);
+                      }}
+                    />
+                    <div className="mt-[47px]">
+                      <TextArea
+                        title="Message for signers"
+                        limit={200 - message.length}
+                        onChange={(e) => {
+                          e.target.value =
+                            e.target.value.match(/^([^]{0,200})/)[0];
+                          setMessage(e.target.value);
+                        }}
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <Step4 />
                 {/* Bottom Buttons */}
                 <div className="flex justify-between mt-[40px] pb-[50px]">

@@ -9,6 +9,7 @@ export const TextArea = ({
   limit,
   required = false,
   value,
+  rows = 2,
 }) => {
   return (
     <div>
@@ -17,12 +18,13 @@ export const TextArea = ({
       </div>
       <textarea
         className={classNames(
-          "outline-none border-[1px] border-[#CDD6E1] rounded-[3px] font-lexend mt-[3px] font-[300] px-[10px] bg-[#F6F8FA]",
+          "outline-none border-[1px] border-[#CDD6E1] h-auto rounded-[3px] font-lexend mt-[3px] font-[300] px-[10px] bg-[#F6F8FA]",
           className
         )}
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        rows={rows}
       />
       <div className="flex justify-end font-lexend font-[500] leading-[15px] text-[#8297B3] text-[12px]">
         {limit}
