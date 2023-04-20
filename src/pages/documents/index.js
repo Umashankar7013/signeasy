@@ -235,7 +235,7 @@ function Documents() {
 
           {/* Table data */}
           <div className="w-[100%] flex flex-col">
-            {filteredData?.map((template, index) => (
+            {filteredData?.map((document, index) => (
               <div
                 key={index}
                 className={classNames(
@@ -247,30 +247,30 @@ function Documents() {
                   className="flex flex-1 items-center ml-[10px] cursor-pointer"
                   onClick={() => {
                     setSelectedItem((prev) =>
-                      prev?.id === template?.id ? {} : template
+                      prev?.id === document?.id ? {} : document
                     );
                   }}
                 >
                   <RadioButton
-                    isActive={template?.id === selectedItem?.id}
-                    isDisabled={template?.name === undefined}
+                    isActive={document?.id === selectedItem?.id}
+                    isDisabled={document?.name === undefined}
                   />
                   <div className="md:pl-[30px] pl-[15px] pr-[10px] text-[14px] font-lexend font-medium">
-                    {template?.name}
+                    {document?.name}
                   </div>
                 </div>
                 <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
                   <div className="font-lexend">
                     {
                       dateHandler({
-                        timestamp: template?.last_modified_time,
+                        timestamp: document?.last_modified_time,
                       })[0]
                     }
                   </div>
                   <div className="font-lexend text-[14px]">
                     {
                       dateHandler({
-                        timestamp: template?.last_modified_time,
+                        timestamp: document?.last_modified_time,
                       })[1]
                     }
                   </div>

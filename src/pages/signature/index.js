@@ -20,6 +20,8 @@ import { Loader } from "../../components/Loader";
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setJWTtoken, setDocParams } =
     useContext(AppContext);
+  const router = useRouter();
+  const type = router.query?.type;
   const [signersData, setSignersData] = useLocalStorage("signersData", [
     {
       first_name: docParams?.firstName || "",
@@ -38,7 +40,7 @@ function Signature() {
   const [emails, setEmails] = useState([]);
   const [emailSubject, setEmailSubject] = useLocalStorage("emailSubject", "");
   const [message, setMessage] = useLocalStorage("message", "");
-  const router = useRouter();
+
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -162,7 +164,7 @@ function Signature() {
           sources: [
             {
               id: selectedItem?.id,
-              type: "original",
+              type,
               source_id: 1,
               name: "acme-contract",
             },

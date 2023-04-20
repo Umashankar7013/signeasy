@@ -206,7 +206,7 @@ function Templates() {
       </div>
       {/* Bottom Buttons */}
       <div className="sticky bottom-0 bg-[#f6f8fa] py-[15px] px-[20px]">
-        <BottomButtons />
+        <BottomButtons forTemplates={true} />
       </div>
     </div>
   );

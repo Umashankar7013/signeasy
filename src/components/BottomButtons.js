@@ -4,7 +4,7 @@ import { AppContext } from "../pages/_app";
 import { PrimaryButton } from "./PrimaryButton";
 import classNames from "classnames";
 
-export const BottomButtons = () => {
+export const BottomButtons = ({ forTemplates = false }) => {
   const { selectedItem } = useContext(AppContext);
   const router = useRouter();
   return (
@@ -37,6 +37,7 @@ export const BottomButtons = () => {
         onClick={() =>
           router.push({
             pathname: "/signature",
+            query: { type: forTemplates ? "template" : "original" },
           })
         }
       />
