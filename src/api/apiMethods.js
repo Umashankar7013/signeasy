@@ -1,5 +1,4 @@
 import axios from "axios";
-import { AUTH_BASE_URL, BASE_URL } from "../constants/constants";
 
 export const getApi = async ({
   endUrl = "",
@@ -9,7 +8,7 @@ export const getApi = async ({
 }) => {
   const data = await axios({
     method: "get",
-    url: `${BASE_URL}${endUrl}`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}${endUrl}`,
     params,
     body,
     headers,
@@ -20,7 +19,7 @@ export const getApi = async ({
 export const deleteApi = async ({ endUrl = "", params = {}, body = {} }) => {
   const data = await axios({
     method: "delete",
-    url: `${AUTH_BASE_URL}${endUrl}`,
+    url: `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}${endUrl}`,
     params,
     body,
   }).catch((err) => console.log("Error", err));

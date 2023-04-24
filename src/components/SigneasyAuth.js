@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { openNotification, popupHandler } from "../utils/functions";
-import { AUTH_BASE_URL } from "../constants/constants";
 import { AuthLabels } from "./AuthLabels";
 import { RevokeButton } from "./RevokeButton";
 import { AuthorizeButton } from "./AuthorizeButton";
@@ -42,7 +41,7 @@ export const SigneasyAuth = ({
 
   const signeasyAuthHandler = async () => {
     let popup;
-    let url = `${AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubspotCredentials?.userId}&hubspot_portal_id=${hubspotCredentials?.portalId}`;
+    let url = `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubspotCredentials?.userId}&hubspot_portal_id=${hubspotCredentials?.portalId}`;
     if (openInPopup) {
       popup = await popupHandler({
         url,

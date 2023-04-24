@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { deleteApi } from "../api/apiMethods";
 import { openNotification, popupHandler } from "../utils/functions";
-import { AUTH_BASE_URL, AUTH_REDIRECTION_URL } from "../constants/constants";
+import { AUTH_REDIRECTION_URL } from "../constants/constants";
 import { AuthLabels } from "./AuthLabels";
 import { RevokeButton } from "./RevokeButton";
 import { AuthorizeButton } from "./AuthorizeButton";
@@ -32,7 +32,7 @@ export const HubspotAuth = ({ api }) => {
 
   const hubSpotAuthHandler = async () => {
     const popup = await popupHandler({
-      url: `${AUTH_BASE_URL}hubspot/sign-in?redirect_uri=${AUTH_REDIRECTION_URL}/`,
+      url: `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}hubspot/sign-in?redirect_uri=${AUTH_REDIRECTION_URL}/`,
     });
     setHubspotPopup(popup);
   };

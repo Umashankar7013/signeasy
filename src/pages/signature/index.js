@@ -5,7 +5,6 @@ import { PlusIcon } from "../../components/PlusIcon";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { LeftOutlined, CheckCircleFilled } from "@ant-design/icons";
 import { FormHeaderLables } from "../../components/FormHeaderLables";
-import { DEPLOYMENT_URL } from "../../constants/constants";
 import { TextArea } from "../../components/TextArea";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
@@ -136,7 +135,7 @@ function Signature() {
             name: selectedItem?.name,
             token: JWTtoken,
             type: "submit",
-            url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+            url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
           });
         })
         .catch((error) => {
@@ -171,7 +170,7 @@ function Signature() {
           ],
           recipients: signersData,
           redirect_url: encodeURI(
-            `${DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
           ),
           embedded_signing: true,
           is_ordered: false,
@@ -286,7 +285,7 @@ function Signature() {
         name: docName,
         token: JWTtoken,
         type: "edit",
-        url: `${DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+        url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
       });
     }
   };

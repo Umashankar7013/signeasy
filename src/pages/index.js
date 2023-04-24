@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { popupHandler } from "../utils/functions";
-import { DEPLOYMENT_URL } from "../constants/constants";
 
 export default function SigneasyApp() {
   const router = useRouter();
@@ -20,7 +19,7 @@ export default function SigneasyApp() {
         onClick={
           () =>
             popupHandler({
-              url: `${DEPLOYMENT_URL}templates?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+              url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}templates?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
             })
           // router.push("/templates")
         }
@@ -31,7 +30,7 @@ export default function SigneasyApp() {
         titleClassName="font-lexend"
         onClick={() =>
           popupHandler({
-            url: `${DEPLOYMENT_URL}documents?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+            url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
           })
         }
       />
