@@ -14,7 +14,7 @@ function Templates() {
   const itemsData = useRef([]);
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
-  const headerData = ["TEMPLATE NAME", "OWNER", "LAST CHANGE"];
+  const headerData = ["TEMPLATE NAME", "LAST CHANGE"];
   const { selectedItem, setSelectedItem, setDocParams, setJWTtoken } =
     useContext(AppContext);
   const selectedHeader = useRef("");
@@ -97,11 +97,7 @@ function Templates() {
   return loading ? (
     <Loader />
   ) : (
-    <div className="w-[100%] pb-[30px] px-[20px] md:px-[50px]">
-      {/* Header */}
-      <div className="font-lexend text-[14px] pt-[20px]">
-        Pick a template to send to your customer and attach to this conatct
-      </div>
+    <div className="w-[100%] pb-[30px]">
       {/* Search bar */}
       <SearchBar
         className="w-fit"
@@ -115,8 +111,7 @@ function Templates() {
               "flex items-center py-[12px] cursor-pointer text-center",
               selectedHeader.current === item && "bg-[#ebf0f5]",
               index === 0 && "flex-1 justify-start",
-              index === 1 && "flex-[0.4] justify-center",
-              index === 2 && "flex-[0.4] justify-center"
+              index === 1 && "flex-[0.4] justify-center"
             )}
             key={index}
             onClick={() => {
@@ -180,11 +175,11 @@ function Templates() {
                 {template?.name}
               </div>
             </div>
-            <div className="flex flex-[0.4] justify-center items-center">
+            {/* <div className="flex flex-[0.4] justify-center items-center">
               <div className="text-[14px] font-lexend font-medium flex-wrap px-[10px]">
                 {template?.ownerName || "Owner Name"}
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
               <div className="font-lexend">
                 {
@@ -205,7 +200,7 @@ function Templates() {
         ))}
       </div>
       {/* Bottom Buttons */}
-      <div className="sticky bottom-0 bg-[#f6f8fa] py-[15px] px-[20px]">
+      <div className="fixed w-[100%] bottom-[19px] py-[15px] px-[20px]">
         <BottomButtons forTemplates={true} />
       </div>
     </div>

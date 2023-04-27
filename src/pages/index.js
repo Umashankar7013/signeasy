@@ -13,25 +13,14 @@ export default function SigneasyApp() {
         onClick={() => router.push("/home")}
       />
       <PrimaryButton
-        title="Templates page"
+        title="tempaltes and docs"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[orange]"
         titleClassName="font-lexend"
-        onClick={
-          () =>
-            popupHandler({
-              url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}templates?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-            })
-          // router.push("/templates")
-        }
-      />
-      <PrimaryButton
-        title="Documents page"
-        className="w-fit px-[20px] py-[10px] mt-[10px] bg-red-500"
-        titleClassName="font-lexend"
         onClick={() =>
-          popupHandler({
-            url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-          })
+          // popupHandler({
+          //   url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}templates?authId=0d30e7a2-42f6-4aef-ba70-a7d0e86ef936&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+          // })
+          router.push("/documents")
         }
       />
       <PrimaryButton
