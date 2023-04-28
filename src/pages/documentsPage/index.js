@@ -13,7 +13,21 @@ import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
 
 function DocumentsPage({ showUpload = true, forTemplates = false }) {
-  const itemsData = useRef([]);
+  const itemsData = useRef([
+    { id: 1, name: "Dummy" },
+    { id: 2, name: "Dummy" },
+    { id: 13, name: "Dummy" },
+    { id: 4, name: "Dummy" },
+    { id: 5, name: "Dummy" },
+    { id: 6, name: "Dummy" },
+    { id: 7, name: "Dummy" },
+    { id: 8, name: "Dummy" },
+    { id: 19, name: "Dummy" },
+    { id: 22, name: "Dummy" },
+    { id: 145, name: "Dummy" },
+    { id: 166, name: "Dummy" },
+    { id: 17, name: "Dummy" },
+  ]);
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
   const headerData = [
@@ -63,7 +77,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
           "x-access-token": data?.token,
         },
       });
-      docsData && (itemsData.current = docsData?.data?.files);
+      // docsData && (itemsData.current = docsData?.data?.files);
       setFilteredData(itemsData?.current);
       setLoading(false);
     } else {
@@ -275,7 +289,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
             ))}
           </div>
           {/* Table data */}
-          <div className="w-[100%] flex flex-col fixed overflow-scroll max-h-[65%] overflow-x-hidden top-[190px] shadow-md">
+          <div className="w-[100%] flex flex-col fixed overflow-scroll h-[55vh] overflow-x-hidden top-[190px] shadow-md">
             {filteredData?.map((document, index) => (
               <div
                 key={index}
@@ -320,7 +334,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
             ))}
           </div>
           {/* Bottom Buttons */}
-          <div className="fixed bottom-[19px] w-[100%] py-[15px] px-[20px]">
+          <div className="fixed bottom-0 bg-[white] w-[100%] py-[15px] px-[20px]">
             <BottomButtons />
           </div>
         </div>

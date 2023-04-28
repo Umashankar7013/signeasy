@@ -318,7 +318,7 @@ function Signature() {
               </div>
             ) : (
               <form>
-                <div className="fixed overflow-scroll xs:h-[90%] h-[85%] overflow-x-hidden w-[100%]">
+                <div className="fixed overflow-scroll xs:h-[90%] h-[85%] pb-[30px] overflow-x-hidden w-[100%]">
                   <Step1 />
                   {/* <Step2 /> */}
                   <div>
@@ -456,7 +456,7 @@ function Signature() {
                   <Step4 />
                 </div>
                 {/* Bottom Buttons */}
-                <div className="xs:flex justify-between fixed bottom-[20px] w-[100%]">
+                <div className="xs:flex justify-between fixed py-[10px] bottom-[0px] w-[100%] bg-[white]">
                   <PrimaryButton
                     title="Back"
                     image={
