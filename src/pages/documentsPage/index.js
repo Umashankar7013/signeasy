@@ -63,7 +63,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
           "x-access-token": data?.token,
         },
       });
-      // docsData && (itemsData.current = docsData?.data?.files);
+      docsData && (itemsData.current = docsData?.data?.files);
       setFilteredData(itemsData?.current);
       setLoading(false);
     } else {
@@ -100,7 +100,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
           "x-access-token": data?.token,
         },
       });
-      // docsData && (itemsData.current = docsData?.data);
+      docsData && (itemsData.current = docsData?.data);
       setFilteredData(itemsData?.current);
       setLoading(false);
     } else {
