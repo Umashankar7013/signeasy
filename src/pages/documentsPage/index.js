@@ -12,11 +12,14 @@ import { notification } from "antd";
 import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
 
-function DocumentsPage() {
+function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const itemsData = useRef([]);
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
-  const headerData = ["DOCUMENT NAME", "LAST CHANGE"];
+  const headerData = [
+    forTemplates ? "TEMPLATE NAME" : "DOCUMENT NAME",
+    "LAST CHANGE",
+  ];
   const {
     selectedItem,
     setSelectedItem,
@@ -60,7 +63,44 @@ function DocumentsPage() {
           "x-access-token": data?.token,
         },
       });
-      docsData && (itemsData.current = docsData?.data?.files);
+      // docsData && (itemsData.current = docsData?.data?.files);
+      setFilteredData(itemsData?.current);
+      setLoading(false);
+    } else {
+      console.log("Not able to access the window.");
+    }
+  };
+
+  const getTemplatesHandler = async () => {
+    if (window) {
+      const currentUrl = window.location.href;
+      const searchParams = new URL(currentUrl).searchParams;
+      const authId = searchParams?.get("authId");
+      const objectId = searchParams?.get("object_id");
+      const objectType = searchParams?.get("object_type");
+      const firstName = searchParams?.get("first_name");
+      const lastName = searchParams?.get("last_name");
+      const email = searchParams?.get("email");
+      setDocParams((prev) => ({
+        ...prev,
+        authId,
+        objectId,
+        objectType,
+        firstName,
+        lastName,
+        email,
+      }));
+      const data = await getApi({
+        endUrl: `set-up/auth?authId=${authId}`,
+      });
+      data && setJWTtoken(data?.token);
+      const docsData = await getApi({
+        endUrl: "hubspot-card/templates",
+        headers: {
+          "x-access-token": data?.token,
+        },
+      });
+      // docsData && (itemsData.current = docsData?.data);
       setFilteredData(itemsData?.current);
       setLoading(false);
     } else {
@@ -140,7 +180,11 @@ function DocumentsPage() {
   };
 
   useEffect(() => {
-    getDocumentsHandler();
+    if (forTemplates) {
+      getTemplatesHandler();
+    } else {
+      getDocumentsHandler();
+    }
   }, [browserWindow]);
 
   useEffect(() => {
@@ -155,30 +199,32 @@ function DocumentsPage() {
       ) : (
         <div className="w-[100%] pb-[30px]">
           {/* Search bar */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between fixed w-[100%] top-[65px]">
             <SearchBar
               className="w-fit"
               onChange={(event) => searchHandler(event?.target?.value)}
             />
-            <div>
-              {/* Upload document */}
-              <input
-                ref={inputFileRef}
-                type="file"
-                className="hidden"
-                onChange={(event) => uploadDocHandler(event.target.files[0])}
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.xml,.rtf,.txt,.html,.htm,.jpeg,.jpg,.png,.bmp,.gif,.tiff,.tif,.ods,.odt,.odp,.csv"
-              />
-              <div
-                onClick={() => inputFileRef.current.click()}
-                className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
-              >
-                Upload document
+            {showUpload && (
+              <div>
+                {/* Upload document */}
+                <input
+                  ref={inputFileRef}
+                  type="file"
+                  className="hidden"
+                  onChange={(event) => uploadDocHandler(event.target.files[0])}
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.xml,.rtf,.txt,.html,.htm,.jpeg,.jpg,.png,.bmp,.gif,.tiff,.tif,.ods,.odt,.odp,.csv"
+                />
+                <div
+                  onClick={() => inputFileRef.current.click()}
+                  className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
+                >
+                  Upload document
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* Table headers */}
-          <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
+          <div className="flex w-[100%] justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9] fixed top-[140px]">
             {headerData?.map((item, index) => (
               <div
                 className={classNames(
@@ -228,9 +274,8 @@ function DocumentsPage() {
               </div>
             ))}
           </div>
-
           {/* Table data */}
-          <div className="w-[100%] flex flex-col">
+          <div className="w-[100%] flex flex-col fixed overflow-scroll max-h-[65%] overflow-x-hidden top-[190px] shadow-md">
             {filteredData?.map((document, index) => (
               <div
                 key={index}
