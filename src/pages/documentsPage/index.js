@@ -48,36 +48,41 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
 
+  const tokenHandler = async () => {
+    const currentUrl = window.location.href;
+    const searchParams = new URL(currentUrl).searchParams;
+    const authId = searchParams?.get("authId");
+    const objectId = searchParams?.get("object_id");
+    const objectType = searchParams?.get("object_type");
+    const firstName = searchParams?.get("first_name");
+    const lastName = searchParams?.get("last_name");
+    const email = searchParams?.get("email");
+    setDocParams((prev) => ({
+      ...prev,
+      authId,
+      objectId,
+      objectType,
+      firstName,
+      lastName,
+      email,
+    }));
+    const data = await getApi({
+      endUrl: `set-up/auth?authId=${authId}`,
+    });
+    data && setJWTtoken(data?.token);
+    return data;
+  };
+
   const getDocumentsHandler = async () => {
     if (window) {
-      const currentUrl = window.location.href;
-      const searchParams = new URL(currentUrl).searchParams;
-      const authId = searchParams?.get("authId");
-      const objectId = searchParams?.get("object_id");
-      const objectType = searchParams?.get("object_type");
-      const firstName = searchParams?.get("first_name");
-      const lastName = searchParams?.get("last_name");
-      const email = searchParams?.get("email");
-      setDocParams((prev) => ({
-        ...prev,
-        authId,
-        objectId,
-        objectType,
-        firstName,
-        lastName,
-        email,
-      }));
-      const data = await getApi({
-        endUrl: `set-up/auth?authId=${authId}`,
-      });
-      data && setJWTtoken(data?.token);
+      const data = await tokenHandler();
       const docsData = await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
           "x-access-token": data?.token,
         },
       });
-      // docsData && (itemsData.current = docsData?.data?.files);
+      docsData && (itemsData.current = docsData?.data?.files);
       setFilteredData(itemsData?.current);
       setLoading(false);
     } else {
@@ -87,27 +92,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
 
   const getTemplatesHandler = async () => {
     if (window) {
-      const currentUrl = window.location.href;
-      const searchParams = new URL(currentUrl).searchParams;
-      const authId = searchParams?.get("authId");
-      const objectId = searchParams?.get("object_id");
-      const objectType = searchParams?.get("object_type");
-      const firstName = searchParams?.get("first_name");
-      const lastName = searchParams?.get("last_name");
-      const email = searchParams?.get("email");
-      setDocParams((prev) => ({
-        ...prev,
-        authId,
-        objectId,
-        objectType,
-        firstName,
-        lastName,
-        email,
-      }));
-      const data = await getApi({
-        endUrl: `set-up/auth?authId=${authId}`,
-      });
-      data && setJWTtoken(data?.token);
+      const data = await tokenHandler();
       const docsData = await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
