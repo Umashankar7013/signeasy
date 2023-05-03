@@ -17,7 +17,7 @@ import { openNotification } from "../../utils/functions";
 import { Loader } from "../../components/Loader";
 
 function Signature() {
-  const { selectedItem, docParams, JWTtoken, setJWTtoken, setDocParams } =
+  const { selectedItem, docParams, JWTtoken, setDocParams } =
     useContext(AppContext);
   const router = useRouter();
   const type = router.query?.type;
@@ -26,7 +26,6 @@ function Signature() {
       first_name: docParams?.firstName || "",
       last_name: docParams?.lastName || "",
       email: docParams?.email || "",
-      recipient_id: 1,
     },
   ]);
   const [api, contextHolder] = notification.useNotification();
@@ -34,12 +33,10 @@ function Signature() {
     first_name: "",
     last_name: "",
     email: "",
-    recipient_id: signersData.length + 1,
   };
   const [emails, setEmails] = useState([]);
   const [emailSubject, setEmailSubject] = useLocalStorage("emailSubject", "");
   const [message, setMessage] = useLocalStorage("message", "");
-
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -118,15 +115,24 @@ function Signature() {
     e.preventDefault();
     if (requiredFieldsCheckHandler()) {
       setLoading(true);
+      let formattedEmails = [];
+      emails?.map((item) => {
+        formattedEmails?.push({ email: item });
+      });
       await axios({
         method: "post",
-        url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/send-envelope",
+        url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/${
+          type === "original" ? "documents" : "templates"
+        }/send-envelope`,
         headers: { "x-access-token": JWTtoken },
         data: {
           original_file_id: selectedItem?.id,
           recipients: signersData,
           embedded_signing: 1,
-          is_ordered: 1,
+          is_ordered: 0,
+          name: selectedItem?.name,
+          message: message,
+          cc: formattedEmails || [],
         },
       })
         .then(async (data) => {
@@ -216,7 +222,6 @@ function Signature() {
         text2=" Copies of signed document can be shared to the below contact."
       />
       <div className="mt-[14px] pl-[17px]">
-        {/* <Input title="Email" /> */}
         <div className="font-lexend font-[500] mb-[3px] text-[14px] leading-[17px] text-[#374659]">
           Email
         </div>

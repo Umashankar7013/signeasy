@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useState } from "react";
 import Templates from "../templates";
-import Documents from "../documentsPage";
+import DocumentsPage from "../documentsPage";
 
 function TemplatesAndDocs() {
   const [selectedTab, setSelectedTab] = useState("templates");
@@ -14,7 +14,7 @@ function TemplatesAndDocs() {
       <div className="border-b-2 flex fixed w-[100%] top-[37px]">
         <div
           className={classNames(
-            "px-[20px] cursor-pointer font-lexend text-[#374659] text-[14px] font-[500] leading-[17.5px]",
+            "px-[20px] cursor-pointer font-lexend text-[#374659] text-[14px] pb-[12px] font-[500] leading-[17.5px]",
             selectedTab === "templates" && "border-b-[5px] border-b-[#374659]"
           )}
           onClick={() => setSelectedTab("templates")}
@@ -32,7 +32,7 @@ function TemplatesAndDocs() {
         </div>
       </div>
       {selectedTab === "templates" && <Templates />}
-      {selectedTab === "documents" && <Documents />}
+      {selectedTab === "documents" && <DocumentsPage />}
     </div>
   );
 }
