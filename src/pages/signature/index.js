@@ -26,6 +26,7 @@ function Signature() {
       first_name: docParams?.firstName || "",
       last_name: docParams?.lastName || "",
       email: docParams?.email || "",
+      recipient_id: 1,
     },
   ]);
   const [api, contextHolder] = notification.useNotification();
@@ -33,6 +34,7 @@ function Signature() {
     first_name: "",
     last_name: "",
     email: "",
+    recipient_id: signersData?.length + 1,
   };
   const [emails, setEmails] = useState([]);
   const [emailSubject, setEmailSubject] = useLocalStorage("emailSubject", "");
@@ -112,6 +114,18 @@ function Signature() {
     }
   };
 
+  const recipientRoleMappingHandler = () => {
+    let mappingArray = [];
+    signersData?.map((_, index) => {
+      mappingArray.push({
+        role_id: index,
+        recipient_id: index,
+        source_id: 1,
+      });
+    });
+    return mappingArray;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (requiredFieldsCheckHandler()) {
@@ -137,11 +151,12 @@ function Signature() {
           ],
           // original_file_id: selectedItem?.id,
           recipients: signersData,
-          embedded_signing: 1,
-          is_ordered: 0,
+          embedded_signing: false,
+          is_ordered: false,
           name: emailSubject !== "" ? emailSubject : selectedItem?.name,
           message: message,
           cc: formattedEmails || [],
+          recipient_role_mapping: recipientRoleMappingHandler(),
         },
       })
         .then(async (data) => {
