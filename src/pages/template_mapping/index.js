@@ -4,6 +4,7 @@ import { AppContext } from "../_app";
 import { DropDown } from "../../components/DropDown";
 import classNames from "classnames";
 import { useRouter } from "next/router";
+import { Loader } from "../../components/Loader";
 
 function TemplateMapping() {
   const tempaltesData = useRef([
@@ -30,6 +31,7 @@ function TemplateMapping() {
   ];
   const [selectedHeader, setSelectedHeader] = useState(headerData[0]?.title);
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   const tokenHandler = async () => {
     const currentUrl = window.location.href;
@@ -66,6 +68,7 @@ function TemplateMapping() {
         },
       });
       docsData && (tempaltesData.current = docsData);
+      setLoading(false);
     } else {
       console.log("Not able to access the window.");
     }
@@ -82,7 +85,9 @@ function TemplateMapping() {
     getTemplatesHandler();
   }, []);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="h-[100vh] border-[1px] border-[#CDD6E1]">
       {/* Header */}
       <div className="w-[100%] fixed z-50 top-0 flex border-b-[1px] border-b-[#CDD6E1]">
