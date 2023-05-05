@@ -4,16 +4,19 @@ import React, { useState } from "react";
 
 export const DropDown = ({
   title = "",
-  content = "",
+  contentHeader = "",
   dropDownData = [],
-  onChange = () => {},
-  userIndex = "",
+  onClick = () => {},
+  specificIndex = "",
   key = "name",
   enableSearch = true,
   bottomContent = "Dummy",
   onClickBottomContent = () => {},
   showBottomContent = true,
   contentClassName = "",
+  className = "",
+  dropDownClassName = "",
+  dropDownContentClassName = "py-[5px]",
 }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [filteredData, setFilteredData] = useState(dropDownData);
@@ -31,7 +34,7 @@ export const DropDown = ({
     <div className="relative">
       <div
         onClick={() => setShowDropDown(!showDropDown)}
-        className="cursor-pointer relative"
+        className={classNames("cursor-pointer relative", className)}
       >
         <div className="font-lexend text-[14px] font-[500] leading-[17.5px] text-[#374659] select-none">
           {title}
@@ -43,7 +46,7 @@ export const DropDown = ({
           )}
         >
           <div className="font-lexend font-[400] leading-[18px] text-[15px] text-[#374659] select-none">
-            {content}
+            {contentHeader}
           </div>
           <CaretDownOutlined
             style={{
@@ -61,7 +64,12 @@ export const DropDown = ({
             className="ovarallPop fixed inset-0"
             onClick={() => setShowDropDown(false)}
           ></div>
-          <div className="bg-[white] border-[1px] z-40 mt-[5px] rounded-[5px] absolute w-[100%] shadow-2xl">
+          <div
+            className={classNames(
+              "bg-[white] border-[1px] z-40 mt-[5px] rounded-[5px] absolute w-[100%] shadow-2xl",
+              dropDownClassName
+            )}
+          >
             {enableSearch && (
               <div className="border-[1px] my-[10px] px-[10px] border-[#00d0e4] flex items-center">
                 <input
@@ -78,11 +86,12 @@ export const DropDown = ({
               {filteredData?.map((item, index) => (
                 <div
                   className={classNames(
-                    "py-[5px] px-[10px] cursor-pointer select-none hover:bg-[#00d0e4]",
-                    index !== dropDownData.length - 1 && "border-b-[1px]"
+                    "cursor-pointer font-lexend text-[#33475B] select-none hover:bg-[#00d0e4]",
+                    index !== dropDownData.length - 1 && "border-b-[1px]",
+                    dropDownContentClassName
                   )}
                   onClick={() => {
-                    onChange(item, userIndex);
+                    onClick(item, specificIndex);
                     setShowDropDown(false);
                   }}
                   key={index}

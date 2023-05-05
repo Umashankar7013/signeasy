@@ -40,7 +40,7 @@ function Signature() {
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [roles, setRoles] = useState(selectedItem?.metadata?.roles)
+  const [roles, setRoles] = useState(selectedItem?.metadata?.roles);
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -127,11 +127,19 @@ function Signature() {
         }/send-envelope`,
         headers: { "x-access-token": JWTtoken },
         data: {
-          original_file_id: selectedItem?.id,
+          sources: [
+            {
+              id: selectedItem?.id,
+              type: "template",
+              name: selectedItem?.name,
+              source_id: 1,
+            },
+          ],
+          // original_file_id: selectedItem?.id,
           recipients: signersData,
           embedded_signing: 1,
           is_ordered: 0,
-          name: selectedItem?.name,
+          name: emailSubject !== "" ? emailSubject : selectedItem?.name,
           message: message,
           cc: formattedEmails || [],
         },
@@ -200,13 +208,14 @@ function Signature() {
   };
 
   useEffect(() => {
-    for (let i=1; i<=selectedItem?.metadata?.roles?.length; i++) {
-        setSignersData((prev) => {
-          if (prev?.length < selectedItem?.metadata?.roles?.length) return [...prev, signer]
-          return [...prev]
-        })
+    for (let i = 1; i <= selectedItem?.metadata?.roles?.length; i++) {
+      setSignersData((prev) => {
+        if (prev?.length < selectedItem?.metadata?.roles?.length)
+          return [...prev, signer];
+        return [...prev];
+      });
     }
-  }, [selectedItem?.metadata?.roles])
+  }, [selectedItem?.metadata?.roles]);
 
   const Step1 = () => (
     <div>
@@ -362,7 +371,6 @@ function Signature() {
                                   (item, index1) => index !== index1
                                 );
                               });
-
                             }}
                           >
                             <CrossIcon />
@@ -375,7 +383,9 @@ function Signature() {
                               required={true}
                               className="w-[100%]"
                               value={signersData[index]?.first_name}
-                              enableDelete={signersData[index]?.first_name !== ""}
+                              enableDelete={
+                                signersData[index]?.first_name !== ""
+                              }
                               onChange={(event) =>
                                 setSignersData((prev) => {
                                   let previous = [...prev];
@@ -386,7 +396,10 @@ function Signature() {
                               }
                               index={index}
                               clearFun={clearInputHandler}
-                              showError={emptyInput && signersData[index]?.first_name === ""}
+                              showError={
+                                emptyInput &&
+                                signersData[index]?.first_name === ""
+                              }
                             />
                           </div>
                           <div className="w-[100%]">
@@ -395,7 +408,9 @@ function Signature() {
                               required={true}
                               className="w-[100%]"
                               value={signersData[index]?.last_name}
-                              enableDelete={signersData[index]?.last_name !== ""}
+                              enableDelete={
+                                signersData[index]?.last_name !== ""
+                              }
                               onChange={(event) =>
                                 setSignersData((prev) => {
                                   let previous = [...prev];
@@ -406,7 +421,10 @@ function Signature() {
                               }
                               index={index}
                               clearFun={clearInputHandler}
-                              showError={emptyInput && signersData[index]?.last_name === ""}
+                              showError={
+                                emptyInput &&
+                                signersData[index]?.last_name === ""
+                              }
                             />
                           </div>
                           <div className="w-[100%]">
@@ -425,7 +443,9 @@ function Signature() {
                               }
                               index={index}
                               clearFun={clearInputHandler}
-                              showError={emptyInput && signersData[index]?.email === ""}
+                              showError={
+                                emptyInput && signersData[index]?.email === ""
+                              }
                             />
                           </div>
                         </div>
@@ -435,8 +455,8 @@ function Signature() {
                     <div
                       className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
                       onClick={() => {
-                        setSignersData((prev) => [...prev, signer])
-                        setRoles((prev) => [...prev, {name: 'Role name'}])
+                        setSignersData((prev) => [...prev, signer]);
+                        setRoles((prev) => [...prev, { name: "Role name" }]);
                       }}
                     >
                       <PlusIcon />
