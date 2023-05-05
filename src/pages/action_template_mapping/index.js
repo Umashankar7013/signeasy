@@ -4,7 +4,6 @@ import React from "react";
 
 function ActionTemplateMapping() {
   const router = useRouter();
-  const selectedTemplate = JSON.parse(router.query?.selectedItem);
   return (
     <div className="h-[100vh]">
       <div className="flex items-center">
