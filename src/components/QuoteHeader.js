@@ -15,8 +15,8 @@ export const QuoteHeader = () => {
     <div className="flex justify-between items-center">
       <div className="font-lexend text-[14px] font-[300]">Edit a quote</div>
       <div className="w-[100%] z-1">
-        {steps?.map((item) => (
-          <ul className="progressBar">
+        {steps?.map((item, index) => (
+          <ul className="progressBar" key={index}>
             <li className="active text-[14px] font-[500]">{item?.title}</li>
           </ul>
         ))}

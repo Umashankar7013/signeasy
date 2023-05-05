@@ -5,6 +5,11 @@ import classNames from "classnames";
 import { DropDown } from "../../components/DropDown";
 
 function Quotes() {
+  const dropDownData = [
+    { name: "Test Deal 1" },
+    { name: "Test Deal 2" },
+    { name: "Test Deal 3" },
+  ];
   return (
     <div className="h-[100vh]">
       <div className="fixed w-[100%] top-[0px] py-[15px]">
@@ -13,7 +18,10 @@ function Quotes() {
 
       <div className="mt-[100px]">
         <div>Quote details</div>
-        <DropDown />
+        <DropDown
+          dropDownData={dropDownData}
+          content={"Choose or create a deal"}
+        />
       </div>
 
       <div className="fixed bottom-0 flex items-center justify-between w-[100%] bg-[#f5f8fa] py-[10px]">
