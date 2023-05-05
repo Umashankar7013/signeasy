@@ -29,12 +29,12 @@ export default function SigneasyApp() {
         titleClassName="font-lexend"
         onClick={() => router.push("/oauth/signeasy")}
       />
-      {/* <PrimaryButton
+      <PrimaryButton
         title="Quotes"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[yellow]"
         titleClassName="font-lexend"
         onClick={() => router.push("/quotes")}
-      /> */}
+      />
     </div>
   );
 }

@@ -47,7 +47,7 @@ export const SigneasyAuth = ({
         url,
       });
     } else {
-      popup = window.open(url, "_self");
+      popup = window && window.open(url, "_self");
     }
     setSigneasyPopup(popup);
   };
@@ -82,16 +82,18 @@ export const SigneasyAuth = ({
   };
 
   useEffect(() => {
-    const currentUrl = window?.location?.href;
-    const searchParams = new URL(currentUrl).searchParams;
-    const userId = searchParams?.get("hubspot_user_id");
-    const portalId = searchParams?.get("hubspot_portal_id");
-    if (userId && portalId) {
-      setHubspotCredentials((prev) => ({
-        ...prev,
-        userId,
-        portalId,
-      }));
+    if (window && onlySigneasy) {
+      const currentUrl = window.location.href;
+      const searchParams = new URL(currentUrl).searchParams;
+      const userId = searchParams?.get("hubspot_user_id");
+      const portalId = searchParams?.get("hubspot_portal_id");
+      if (userId && portalId) {
+        setHubspotCredentials((prev) => ({
+          ...prev,
+          userId,
+          portalId,
+        }));
+      }
     }
   }, []);
 
@@ -100,10 +102,10 @@ export const SigneasyAuth = ({
   }, [signeasyPopup]);
 
   useEffect(() => {
-    if (onlySigneasy) {
+    if (onlySigneasy && signeasyAuth?.success) {
       window &&
         window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
-    } else if (signeasyAuth?.redirectionUrl !== "") {
+    } else if (signeasyAuth?.redirectionUrl !== "" && signeasyAuth?.success) {
       location && location?.assign(signeasyAuth?.redirectionUrl);
     }
   }, [signeasyAuth]);
