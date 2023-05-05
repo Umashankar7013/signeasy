@@ -13,6 +13,7 @@ export const DropDown = ({
   bottomContent = "Dummy",
   onClickBottomContent = () => {},
   showBottomContent = true,
+  contentClassName = "",
 }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [filteredData, setFilteredData] = useState(dropDownData);
@@ -35,7 +36,12 @@ export const DropDown = ({
         <div className="font-lexend text-[14px] font-[500] leading-[17.5px] text-[#374659] select-none">
           {title}
         </div>
-        <div className="flex justify-between items-center border-[1px] border-[#CDD6E1] bg-[#F6F8FA] p-[10px] rounded-[3px] mt-[3px]">
+        <div
+          className={classNames(
+            "flex justify-between items-center border-[1px] border-[#CDD6E1] bg-[#F6F8FA] p-[10px] rounded-[3px] mt-[3px]",
+            contentClassName
+          )}
+        >
           <div className="font-lexend font-[400] leading-[18px] text-[15px] text-[#374659] select-none">
             {content}
           </div>

@@ -318,7 +318,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
           </div>
           {/* Bottom Buttons */}
           <div className="fixed bottom-0 bg-[white] w-[100%] py-[15px] px-[20px]">
-            <BottomButtons />
+            <BottomButtons forTemplates={forTemplates} />
           </div>
         </div>
       )}

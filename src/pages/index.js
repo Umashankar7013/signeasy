@@ -30,10 +30,10 @@ export default function SigneasyApp() {
         onClick={() => router.push("/oauth/signeasy")}
       />
       <PrimaryButton
-        title="Quotes"
+        title="Template Mapping"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[yellow]"
         titleClassName="font-lexend"
-        onClick={() => router.push("/quotes")}
+        onClick={() => router.push("/template_mapping")}
       />
     </div>
   );

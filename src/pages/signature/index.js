@@ -171,7 +171,7 @@ function Signature() {
               id: selectedItem?.id,
               type,
               source_id: 1,
-              name: "acme-contract",
+              name: selectedItem?.name,
             },
           ],
           recipients: signersData,
