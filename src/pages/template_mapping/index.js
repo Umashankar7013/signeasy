@@ -10,17 +10,17 @@ function TemplateMapping() {
   const tempaltesData = useRef([
     { id: 1, name: "Dummy1" },
     { id: 2, name: "Dummy2" },
-    { id: 13, name: "Dummy3" },
+    { id: 3, name: "Dummy3" },
     { id: 4, name: "Dummy4" },
     { id: 5, name: "Dummy4" },
     { id: 6, name: "Dummy5" },
     { id: 7, name: "Dummy6" },
     { id: 8, name: "Dummy7" },
-    { id: 19, name: "Dummy8" },
-    { id: 22, name: "Dummy9" },
-    { id: 145, name: "Dummy10" },
-    { id: 166, name: "Dummy11" },
-    { id: 17, name: "Dummy12" },
+    { id: 9, name: "Dummy8" },
+    // { id: 10, name: "Dummy9" },
+    { id: 11, name: "Dummy10" },
+    { id: 12, name: "Dummy11" },
+    { id: 13, name: "Dummy12" },
   ]);
   const { selectedItem, setSelectedItem, setDocParams, JWTtoken, setJWTtoken } =
     useContext(AppContext);
@@ -88,7 +88,7 @@ function TemplateMapping() {
   return loading ? (
     <Loader />
   ) : (
-    <div className="h-[100vh] border-[1px] border-[#CDD6E1]">
+    <div className="border-[1px] border-[#CDD6E1]">
       {/* Header */}
       <div className="w-[100%] fixed z-50 top-0 flex border-b-[1px] border-b-[#CDD6E1]">
         {headerData?.map((header, index) => (
@@ -111,7 +111,11 @@ function TemplateMapping() {
       <div className="mt-[46.39px]">
         {tempaltesData?.current?.map((template, index) => (
           <div
-            className="flex w-[100%] items-center py-[20px] border-b-[1px] border-b-[#CDD6E1]"
+            className={classNames(
+              "flex w-[100%] items-center py-[20px]",
+              index !== tempaltesData?.current.length - 1 &&
+                "border-b-[1px] border-b-[#CDD6E1]"
+            )}
             key={index}
           >
             <div className="w-[35%] text-[14px] text-[#3F8FAB] leading-[19.12px] font-[600] px-[24px]">
