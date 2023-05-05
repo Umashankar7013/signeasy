@@ -72,7 +72,10 @@ function TemplateMapping() {
   };
 
   const actionsHandler = async (item, index) => {
-    console.log(index, item);
+    // await router.push({
+    //   pathname: "/action_template_mapping",
+    //   query: { selectedItem: JSON.stringify(tempaltesData?.current[index]) },
+    // });
   };
 
   useEffect(() => {
