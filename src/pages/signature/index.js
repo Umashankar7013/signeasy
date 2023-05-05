@@ -40,6 +40,7 @@ function Signature() {
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [roles, setRoles] = useState(selectedItem?.metadata?.roles)
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -198,6 +199,15 @@ function Signature() {
     }
   };
 
+  useEffect(() => {
+    for (let i=1; i<=selectedItem?.metadata?.roles?.length; i++) {
+        setSignersData((prev) => {
+          if (prev?.length < selectedItem?.metadata?.roles?.length) return [...prev, signer]
+          return [...prev]
+        })
+    }
+  }, [selectedItem?.metadata?.roles])
+
   const Step1 = () => (
     <div>
       <FormHeaderLables
@@ -331,14 +341,14 @@ function Signature() {
                       text1="2. Invite signers"
                       text2="Add HubSpot contacts as recipients for this envelope."
                     />
-                    {signersData?.map((item, index) => (
+                    {roles?.map((item, index) => (
                       <div
                         className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] mt-[14px] ml-[17px]"
                         key={index}
                       >
                         <div className="flex justify-between items-center">
                           <div className="font-lexend font-[500] text-[14px] text-[#374659]">
-                            {"<Role name>"}
+                            {item?.name}
                           </div>
                           <div
                             onClick={() => {
@@ -347,6 +357,12 @@ function Signature() {
                                   (item, index1) => index !== index1
                                 );
                               });
+                              setRoles((prev) => {
+                                return prev.filter(
+                                  (item, index1) => index !== index1
+                                );
+                              });
+
                             }}
                           >
                             <CrossIcon />
@@ -358,8 +374,8 @@ function Signature() {
                               title="First name"
                               required={true}
                               className="w-[100%]"
-                              value={item?.first_name}
-                              enableDelete={item?.first_name !== ""}
+                              value={signersData[index]?.first_name}
+                              enableDelete={signersData[index]?.first_name !== ""}
                               onChange={(event) =>
                                 setSignersData((prev) => {
                                   let previous = [...prev];
@@ -370,7 +386,7 @@ function Signature() {
                               }
                               index={index}
                               clearFun={clearInputHandler}
-                              showError={emptyInput && item?.first_name === ""}
+                              showError={emptyInput && signersData[index]?.first_name === ""}
                             />
                           </div>
                           <div className="w-[100%]">
@@ -378,8 +394,8 @@ function Signature() {
                               title="Last name"
                               required={true}
                               className="w-[100%]"
-                              value={item?.last_name}
-                              enableDelete={item?.last_name !== ""}
+                              value={signersData[index]?.last_name}
+                              enableDelete={signersData[index]?.last_name !== ""}
                               onChange={(event) =>
                                 setSignersData((prev) => {
                                   let previous = [...prev];
@@ -390,7 +406,7 @@ function Signature() {
                               }
                               index={index}
                               clearFun={clearInputHandler}
-                              showError={emptyInput && item?.last_name === ""}
+                              showError={emptyInput && signersData[index]?.last_name === ""}
                             />
                           </div>
                           <div className="w-[100%]">
@@ -398,8 +414,8 @@ function Signature() {
                               title="Email"
                               required={true}
                               className="w-[100%]"
-                              value={item?.email}
-                              enableDelete={item?.email !== ""}
+                              value={signersData[index]?.email}
+                              enableDelete={signersData[index]?.email !== ""}
                               onChange={(event) =>
                                 setSignersData((prev) => {
                                   let previous = [...prev];
@@ -409,7 +425,7 @@ function Signature() {
                               }
                               index={index}
                               clearFun={clearInputHandler}
-                              showError={emptyInput && item?.email === ""}
+                              showError={emptyInput && signersData[index]?.email === ""}
                             />
                           </div>
                         </div>
@@ -418,9 +434,10 @@ function Signature() {
 
                     <div
                       className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
-                      onClick={() =>
+                      onClick={() => {
                         setSignersData((prev) => [...prev, signer])
-                      }
+                        setRoles((prev) => [...prev, {name: 'Role name'}])
+                      }}
                     >
                       <PlusIcon />
                       <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
