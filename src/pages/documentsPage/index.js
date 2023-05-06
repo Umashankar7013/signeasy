@@ -38,6 +38,15 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     const lastName = searchParams?.get("last_name");
     const email = searchParams?.get("email");
     const JWTtoken = searchParams?.get("JWTtoken");
+    console.log(
+      authId,
+      objectId,
+      objectType,
+      firstName,
+      lastName,
+      email,
+      "params"
+    );
     setDocParams((prev) => ({
       ...prev,
       authId,
