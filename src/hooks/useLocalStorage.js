@@ -22,7 +22,9 @@ export const useLocalStorage = (key, defaultValue) => {
         localStorage.setItem(key, JSON.stringify(value));
       }
     } else {
-      localStorage.setItem(key, JSON.stringify(value));
+      console.log(value, '----value----')
+      if (key === "JWTtoken" && value === 'undefined') localStorage.setItem(key, "");
+      else localStorage.setItem(key, JSON.stringify(value));
     }
   }, [key, value]);
 
