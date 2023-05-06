@@ -37,8 +37,8 @@ function Signature() {
     recipient_id: signersData?.length + 1,
   };
   const [emails, setEmails] = useState([]);
-  const [emailSubject, setEmailSubject] = useLocalStorage("emailSubject", "");
-  const [message, setMessage] = useLocalStorage("message", "");
+  const [emailSubject, setEmailSubject] = useState("");
+  const [message, setMessage] = useState("");
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -328,6 +328,10 @@ function Signature() {
       });
     }
   };
+
+  useEffect(() => {
+    return () => setSignersData([{}]);
+  }, []);
 
   useEffect(() => {
     popupObserver();

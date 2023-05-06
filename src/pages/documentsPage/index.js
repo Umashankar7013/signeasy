@@ -190,89 +190,85 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       {loading ? (
         <Loader />
       ) : (
-        <div className="w-[100%]">
-          <div className="fixed w-[100%] top-[65px]">
-            {/* Search bar */}
-            <div className="flex items-center justify-between">
-              <SearchBar
-                className="w-fit my-[20px]"
-                onChange={(event) => searchHandler(event?.target?.value)}
-              />
-              {showUpload && (
-                <div>
-                  {/* Upload document */}
-                  <input
-                    ref={inputFileRef}
-                    type="file"
-                    className="hidden"
-                    onChange={(event) =>
-                      uploadDocHandler(event.target.files[0])
-                    }
-                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.xml,.rtf,.txt,.html,.htm,.jpeg,.jpg,.png,.bmp,.gif,.tiff,.tif,.ods,.odt,.odp,.csv"
-                  />
-                  <div
-                    onClick={() => inputFileRef.current.click()}
-                    className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
-                  >
-                    Upload document
-                  </div>
+        <>
+          {/* Search bar */}
+          <div className="flex items-center justify-between">
+            <SearchBar
+              className="w-fit my-[20px]"
+              onChange={(event) => searchHandler(event?.target?.value)}
+            />
+            {showUpload && (
+              <div>
+                {/* Upload document */}
+                <input
+                  ref={inputFileRef}
+                  type="file"
+                  className="hidden"
+                  onChange={(event) => uploadDocHandler(event.target.files[0])}
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.xml,.rtf,.txt,.html,.htm,.jpeg,.jpg,.png,.bmp,.gif,.tiff,.tif,.ods,.odt,.odp,.csv"
+                />
+                <div
+                  onClick={() => inputFileRef.current.click()}
+                  className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
+                >
+                  Upload document
                 </div>
-              )}
-            </div>
-            {/* Table headers */}
-            <div className="flex justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
-              {headerData?.map((item, index) => (
+              </div>
+            )}
+          </div>
+          {/* Table headers */}
+          <div className="flex justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
+            {headerData?.map((item, index) => (
+              <div
+                className={classNames(
+                  "flex items-center py-[12px] cursor-pointer text-center",
+                  selectedHeader.current === item && "bg-[#ebf0f5]",
+                  index === 0 && "flex-1 justify-start",
+                  index === 1
+                    ? headerData?.length === 2
+                      ? "flex-[0.4] justify-center"
+                      : "flex-[0.6] justify-center"
+                    : ""
+                  // index === 2 && "flex-[0.4] justify-center"
+                )}
+                key={index}
+                onClick={() => {
+                  selectedHeader.current = item;
+                  sortHandler();
+                }}
+              >
                 <div
                   className={classNames(
-                    "flex items-center py-[12px] cursor-pointer text-center",
-                    selectedHeader.current === item && "bg-[#ebf0f5]",
-                    index === 0 && "flex-1 justify-start",
-                    index === 1
-                      ? headerData?.length === 2
-                        ? "flex-[0.4] justify-center"
-                        : "flex-[0.6] justify-center"
-                      : ""
-                    // index === 2 && "flex-[0.4] justify-center"
+                    "font-lexend font-medium text-[14px]",
+                    index === 0 && "md:pl-[60px] pl-[47px]"
                   )}
-                  key={index}
-                  onClick={() => {
-                    selectedHeader.current = item;
-                    sortHandler();
-                  }}
                 >
-                  <div
-                    className={classNames(
-                      "font-lexend font-medium text-[14px]",
-                      index === 0 && "md:pl-[60px] pl-[47px]"
-                    )}
-                  >
-                    {item}
-                  </div>
-                  <div className="flex flex-col ml-[5px]">
-                    <CaretUpOutlined
-                      style={{
-                        fontSize: "11px",
-                        padding: "0px",
-                        margin: "0px",
-                        color: "gray",
-                      }}
-                    />
-                    <CaretDownOutlined
-                      style={{
-                        fontSize: "11px",
-                        padding: "0px",
-                        margin: "0px",
-                        color:
-                          selectedHeader.current === item ? "#3F8FAB" : "gray",
-                      }}
-                    />
-                  </div>
+                  {item}
                 </div>
-              ))}
-            </div>
+                <div className="flex flex-col ml-[5px]">
+                  <CaretUpOutlined
+                    style={{
+                      fontSize: "11px",
+                      padding: "0px",
+                      margin: "0px",
+                      color: "gray",
+                    }}
+                  />
+                  <CaretDownOutlined
+                    style={{
+                      fontSize: "11px",
+                      padding: "0px",
+                      margin: "0px",
+                      color:
+                        selectedHeader.current === item ? "#3F8FAB" : "gray",
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
           {/* Table data */}
-          <div className="w-[100%] flex flex-col fixed overflow-scroll h-[55vh] overflow-x-hidden top-[195px] shadow-md">
+          <div className="w-[100%] shadow-md pb-[20px]">
             {filteredData?.map((document, index) => (
               <div
                 key={index}
@@ -320,7 +316,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
           <div className="fixed bottom-0 bg-[white] w-[100%] py-[15px] px-[20px]">
             <BottomButtons forTemplates={forTemplates} />
           </div>
-        </div>
+        </>
       )}
     </>
   );
