@@ -76,7 +76,7 @@ function Signature() {
           //openNotification({ message: "Success" });
           // setShowSuccessMessage(true);
           // setLoading(false);
-          console.log(type);
+          window?.open(url, "_self");
         } else {
           // openNotification({
           //   message: "Success",
