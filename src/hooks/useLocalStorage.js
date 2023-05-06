@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function getStorageValue(key, defaultValue) {
   if (typeof window !== "undefined") {
     const stored = localStorage.getItem(key);
-    return JSON?.parse(stored) ?? defaultValue;
+    return stored !== 'undefined' && stored != 'null' && stored ? JSON?.parse(stored) : defaultValue
   }
 
   return null;
