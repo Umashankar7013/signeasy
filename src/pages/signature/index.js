@@ -228,6 +228,7 @@ function Signature() {
         // },
       })
         .then(async (data) => {
+          setLoading(false);
           window?.open(data?.data?.data?.url, "_self");
         })
         .catch((error) => {
