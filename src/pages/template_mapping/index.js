@@ -89,7 +89,7 @@ function TemplateMapping() {
     <Loader />
   ) : (
     <div className="border-[1px] border-[#CDD6E1]">
-      {/* Header */}
+      \{/* Header */}
       <div className="w-[100%] fixed z-50 top-0 flex border-b-[1px] border-b-[#CDD6E1]">
         {headerData?.map((header, index) => (
           <div

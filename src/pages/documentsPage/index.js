@@ -13,21 +13,7 @@ import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
 
 function DocumentsPage({ showUpload = true, forTemplates = false }) {
-  const itemsData = useRef([
-    { id: 1, name: "Dummy" },
-    { id: 2, name: "Dummy" },
-    { id: 13, name: "Dummy" },
-    { id: 4, name: "Dummy" },
-    { id: 5, name: "Dummy" },
-    { id: 6, name: "Dummy" },
-    { id: 7, name: "Dummy" },
-    { id: 8, name: "Dummy" },
-    { id: 19, name: "Dummy" },
-    { id: 22, name: "Dummy" },
-    { id: 145, name: "Dummy" },
-    { id: 166, name: "Dummy" },
-    { id: 17, name: "Dummy" },
-  ]);
+  const itemsData = useRef([]);
   const [filteredData, setFilteredData] = useState();
   const [loading, setLoading] = useState(true);
   const headerData = [
@@ -268,7 +254,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
             ))}
           </div>
           {/* Table data */}
-          <div className="w-[100%] shadow-md pb-[20px]">
+          <div className="w-[100%] shadow-md pb-[100px]">
             {filteredData?.map((document, index) => (
               <div
                 key={index}
