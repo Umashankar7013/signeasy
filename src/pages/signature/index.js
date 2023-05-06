@@ -185,6 +185,10 @@ function Signature() {
     e.preventDefault();
     if (requiredFieldsCheckHandler()) {
       setLoading(true);
+      let formattedEmails = [];
+      emails?.map((item) => {
+        formattedEmails?.push({ email: item });
+      });
       await axios({
         method: "post",
         url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
@@ -228,7 +232,13 @@ function Signature() {
         // },
       })
         .then(async (data) => {
-          setLoading(false);
+          await envelopSaveHandler({
+            id: data?.data?.data?.pending_file_id,
+            name: selectedItem?.name,
+            token: JWTtoken,
+            type: "submit",
+            url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+          });
           window?.open(data?.data?.data?.url, "_self");
         })
         .catch((error) => {
