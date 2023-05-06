@@ -118,8 +118,8 @@ function Signature() {
     let mappingArray = [];
     signersData?.map((_, index) => {
       mappingArray.push({
-        role_id: index,
-        recipient_id: index,
+        role_id: index + 1,
+        recipient_id: index + 1,
         source_id: 1,
       });
     });
