@@ -43,7 +43,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     const firstName = searchParams?.get("first_name");
     const lastName = searchParams?.get("last_name");
     const email = searchParams?.get("email");
-    const JWTtoken = searchParams?.get("JWTtoken");
+    // const JWTtoken = searchParams?.get("JWTtoken");
     console.log(
       authId,
       objectId,
@@ -67,9 +67,9 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
         endUrl: `set-up/auth?authId=${authId}`,
       });
       setJWTtoken(data?.token);
-    } else if (JWTtoken) {
-      setJWTtoken(JWTtoken);
-    }
+    // } else if (JWTtoken) {
+    //   setJWTtoken(JWTtoken);
+    // }
   };
 
   console.log(docParams);
