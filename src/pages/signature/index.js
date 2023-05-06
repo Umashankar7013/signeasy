@@ -206,6 +206,9 @@ function Signature() {
           message: message,
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
+          redirect_url: encodeURI(
+            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+          ),
         },
         //  {
         //   sources: [
@@ -217,9 +220,9 @@ function Signature() {
         //     },
         //   ],
         //   recipients: signersData,
-        //   redirect_url: encodeURI(
-        //     `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
-        //   ),
+        // redirect_url: encodeURI(
+        //   `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+        // ),
         //   embedded_signing: true,
         //   is_ordered: false,
         // },
