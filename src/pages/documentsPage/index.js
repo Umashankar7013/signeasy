@@ -33,53 +33,51 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const inputFileRef = useRef(null);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
-console.log(docParams)
+  console.log(docParams);
   const tokenHandler = async () => {
-    if (JWTtoken == '' || JWTtoken == 'undefined') {
-    const currentUrl = window.location.href;
-    const searchParams = new URL(currentUrl).searchParams;
-    const authId = searchParams?.get("authId");
-    const objectId = searchParams?.get("object_id");
-    const objectType = searchParams?.get("object_type");
-    const firstName = searchParams?.get("first_name");
-    const lastName = searchParams?.get("last_name");
-    const email = searchParams?.get("email");
-    console.log(
-      authId,
-      objectId,
-      objectType,
-      firstName,
-      lastName,
-      email,
-      "params"
-    );
-    setDocParams({
-      authId:authId,
-      objectId:objectId,
-      objectType:objectType,
-      firstName:firstName,
-      lastName:lastName,
-      email:email,
-    });
-    if (authId) {
+    if (JWTtoken == "" || JWTtoken == "undefined") {
+      const currentUrl = window.location.href;
+      const searchParams = new URL(currentUrl).searchParams;
+      const authId = searchParams?.get("authId");
+      const objectId = searchParams?.get("object_id");
+      const objectType = searchParams?.get("object_type");
+      const firstName = searchParams?.get("first_name");
+      const lastName = searchParams?.get("last_name");
+      const email = searchParams?.get("email");
+      console.log(
+        authId,
+        objectId,
+        objectType,
+        firstName,
+        lastName,
+        email,
+        "params"
+      );
       const data = await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       });
       setJWTtoken(data?.token);
+      setDocParams({
+        authId,
+        objectId,
+        objectType,
+        firstName,
+        lastName,
+        email,
+      });
       return data;
     }
-  }
   };
 
   console.log(docParams);
 
   const getDocumentsHandler = async () => {
-    const data = await tokenHandler()
+    const data = await tokenHandler();
     if (window) {
       const docsData = await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
-          "x-access-token": JWTtoken !== "" ? JWTtoken: data?.token,
+          "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
         },
       });
       docsData && (itemsData.current = docsData?.data?.files);
@@ -91,12 +89,12 @@ console.log(docParams)
   };
 
   const getTemplatesHandler = async () => {
-    const data = await tokenHandler()
+    const data = await tokenHandler();
     if (window) {
       const docsData = await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
-          "x-access-token": JWTtoken !== "" ? JWTtoken: data?.token,
+          "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
         },
       });
       docsData && (itemsData.current = docsData?.data);
@@ -182,7 +180,7 @@ console.log(docParams)
     if (forTemplates) {
       getTemplatesHandler();
     } else {
-        getDocumentsHandler();
+      getDocumentsHandler();
     }
   }, [browserWindow]);
 
