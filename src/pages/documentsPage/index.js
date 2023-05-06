@@ -52,8 +52,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
         endUrl: `set-up/auth?authId=${authId}`,
       });
       setJWTtoken(data?.token);
-    }
-    if (JWTtoken) {
+    } else if (JWTtoken) {
       setJWTtoken(JWTtoken);
     }
   };
