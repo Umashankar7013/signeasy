@@ -21,7 +21,7 @@ function Signature() {
     useContext(AppContext);
   const router = useRouter();
   const type = router.query?.type;
-  const [signersData, setSignersData] = useLocalStorage("signersData", [
+  const [signersData, setSignersData] = useState([
     {
       first_name: docParams?.firstName || "",
       last_name: docParams?.lastName || "",
