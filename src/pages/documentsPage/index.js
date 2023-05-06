@@ -178,12 +178,10 @@ console.log(docParams)
   };
 
   useEffect(() => {
-    if (forTemplates && JWTtoken !== "") {
+    if (forTemplates) {
       getTemplatesHandler();
     } else {
-      if (JWTtoken !== "") {
         getDocumentsHandler();
-      }
     }
   }, [browserWindow, JWTtoken]);
 
