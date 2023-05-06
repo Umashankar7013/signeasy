@@ -35,6 +35,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const [api, contextHolder] = notification.useNotification();
 console.log(docParams)
   const tokenHandler = async () => {
+    if (JWTtoken !== "") {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
@@ -66,11 +67,13 @@ console.log(docParams)
       });
       setJWTtoken(data?.token);
     }
+  }
   };
 
   console.log(docParams);
 
   const getDocumentsHandler = async () => {
+    await tokenHandler()
     if (window) {
       const docsData = await getApi({
         endUrl: "hubspot-card/documents",
@@ -87,6 +90,7 @@ console.log(docParams)
   };
 
   const getTemplatesHandler = async () => {
+    await tokenHandler()
     if (window) {
       const docsData = await getApi({
         endUrl: "hubspot-card/templates",
@@ -183,11 +187,11 @@ console.log(docParams)
     }
   }, [browserWindow, JWTtoken]);
 
-  useEffect(() => {
-    if (JWTtoken === "") {
-      tokenHandler();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (JWTtoken === "") {
+  //     tokenHandler();
+  //   }
+  // }, []);
 
   useEffect(() => {
     setBrowserWindow(window);
