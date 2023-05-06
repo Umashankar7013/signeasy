@@ -57,7 +57,7 @@ function Signature() {
     });
   };
 
-  const envelopSaveHandler = async ({ id, name, token, type, url }) => {
+  const envelopSaveHandler = async ({ id, name, token, type }) => {
     setLoading(true);
     await axios({
       method: "post",
@@ -72,19 +72,16 @@ function Signature() {
     })
       .then((response) => {
         localStorage.clear();
-        if (type === "edit") {
-          //openNotification({ message: "Success" });
-          // setShowSuccessMessage(true);
-          // setLoading(false);
-          window?.open(url, "_self");
-        } else {
-          // openNotification({
-          //   message: "Success",
-          //   description: "Sucessfully sent the envelop to the signature.",
-          // });
-          setShowSuccessMessage(true);
-          setLoading(false);
-        }
+        // if (type === "edit") {
+        //openNotification({ message: "Success" });
+        setShowSuccessMessage(true);
+        setLoading(false);
+        // } else {
+        // openNotification({
+        //   message: "Success",
+        //   description: "Sucessfully sent the envelop to the signature.",
+        // });
+        // }
         //setTimeout(() => location?.assign(url), 500);
       })
       .catch((error) => {
@@ -348,7 +345,6 @@ function Signature() {
         name: docName,
         token: JWTtoken,
         type: "edit",
-        url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?JWTtoken=${JWTtoken}&object_id=${docParams?.objectId}&object_type=${docParams?.objectType}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`,
       });
     }
   };
