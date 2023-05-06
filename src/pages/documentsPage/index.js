@@ -61,13 +61,11 @@ console.log(docParams)
       lastName:lastName,
       email:email,
     });
-    if (authId) {
       const data = await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       });
       setJWTtoken(data?.token);
       return data;
-    }
   }
   };
 

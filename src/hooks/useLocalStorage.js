@@ -22,9 +22,7 @@ export const useLocalStorage = (key, defaultValue) => {
         localStorage.setItem(key, JSON.stringify(value));
       }
     } else {
-        if (value !== 'undefined') {
-          localStorage.setItem(key, JSON.stringify(value));
-        } 
+        localStorage.setItem(key, JSON.stringify(value));
     }
   }, [key, value]);
 
