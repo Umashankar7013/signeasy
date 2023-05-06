@@ -74,8 +74,9 @@ function Signature() {
         localStorage.clear();
         if (type === "edit") {
           //openNotification({ message: "Success" });
-          setShowSuccessMessage(true);
-          setLoading(false);
+          // setShowSuccessMessage(true);
+          // setLoading(false);
+          console.log(type);
         } else {
           // openNotification({
           //   message: "Success",
@@ -236,7 +237,7 @@ function Signature() {
             id: data?.data?.data?.pending_file_id,
             name: selectedItem?.name,
             token: JWTtoken,
-            type: "submit",
+            type: "edit",
             url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
           });
           window?.open(data?.data?.data?.url, "_self");
