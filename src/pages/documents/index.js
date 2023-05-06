@@ -6,7 +6,7 @@ import DocumentsPage from "../documentsPage";
 function TemplatesAndDocs() {
   const [selectedTab, setSelectedTab] = useState("templates");
   return (
-    <div className="h-[100vh]">
+    <div className="h-full">
       <div className="font-lexend text-[14px] leading-[17.5px] text-[#374659] font-[300]">
         Choose a template or document to send to your customer and attach to
         this contact

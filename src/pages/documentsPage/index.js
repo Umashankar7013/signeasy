@@ -172,7 +172,9 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   }, [browserWindow, JWTtoken]);
 
   useEffect(() => {
-    tokenHandler();
+    if (JWTtoken === "") {
+      tokenHandler();
+    }
   }, []);
 
   useEffect(() => {
