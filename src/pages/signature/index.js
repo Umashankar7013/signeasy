@@ -193,18 +193,36 @@ function Signature() {
           sources: [
             {
               id: selectedItem?.id,
-              type,
-              source_id: 1,
+              type: "template",
               name: selectedItem?.name,
+              source_id: 1,
             },
           ],
+          // original_file_id: selectedItem?.id,
           recipients: signersData,
-          redirect_url: encodeURI(
-            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
-          ),
-          embedded_signing: true,
+          embedded_signing: false,
           is_ordered: false,
+          name: emailSubject !== "" ? emailSubject : selectedItem?.name,
+          message: message,
+          cc: formattedEmails || [],
+          recipient_role_mapping: recipientRoleMappingHandler(),
         },
+        //  {
+        //   sources: [
+        //     {
+        //       id: selectedItem?.id,
+        //       type,
+        //       source_id: 1,
+        //       name: selectedItem?.name,
+        //     },
+        //   ],
+        //   recipients: signersData,
+        //   redirect_url: encodeURI(
+        //     `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+        //   ),
+        //   embedded_signing: true,
+        //   is_ordered: false,
+        // },
       })
         .then(async (data) => {
           window?.open(data?.data?.data?.url, "_self");
