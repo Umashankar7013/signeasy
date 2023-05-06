@@ -43,7 +43,6 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     const firstName = searchParams?.get("first_name");
     const lastName = searchParams?.get("last_name");
     const email = searchParams?.get("email");
-    // const JWTtoken = searchParams?.get("JWTtoken");
     console.log(
       authId,
       objectId,
@@ -53,24 +52,20 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       email,
       "params"
     );
-    setDocParams((prev) => ({
-      ...prev,
+    setDocParams({
       authId,
       objectId,
       objectType,
       firstName,
       lastName,
       email,
-    }));
+    });
     if (authId) {
       const data = await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       });
       setJWTtoken(data?.token);
     }
-    // } else if (JWTtoken) {
-    //   setJWTtoken(JWTtoken);
-    // }
   };
 
   console.log(docParams);
@@ -282,7 +277,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
             ))}
           </div>
           {/* Table data */}
-          <div className="w-[100%] shadow-md pb-[100px]">
+          <div className="w-[100%] pb-[100px]">
             {filteredData?.map((document, index) => (
               <div
                 key={index}
