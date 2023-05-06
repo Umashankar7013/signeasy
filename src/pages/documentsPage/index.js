@@ -20,8 +20,14 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     forTemplates ? "TEMPLATE NAME" : "DOCUMENT NAME",
     "LAST CHANGE",
   ];
-  const { selectedItem, setSelectedItem, setDocParams, JWTtoken, setJWTtoken } =
-    useContext(AppContext);
+  const {
+    selectedItem,
+    setSelectedItem,
+    setDocParams,
+    JWTtoken,
+    setJWTtoken,
+    docParams,
+  } = useContext(AppContext);
   const selectedHeader = useRef("");
   const router = useRouter();
   const inputFileRef = useRef(null);
@@ -65,6 +71,8 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       setJWTtoken(JWTtoken);
     }
   };
+
+  console.log(docParams);
 
   const getDocumentsHandler = async () => {
     if (window) {
