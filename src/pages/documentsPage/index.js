@@ -66,6 +66,7 @@ console.log(docParams)
         endUrl: `set-up/auth?authId=${authId}`,
       });
       setJWTtoken(data?.token);
+      return data;
     }
   }
   };
@@ -73,12 +74,12 @@ console.log(docParams)
   console.log(docParams);
 
   const getDocumentsHandler = async () => {
-    await tokenHandler()
+    const data = await tokenHandler()
     if (window) {
       const docsData = await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
-          "x-access-token": JWTtoken,
+          "x-access-token": JWTtoken !== "" ? JWTtoken: data?.token,
         },
       });
       docsData && (itemsData.current = docsData?.data?.files);
@@ -90,12 +91,12 @@ console.log(docParams)
   };
 
   const getTemplatesHandler = async () => {
-    await tokenHandler()
+    const data = await tokenHandler()
     if (window) {
       const docsData = await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
-          "x-access-token": JWTtoken,
+          "x-access-token": JWTtoken !== "" ? JWTtoken: data?.token,
         },
       });
       docsData && (itemsData.current = docsData?.data);
@@ -183,7 +184,7 @@ console.log(docParams)
     } else {
         getDocumentsHandler();
     }
-  }, [browserWindow, JWTtoken]);
+  }, [browserWindow]);
 
   // useEffect(() => {
   //   if (JWTtoken === "") {
