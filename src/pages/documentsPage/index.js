@@ -33,7 +33,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const inputFileRef = useRef(null);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
-
+console.log(docParams)
   const tokenHandler = async () => {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
@@ -53,12 +53,12 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       "params"
     );
     setDocParams({
-      authId,
-      objectId,
-      objectType,
-      firstName,
-      lastName,
-      email,
+      authId:authId,
+      objectId:objectId,
+      objectType:objectType,
+      firstName:firstName,
+      lastName:lastName,
+      email:email,
     });
     if (authId) {
       const data = await getApi({
