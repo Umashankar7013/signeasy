@@ -211,9 +211,7 @@ function Signature() {
           message: message,
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
-          redirect_url: encodeURI(
-            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
-          ),
+          redirect_url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`,
         },
         //  {
         //   sources: [
@@ -233,13 +231,6 @@ function Signature() {
         // },
       })
         .then(async (data) => {
-          await envelopSaveHandler({
-            id: data?.data?.data?.pending_file_id,
-            name: selectedItem?.name,
-            token: JWTtoken,
-            type: "edit",
-            url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
-          });
           window?.open(data?.data?.data?.url, "_self");
         })
         .catch((error) => {
@@ -345,7 +336,7 @@ function Signature() {
       const docName = searchParams?.get("name");
       setDocParams((prev) => ({
         ...prev,
-        authId: "",
+        authId: null,
         objectId,
         objectType,
         firstName,
@@ -357,7 +348,7 @@ function Signature() {
         name: docName,
         token: JWTtoken,
         type: "edit",
-        url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
+        url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?JWTtoken=${JWTtoken}&object_id=${docParams?.objectId}&object_type=${docParams?.objectType}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`,
       });
     }
   };

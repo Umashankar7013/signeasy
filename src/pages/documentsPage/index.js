@@ -37,6 +37,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     const firstName = searchParams?.get("first_name");
     const lastName = searchParams?.get("last_name");
     const email = searchParams?.get("email");
+    const JWTtoken = searchParams?.get("JWTtoken");
     setDocParams((prev) => ({
       ...prev,
       authId,
@@ -46,20 +47,23 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       lastName,
       email,
     }));
-    const data = await getApi({
-      endUrl: `set-up/auth?authId=${authId}`,
-    });
-    data && setJWTtoken(data?.token);
-    return data;
+    if (authId) {
+      const data = await getApi({
+        endUrl: `set-up/auth?authId=${authId}`,
+      });
+      setJWTtoken(data?.token);
+    }
+    if (JWTtoken) {
+      setJWTtoken(JWTtoken);
+    }
   };
 
   const getDocumentsHandler = async () => {
     if (window) {
-      const data = await tokenHandler();
       const docsData = await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
-          "x-access-token": data?.token,
+          "x-access-token": JWTtoken,
         },
       });
       docsData && (itemsData.current = docsData?.data?.files);
@@ -72,11 +76,10 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
 
   const getTemplatesHandler = async () => {
     if (window) {
-      const data = await tokenHandler();
       const docsData = await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
-          "x-access-token": data?.token,
+          "x-access-token": JWTtoken,
         },
       });
       docsData && (itemsData.current = docsData?.data);
@@ -159,12 +162,14 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   };
 
   useEffect(() => {
-    if (forTemplates) {
+    if (forTemplates && JWTtoken !== "") {
       getTemplatesHandler();
     } else {
-      getDocumentsHandler();
+      if (JWTtoken !== "") {
+        getDocumentsHandler();
+      }
     }
-  }, [browserWindow]);
+  }, [browserWindow, JWTtoken]);
 
   useEffect(() => {
     setBrowserWindow(window);
