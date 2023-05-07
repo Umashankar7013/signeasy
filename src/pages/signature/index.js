@@ -57,7 +57,7 @@ function Signature() {
     });
   };
 
-  const envelopSaveHandler = async ({ id, name, token, type }) => {
+  const envelopSaveHandler = async ({ id, name, token, type, objectId, objectType }) => {
     setLoading(true);
     await axios({
       method: "post",
@@ -66,8 +66,8 @@ function Signature() {
       data: {
         name: name,
         envelope_id: id,
-        object_type: docParams?.objectType,
-        object_id: Number(docParams?.objectId),
+        object_type: objectType?  objectType : docParams?.objectType ,
+        object_id: objectId? Number(objectId) : Number(docParams?.objectId),
       },
     })
       .then((response) => {
@@ -363,6 +363,8 @@ function Signature() {
         name: docName,
         token: JWTtoken,
         type: "edit",
+        objectId: objectId,
+        objectType: objectType
       });
     }
   };
