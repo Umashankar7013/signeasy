@@ -33,9 +33,9 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const inputFileRef = useRef(null);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
-console.log(docParams)
+console.log(docParams, '---docParams--')
   const tokenHandler = async () => {
-    if (JWTtoken == '' || JWTtoken == 'undefined') {
+    if (JWTtoken === '' || JWTtoken === 'undefined') {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
