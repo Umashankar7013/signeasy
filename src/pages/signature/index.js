@@ -42,7 +42,7 @@ function Signature() {
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [roles, setRoles] = useState(selectedItem?.metadata?.roles);
+  const [roles, setRoles] = useState(type === "original" ? signersData : selectedItem?.metadata?.roles);
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -132,13 +132,17 @@ function Signature() {
       emails?.map((item) => {
         formattedEmails?.push({ email: item });
       });
-      await axios({
-        method: "post",
-        url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/${
-          type === "original" ? "documents" : "templates"
-        }/send-envelope`,
-        headers: { "x-access-token": JWTtoken },
-        data: {
+
+      let data
+      if (type === 'original') {
+        data = {
+          original_file_id: selectedItem?.id,
+          recipients: signersData,
+          embedded_signing: 1,
+          is_ordered: 1,
+        }
+      } else {
+        data = {
           sources: [
             {
               id: selectedItem?.id,
@@ -155,7 +159,15 @@ function Signature() {
           message: message,
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
-        },
+        }
+      }
+      await axios({
+        method: "post",
+        url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/${
+          type === "original" ? "documents" : "templates"
+        }/send-envelope`,
+        headers: { "x-access-token": JWTtoken },
+        data: data
       })
         .then(async (data) => {
           await envelopSaveHandler({
@@ -187,11 +199,26 @@ function Signature() {
       emails?.map((item) => {
         formattedEmails?.push({ email: item });
       });
-      await axios({
-        method: "post",
-        url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
-        headers: { "x-access-token": JWTtoken },
-        data: {
+      let data
+      if (type === 'original') {
+        data = {
+          sources: [
+            {
+              id: selectedItem?.id,
+              type,
+              source_id: 1,
+              name: "acme-contract",
+            },
+          ],
+          recipients: signersData,
+          redirect_url: encodeURI(
+            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+          ),
+          embedded_signing: true,
+          is_ordered: false,
+        }
+      } else {
+        data = {
           sources: [
             {
               id: selectedItem?.id,
@@ -209,23 +236,14 @@ function Signature() {
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
           redirect_url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`,
-        },
-        //  {
-        //   sources: [
-        //     {
-        //       id: selectedItem?.id,
-        //       type,
-        //       source_id: 1,
-        //       name: selectedItem?.name,
-        //     },
-        //   ],
-        //   recipients: signersData,
-        // redirect_url: encodeURI(
-        //   `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
-        // ),
-        //   embedded_signing: true,
-        //   is_ordered: false,
-        // },
+        }
+      }
+      
+      await axios({
+        method: "post",
+        url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
+        headers: { "x-access-token": JWTtoken },
+        data: data
       })
         .then(async (data) => {
           window?.open(data?.data?.data?.url, "_self");
