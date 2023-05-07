@@ -3,7 +3,7 @@ import React from "react";
 
 export const Loader = () => {
   return (
-    <div className="flex h-[100vh] w-[100vw] justify-center items-center">
+    <div className="flex h-[60vh] w-[60vw] justify-center items-center">
       <LoadingOutlined />
     </div>
   );

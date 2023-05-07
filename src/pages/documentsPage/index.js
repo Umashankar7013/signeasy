@@ -35,7 +35,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const [api, contextHolder] = notification.useNotification();
   console.log(docParams);
   const tokenHandler = async () => {
-    if (JWTtoken == "" || JWTtoken == "undefined") {
+    if (JWTtoken === "" || JWTtoken === "undefined") {
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
       const authId = searchParams?.get("authId");
@@ -53,19 +53,21 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
         email,
         "params"
       );
-      const data = await getApi({
-        endUrl: `set-up/auth?authId=${authId}`,
-      });
-      setJWTtoken(data?.token);
       setDocParams({
-        authId,
-        objectId,
-        objectType,
-        firstName,
-        lastName,
-        email,
+        authId: authId,
+        objectId: objectId,
+        objectType: objectType,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
       });
-      return data;
+      if (authId) {
+        const data = await getApi({
+          endUrl: `set-up/auth?authId=${authId}`,
+        });
+        setJWTtoken(data?.token);
+        return data;
+      }
     }
   };
 
