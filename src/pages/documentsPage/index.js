@@ -64,7 +64,7 @@ console.log(docParams)
       const data = await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       });
-      setJWTtoken(data?.token);
+      data?.token && setJWTtoken(data?.token);
       return data;
   }
   };
