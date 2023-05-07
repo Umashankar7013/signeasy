@@ -33,7 +33,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const inputFileRef = useRef(null);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
-  console.log(docParams, "---docParams--");
+
   const tokenHandler = async () => {
     if (JWTtoken === "" || JWTtoken === "undefined") {
       const currentUrl = window.location.href;
@@ -44,15 +44,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       const firstName = searchParams?.get("first_name");
       const lastName = searchParams?.get("last_name");
       const email = searchParams?.get("email");
-      console.log(
-        authId,
-        objectId,
-        objectType,
-        firstName,
-        lastName,
-        email,
-        "params"
-      );
+
       setDocParams({
         authId: authId,
         objectId: objectId,
@@ -68,8 +60,6 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       return data;
     }
   };
-
-  console.log(docParams);
 
   const getDocumentsHandler = async () => {
     const data = await tokenHandler();
