@@ -171,7 +171,7 @@ function Signature() {
       })
         .then(async (data) => {
           await envelopSaveHandler({
-            id: data?.data?.data?.id,
+            id: type === "original" ? data?.data?.data?.pending_file_id : data?.data?.data?.id,
             name: selectedItem?.name,
             token: JWTtoken,
             type: "submit",
