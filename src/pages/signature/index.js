@@ -138,7 +138,7 @@ function Signature() {
         data = {
           original_file_id: selectedItem?.id,
           recipients: signersData,
-          embedded_signing: 1,
+          embedded_signing: false,
           is_ordered: 1,
         }
       } else {
@@ -207,14 +207,14 @@ function Signature() {
               id: selectedItem?.id,
               type,
               source_id: 1,
-              name: "acme-contract",
+              name: selectedItem?.name,
             },
           ],
           recipients: signersData,
           redirect_url: encodeURI(
             `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
           ),
-          embedded_signing: true,
+          embedded_signing: false,
           is_ordered: false,
         }
       } else {
