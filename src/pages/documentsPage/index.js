@@ -64,13 +64,8 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       const data = await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       });
-      if (authId) {
-        const data = await getApi({
-          endUrl: `set-up/auth?authId=${authId}`,
-        });
-        setJWTtoken(data?.token);
-        return data;
-      }
+      data && setJWTtoken(data?.token);
+      return data;
     }
   };
 
