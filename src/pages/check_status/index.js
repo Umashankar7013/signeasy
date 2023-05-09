@@ -143,7 +143,7 @@ const CheckStatus = () => {
             <div className="flex items-center w-[40%] pr-[10px]">
               <div className="-mt-[6px]">{statusUtils[item?.status]?.icon}</div>
               <div className="pl-[10px] font-[500] text-[14px]">
-                {item?.name}
+                {item?.name || ""}
               </div>
             </div>
             <div className="w-[20%]">
