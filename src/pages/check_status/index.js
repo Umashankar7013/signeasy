@@ -107,6 +107,7 @@ const CheckStatus = () => {
               index !== statusData?.length - 1 && "border-r-[1px]",
               "px-[15px]"
             )}
+            key={index}
           >
             <div className="text-[#838b90] text-[14px]">{item?.title}</div>
             <div className="font-[500]">{item?.count}</div>
@@ -115,7 +116,7 @@ const CheckStatus = () => {
       </div>
       {/* Headers */}
       <div className="flex border-b-[1px] px-[30px] pb-[10px]">
-        {headerData?.map((item) => (
+        {headerData?.map((item, index) => (
           <div
             className={classNames(
               "flex items-center select-none cursor-pointer",
@@ -123,6 +124,7 @@ const CheckStatus = () => {
             )}
             style={{ width: item?.width }}
             onClick={() => sortHandler(item?.title)}
+            key={index}
           >
             <div className="text-[14px] text-[#838b90]">{item?.title}</div>
             {item?.title !== "Actions" && (
@@ -133,8 +135,11 @@ const CheckStatus = () => {
       </div>
       {/* data */}
       <div className="w-[100%]">
-        {sortedData.map((item) => (
-          <div className="flex items-center border-b-[1px] py-[12px] px-[30px]">
+        {sortedData.map((item, index) => (
+          <div
+            className="flex items-center border-b-[1px] py-[12px] px-[30px]"
+            key={index}
+          >
             <div className="flex items-center w-[40%] pr-[10px]">
               <div className="-mt-[6px]">{statusUtils[item?.status]?.icon}</div>
               <div className="pl-[10px] font-[500] text-[14px]">

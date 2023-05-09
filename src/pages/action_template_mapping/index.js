@@ -86,8 +86,11 @@ function ActionTemplateMapping() {
       </div>
       <div className="border-[1px] mb-[70px]">
         <div className="flex w-[100%] bg-[#F6F8FA] border-b-[1px]">
-          {headerData?.map((header) => (
-            <div className="w-[50%] py-[14px] pl-[25px] text-[14px] text-[#374659] font-[700] font-lexend leading-[17.5px]">
+          {headerData?.map((header, index) => (
+            <div
+              className="w-[50%] py-[14px] pl-[25px] text-[14px] text-[#374659] font-[700] font-lexend leading-[17.5px]"
+              key={index}
+            >
               {header}
             </div>
           ))}
@@ -99,6 +102,7 @@ function ActionTemplateMapping() {
                 "flex items-center",
                 index !== data?.length && "border-b-[1px]"
               )}
+              key={index}
             >
               <div className="w-[50%] pl-[25px] text-[14px] text-[#374659] font-[400] font-lexend">
                 {item?.name}

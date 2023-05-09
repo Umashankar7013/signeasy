@@ -23,8 +23,11 @@ export const MultiTextInputDropdown = ({
       >
         <div className="flex overflow-x-scroll">
           {data.length > 0 ? (
-            data?.map((item) => (
-              <div className="px-[6px] flex items-center py-[3px] bg-[#ECF0F4] mr-[10px]">
+            data?.map((item, index) => (
+              <div
+                className="px-[6px] flex items-center py-[3px] bg-[#ECF0F4] mr-[10px]"
+                key={index}
+              >
                 <div className="flex">
                   {item?.split(" ")?.map((text) => (
                     <div className="pl-[4px] text-[12px] text-[#424E5E] font-[400] select-none">
@@ -63,7 +66,7 @@ export const MultiTextInputDropdown = ({
           ></div>
           <div className="absolute left-0 top-[35px] border-[1px] w-[100%] px-[10px] z-30 bg-[white]">
             {dropDownData?.map(
-              (item) =>
+              (item, index) =>
                 !data?.includes(item) && (
                   <div
                     className="py-[7px] text-[14px] font-lexend text-[#99A6BA] cursor-pointer select-none"
@@ -71,6 +74,7 @@ export const MultiTextInputDropdown = ({
                       addFun(item, specificIndex);
                       setShowDropDown(false);
                     }}
+                    key={index}
                   >
                     {item}
                   </div>

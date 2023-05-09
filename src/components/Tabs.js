@@ -5,7 +5,7 @@ export const Tabs = ({ tabs, onChangeTab = () => {} }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   return (
     <div className="border-b-2 flex pt-[19px]">
-      {tabs?.map((tab) => (
+      {tabs?.map((tab, index) => (
         <div
           className={classNames(
             "px-[20px] cursor-pointer font-lexend text-[#374659] text-[14px] pb-[12px] font-[500] leading-[17.5px] select-none",
@@ -15,6 +15,7 @@ export const Tabs = ({ tabs, onChangeTab = () => {} }) => {
             onChangeTab(tab);
             setSelectedTab(tab);
           }}
+          key={index}
         >
           {tab}
         </div>
