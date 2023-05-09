@@ -10,7 +10,6 @@ import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import { useRouter } from "next/router";
 import { AppContext } from "../_app";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
@@ -42,7 +41,9 @@ function Signature() {
   const [emptyInput, setEmptyInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [roles, setRoles] = useState(type === "original" ? signersData : selectedItem?.metadata?.roles);
+  const [roles, setRoles] = useState(
+    type === "original" ? signersData : selectedItem?.metadata?.roles
+  );
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -57,7 +58,13 @@ function Signature() {
     });
   };
 
-  const envelopSaveHandler = async ({ id, name, token, type, objectId, objectType }) => {
+  const envelopSaveHandler = async ({
+    id,
+    name,
+    token,
+    objectId,
+    objectType,
+  }) => {
     setLoading(true);
     await axios({
       method: "post",
@@ -66,23 +73,14 @@ function Signature() {
       data: {
         name: name,
         envelope_id: id,
-        object_type: objectType?  objectType : docParams?.objectType ,
-        object_id: objectId? Number(objectId) : Number(docParams?.objectId),
+        object_type: objectType ? objectType : docParams?.objectType,
+        object_id: objectId ? Number(objectId) : Number(docParams?.objectId),
       },
     })
       .then((response) => {
         localStorage.clear();
-        // if (type === "edit") {
-        //openNotification({ message: "Success" });
         setShowSuccessMessage(true);
         setLoading(false);
-        // } else {
-        // openNotification({
-        //   message: "Success",
-        //   description: "Sucessfully sent the envelop to the signature.",
-        // });
-        // }
-        //setTimeout(() => location?.assign(url), 500);
       })
       .catch((error) => {
         openNotification({
@@ -133,14 +131,14 @@ function Signature() {
         formattedEmails?.push({ email: item });
       });
 
-      let data
-      if (type === 'original') {
+      let data;
+      if (type === "original") {
         data = {
           original_file_id: selectedItem?.id,
           recipients: signersData,
           embedded_signing: false,
           is_ordered: 1,
-        }
+        };
       } else {
         data = {
           sources: [
@@ -151,7 +149,6 @@ function Signature() {
               source_id: 1,
             },
           ],
-          // original_file_id: selectedItem?.id,
           recipients: signersData,
           embedded_signing: false,
           is_ordered: false,
@@ -159,7 +156,7 @@ function Signature() {
           message: message,
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
-        }
+        };
       }
       await axios({
         method: "post",
@@ -167,15 +164,16 @@ function Signature() {
           type === "original" ? "documents" : "templates"
         }/send-envelope`,
         headers: { "x-access-token": JWTtoken },
-        data: data
+        data: data,
       })
         .then(async (data) => {
           await envelopSaveHandler({
-            id: type === "original" ? data?.data?.data?.pending_file_id : data?.data?.data?.id,
+            id:
+              type === "original"
+                ? data?.data?.data?.pending_file_id
+                : data?.data?.data?.id,
             name: selectedItem?.name,
             token: JWTtoken,
-            type: "submit",
-            url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}documents?authId=1c0be571-fd77-4877-bd30-fdef12bf3362&object_id=51&object_type=CONTACT#https://app.hubspot.com`,
           });
         })
         .catch((error) => {
@@ -199,8 +197,8 @@ function Signature() {
       emails?.map((item) => {
         formattedEmails?.push({ email: item });
       });
-      let data
-      if (type === 'original') {
+      let data;
+      if (type === "original") {
         data = {
           sources: [
             {
@@ -216,7 +214,7 @@ function Signature() {
           ),
           embedded_signing: false,
           is_ordered: false,
-        }
+        };
       } else {
         data = {
           sources: [
@@ -236,14 +234,14 @@ function Signature() {
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
           redirect_url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`,
-        }
+        };
       }
-      
+
       await axios({
         method: "post",
         url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
         headers: { "x-access-token": JWTtoken },
-        data: data
+        data: data,
       })
         .then(async (data) => {
           window?.open(data?.data?.data?.url, "_self");
@@ -362,9 +360,8 @@ function Signature() {
         id: pending_file_id,
         name: docName,
         token: JWTtoken,
-        type: "edit",
         objectId: objectId,
-        objectType: objectType
+        objectType: objectType,
       });
     }
   };

@@ -17,45 +17,62 @@ function TemplateMapping() {
     { id: 7, name: "Dummy6" },
     { id: 8, name: "Dummy7" },
     { id: 9, name: "Dummy8" },
-    // { id: 10, name: "Dummy9" },
     { id: 11, name: "Dummy10" },
     { id: 12, name: "Dummy11" },
     { id: 13, name: "Dummy12" },
   ]);
-  const { selectedItem, setSelectedItem, setDocParams, JWTtoken, setJWTtoken } =
-    useContext(AppContext);
+  const { setDocParams, JWTtoken, setJWTtoken } = useContext(AppContext);
   const headerData = [
     { title: "TEMPLATE NAME", width: "35%" },
     { title: "ROLES", width: "30%" },
     { title: "LAST MODIFIED", width: "35%" },
   ];
-  const [selectedHeader, setSelectedHeader] = useState(headerData[0]?.title);
+  const selectedHeader = useRef(headerData[0]?.title);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [sortedData, setSortedData] = useState([]);
+  const [browserWindow, setBrowserWindow] = useState();
 
   const tokenHandler = async () => {
-    const currentUrl = window.location.href;
-    const searchParams = new URL(currentUrl).searchParams;
-    const authId = searchParams?.get("authId");
-    const objectId = searchParams?.get("object_id");
-    const objectType = searchParams?.get("object_type");
-    const firstName = searchParams?.get("first_name");
-    const lastName = searchParams?.get("last_name");
-    const email = searchParams?.get("email");
-    setDocParams((prev) => ({
-      ...prev,
-      authId,
-      objectId,
-      objectType,
-      firstName,
-      lastName,
-      email,
-    }));
-    const data = await getApi({
-      endUrl: `set-up/auth?authId=${authId}`,
+    if (JWTtoken === "" || JWTtoken === "undefined") {
+      const currentUrl = window.location.href;
+      const searchParams = new URL(currentUrl).searchParams;
+      const authId = searchParams?.get("authId");
+      const objectId = searchParams?.get("object_id");
+      const objectType = searchParams?.get("object_type");
+      const firstName = searchParams?.get("first_name");
+      const lastName = searchParams?.get("last_name");
+      const email = searchParams?.get("email");
+      setDocParams((prev) => ({
+        ...prev,
+        authId,
+        objectId,
+        objectType,
+        firstName,
+        lastName,
+        email,
+      }));
+      const data = await getApi({
+        endUrl: `set-up/auth?authId=${authId}`,
+      });
+      data && setJWTtoken(data?.token);
+      return data;
+    }
+  };
+
+  const sortHandler = () => {
+    const templateUtils = {
+      "TEMPLATE NAME": "name",
+      ROLE: "role",
+      "LAST MODIFIED": "modified_time",
+    };
+    const sortKey = templateUtils?.[selectedHeader?.current];
+    const sortedData = tempaltesData?.current?.sort((a, b) => {
+      if (a?.[sortKey] > b?.[sortKey]) return 1;
+      else if (a?.[sortKey] < b?.[sortKey]) return -1;
+      else if (a?.[sortKey] === b?.[sortKey]) return 0;
     });
-    data && setJWTtoken(data?.token);
-    return data;
+    sortedData && setSortedData([...sortedData]);
   };
 
   const getTemplatesHandler = async () => {
@@ -64,10 +81,11 @@ function TemplateMapping() {
       const docsData = await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
-          "x-access-token": data?.token,
+          "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
         },
       });
       docsData && (tempaltesData.current = docsData);
+      sortHandler();
       setLoading(false);
     } else {
       console.log("Not able to access the window.");
@@ -75,21 +93,27 @@ function TemplateMapping() {
   };
 
   const actionsHandler = async (item, index) => {
-    // await router.push({
-    //   pathname: "/action_template_mapping",
-    //   query: { selectedItem: JSON.stringify(tempaltesData?.current[index]) },
-    // });
+    await router.push({
+      pathname: "/action_template_mapping",
+      query: { selectedItem: JSON.stringify(tempaltesData?.current[index]) },
+    });
   };
 
   useEffect(() => {
-    getTemplatesHandler();
+    if (browserWindow) {
+      getTemplatesHandler();
+    }
+  }, [browserWindow]);
+
+  useEffect(() => {
+    setBrowserWindow(window);
   }, []);
 
   return loading ? (
     <Loader />
   ) : (
     <div className="border-[1px] border-[#CDD6E1]">
-      \{/* Header */}
+      {/* Header */}
       <div className="w-[100%] fixed z-50 top-0 flex border-b-[1px] border-b-[#CDD6E1]">
         {headerData?.map((header, index) => (
           <div
@@ -97,10 +121,15 @@ function TemplateMapping() {
             style={{
               width: header?.width,
             }}
-            onClick={() => setSelectedHeader(header?.title)}
+            onClick={() => {
+              selectedHeader.current = header?.title;
+              sortHandler();
+            }}
             className={classNames(
               "text-[12px] text-[#374659] font-[500] px-[24px] leading-[16.39px] py-[15px] cursor-pointer",
-              selectedHeader === header?.title ? "bg-[#CDD6E1]" : "bg-[#EBF0F5]"
+              selectedHeader.current === header?.title
+                ? "bg-[#CDD6E1]"
+                : "bg-[#EBF0F5]"
             )}
           >
             {header?.title}
@@ -109,7 +138,7 @@ function TemplateMapping() {
       </div>
       {/* tempaltes */}
       <div className="mt-[46.39px]">
-        {tempaltesData?.current?.map((template, index) => (
+        {sortedData?.map((template, index) => (
           <div
             className={classNames(
               "flex w-[100%] items-center py-[20px]",

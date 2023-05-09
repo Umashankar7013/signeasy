@@ -21,6 +21,8 @@ function Quotes() {
         <DropDown
           dropDownData={dropDownData}
           content={"Choose or create a deal"}
+          dropDownContentClassName="px-[15px] py-[10px] font-[300]"
+          contentHeader="Create Quote"
         />
       </div>
 

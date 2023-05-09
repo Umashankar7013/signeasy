@@ -20,6 +20,7 @@ export const DropDown = ({
 }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [filteredData, setFilteredData] = useState(dropDownData);
+
   const searchHandler = (text) => {
     if (text.length === 0) {
       setFilteredData(dropDownData);
@@ -30,6 +31,7 @@ export const DropDown = ({
       setFilteredData(data);
     }
   };
+
   return (
     <div className="relative">
       <div
@@ -71,41 +73,53 @@ export const DropDown = ({
             )}
           >
             {enableSearch && (
-              <div className="border-[1px] my-[10px] px-[10px] border-[#00d0e4] flex items-center">
-                <input
-                  placeholder="search"
-                  className="py-[10px] w-[100%] outline-none "
-                  onChange={(e) => searchHandler(e.target.value)}
-                />
-                <SearchOutlined
-                  style={{ color: "#3F8FAB", fontSize: "18px" }}
-                />
+              <div className="py-[10px] px-[10px] bg-[#eaf0f6]">
+                <div className="border-[1px] px-[10px] border-[#00d0e4] flex items-center rounded-[4px] bg-[#fff]">
+                  <input
+                    placeholder="Search"
+                    className="py-[10px] w-[100%] font-lexend outline-none text-[16px]"
+                    onChange={(e) => searchHandler(e.target.value)}
+                  />
+                  <SearchOutlined
+                    style={{
+                      color: "#3F8FAB",
+                      fontSize: "18px",
+                    }}
+                  />
+                </div>
               </div>
             )}
             <div className="border-b-[2px]">
-              {filteredData?.map((item, index) => (
-                <div
-                  className={classNames(
-                    "cursor-pointer font-lexend text-[#33475B] select-none hover:bg-[#00d0e4]",
-                    index !== dropDownData.length - 1 && "border-b-[1px]",
-                    dropDownContentClassName
-                  )}
-                  onClick={() => {
-                    onClick(item, specificIndex);
-                    setShowDropDown(false);
-                  }}
-                  key={index}
-                >
-                  {item?.[key]}
+              {filteredData?.length > 0 ? (
+                filteredData?.map((item, index) => (
+                  <div
+                    className={classNames(
+                      "cursor-pointer font-lexend text-[#33475B] select-none",
+                      dropDownContentClassName
+                    )}
+                    onClick={() => {
+                      onClick(item, specificIndex);
+                      setShowDropDown(false);
+                    }}
+                    key={index}
+                  >
+                    {item?.[key]}
+                  </div>
+                ))
+              ) : (
+                <div className="px-[15px] py-[10px] text-[15px] font-lexend font-[300] text-[#d1e1ee]">
+                  No results found
                 </div>
-              ))}
+              )}
             </div>
             {showBottomContent && (
-              <div
-                className="mx-[10px] mb-[10px] w-fit hover:border-b-[2px] cursor-pointer font-lexend font-[600] text-[#00d0e4]"
-                onClick={onClickBottomContent}
-              >
-                {bottomContent}
+              <div className="py-[15px] px-[15px]">
+                <div
+                  className="w-fit hover:border-b-[1px] border-b-[black] cursor-pointer font-lexend font-[600] text-[#00d0e4] select-none"
+                  onClick={onClickBottomContent}
+                >
+                  {bottomContent}
+                </div>
               </div>
             )}
           </div>

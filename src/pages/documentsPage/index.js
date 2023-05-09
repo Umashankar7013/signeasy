@@ -44,7 +44,6 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       const firstName = searchParams?.get("first_name");
       const lastName = searchParams?.get("last_name");
       const email = searchParams?.get("email");
-
       setDocParams({
         authId: authId,
         objectId: objectId,
@@ -173,12 +172,6 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       getDocumentsHandler();
     }
   }, [browserWindow]);
-
-  // useEffect(() => {
-  //   if (JWTtoken === "") {
-  //     tokenHandler();
-  //   }
-  // }, []);
 
   useEffect(() => {
     setBrowserWindow(window);

@@ -101,15 +101,6 @@ pre {
   z-index: -1;
 }
 
-/* .progressBar li.active + li:after {
-  background-color: #3aac5d;
+div::-webkit-scrollbar {
+  display: none;
 }
-.progressBar li.active + li:before {
-  border-color: #3aac5d;
-  background-color: #3aac5d;
-  color: white;
-}
-
-.progressBar li:first-child:after {
-  content: none;
-} */
