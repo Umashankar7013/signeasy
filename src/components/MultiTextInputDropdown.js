@@ -29,8 +29,11 @@ export const MultiTextInputDropdown = ({
                 key={index}
               >
                 <div className="flex">
-                  {item?.split(" ")?.map((text) => (
-                    <div className="pl-[4px] text-[12px] text-[#424E5E] font-[400] select-none">
+                  {item?.split(" ")?.map((text, index) => (
+                    <div
+                      className="pl-[4px] text-[12px] text-[#424E5E] font-[400] select-none"
+                      key={index}
+                    >
                       {text}
                     </div>
                   ))}
