@@ -1,15 +1,15 @@
 import { LeftOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Tabs } from "../../components/Tabs";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { MultiTextInputDropdown } from "../../components/MultiTextInputDropdown";
+import { AppContext } from "../_app";
 
 function ActionTemplateMapping() {
   const router = useRouter();
-  const selectedTemplate = JSON?.parse(router?.query?.selectedItem) || {};
-  // const selectedTemplate = "";
+  const { selectedItem } = useContext(AppContext);
   const tabs = ["Contacts", "Company", "Deals"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const headerData = ["SIGNEASY", "HUBSPOT VARIABLES"];
@@ -79,7 +79,7 @@ function ActionTemplateMapping() {
         </div>
       </div>
       <div className="text-[18px] font-lexend leading-[22.5px] text-[#374659] pb-[20px]">
-        {selectedTemplate?.name || "name"}
+        {selectedItem?.name || "name"}
       </div>
       <div className="pb-[23px]">
         <Tabs tabs={tabs} onChangeTab={onChangeTabHandler} />

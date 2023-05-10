@@ -21,7 +21,8 @@ function TemplateMapping() {
     { id: 12, name: "Dummy11" },
     { id: 13, name: "Dummy12" },
   ]);
-  const { setDocParams, JWTtoken, setJWTtoken } = useContext(AppContext);
+  const { setDocParams, JWTtoken, setJWTtoken, setSelectedItem } =
+    useContext(AppContext);
   const headerData = [
     { title: "TEMPLATE NAME", width: "35%" },
     { title: "ROLES", width: "30%" },
@@ -93,10 +94,12 @@ function TemplateMapping() {
   };
 
   const actionsHandler = async (item, index) => {
+    setSelectedItem(tempaltesData?.current[index]);
+    setLoading(true);
     await router.push({
       pathname: "/action_template_mapping",
-      query: { selectedItem: JSON.stringify(tempaltesData?.current[index]) },
     });
+    setLoading(false);
   };
 
   useEffect(() => {
