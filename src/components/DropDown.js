@@ -17,6 +17,7 @@ export const DropDown = ({
   className = "",
   dropDownClassName = "",
   dropDownContentClassName = "py-[5px]",
+  singleInputOnly = false,
 }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [filteredData, setFilteredData] = useState(dropDownData);

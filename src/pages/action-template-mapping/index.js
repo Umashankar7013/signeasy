@@ -1,15 +1,16 @@
 import { LeftOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Tabs } from "../../components/Tabs";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { MultiTextInputDropdown } from "../../components/MultiTextInputDropdown";
 import { AppContext } from "../_app";
+import { getApi, putMethod } from "../../api/apiMethods";
 
 function ActionTemplateMapping() {
   const router = useRouter();
-  const { selectedItem } = useContext(AppContext);
+  const { selectedItem, JWTtoken } = useContext(AppContext);
   const tabs = ["Contacts", "Company", "Deals"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const headerData = ["SIGNEASY", "HUBSPOT VARIABLES"];
@@ -18,134 +19,12 @@ function ActionTemplateMapping() {
     setSelectedTab(tab);
   };
 
-  const [data, setData] = useState({
-    Contacts: [
-      {
-        name: "First name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Last name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Company name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Phone number",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-    ],
-    Company: [
-      {
-        name: "First name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Last name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Company name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Phone number",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-    ],
-    Deals: [
-      {
-        name: "First name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Last name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Company name",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-      {
-        name: "Phone number",
-        dropDownData: [
-          "First name",
-          "Last Name",
-          "Phone number",
-          "Company name",
-        ],
-        selectedVariables: [],
-      },
-    ],
-  });
+  const tabsDropdownData = {
+    Contacts: ["firstname", "lastname", "email"],
+    Company: ["name"],
+    Deals: [],
+  };
+  const [data, setData] = useState({});
 
   const addVariablesHandler = (item, index) => {
     setData((prev) => {
@@ -166,14 +45,69 @@ function ActionTemplateMapping() {
 
   const activateSaveHandler = () => {
     let count = 0;
-    data?.[selectedTab].map((item) => {
+    data?.[selectedTab]?.map((item) => {
       if (item?.selectedVariables?.length > 0) {
         count += 1;
       }
     });
-    if (count === data?.length) return true;
+    if (count === data?.[selectedTab]?.length) return true;
     else return false;
   };
+
+  const saveHandler = async () => {
+    const tabUtils = {
+      Contacts: "contact",
+      Company: "company",
+      Deals: "deal",
+    };
+    let formattedData = {};
+    Object?.keys(data)?.map((key) => {
+      let array = [];
+      data[key]?.map((item) => {
+        item?.selectedVariables?.map((item1) => {
+          array.push({ signeasy_field: item?.name, hubspot_field: item1 });
+        });
+      });
+      formattedData[tabUtils[key]] = array;
+    });
+    await putMethod({
+      endUrl: `set-up/settings/mapping/${selectedItem?.id}`,
+      headers: {
+        "x-access-token": JWTtoken,
+      },
+    });
+    router.back();
+  };
+
+  const getSavedTemplateData = async () => {
+    await getApi({
+      endUrl: `set-up/settings/mapping/${selectedItem?.id}`,
+      headers: {
+        "x-access-token": JWTtoken,
+      },
+    }).then((data) => console.log(data));
+  };
+
+  useEffect(() => {
+    let tabs = ["Contacts", "Company", "Deals"];
+    let dataObject = {};
+    tabs?.map((tab) => {
+      let array = [];
+      selectedItem?.metadata?.fields?.map((field) => {
+        array.push({
+          name: field?.sub_type,
+          dropDownData: tabsDropdownData[tab],
+          selectedVariables: [],
+        });
+      });
+      dataObject[tab] = array;
+    });
+    setData(dataObject);
+  }, []);
+
+  useEffect(() => {
+    getSavedTemplateData();
+  }, []);
 
   return (
     <div>
@@ -210,7 +144,7 @@ function ActionTemplateMapping() {
         </div>
         {/* Variables data */}
         <div>
-          {data?.[selectedTab].map((item, index) => (
+          {data?.[selectedTab]?.map((item, index) => (
             <div
               className={classNames(
                 "flex items-center",
@@ -230,6 +164,7 @@ function ActionTemplateMapping() {
                   addFun={addVariablesHandler}
                   deleteFun={deleteVariableHandler}
                   specificIndex={index}
+                  singleInput={true}
                 />
               </div>
             </div>
@@ -244,6 +179,7 @@ function ActionTemplateMapping() {
             "px-[25px] py-[11px] text-[#FFFFFF] bg-[#EE8162] font-[600] ml-[25px]",
             activateSaveHandler() ? "opacity-100" : "opacity-50"
           )}
+          onClick={() => activateSaveHandler() && saveHandler()}
         />
       </div>
     </div>

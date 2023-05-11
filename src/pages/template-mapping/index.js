@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { useRouter } from "next/router";
 import { Loader } from "../../components/Loader";
 import { notification } from "antd";
-import { openNotification } from "../../utils/functions";
+import { dateHandler, openNotification } from "../../utils/functions";
 import axios from "axios";
 
 function TemplateMapping() {
@@ -61,7 +61,6 @@ function TemplateMapping() {
         endUrl: `set-up/auth?authId=${authId}`,
       })
         .then((data) => {
-          console.log(data);
           data && setJWTtoken(data?.token);
           return data;
         })
@@ -94,18 +93,15 @@ function TemplateMapping() {
 
   const getTemplatesHandler = async () => {
     if (window) {
-      // const data = await tokenHandler();
+      const data = await tokenHandler();
       await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
-          // "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
-          "x-access-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodWJzcG90X3VzZXJfaWQiOjQ5NzkyNzIyLCJodWJzcG90X3BvcnRhbF9pZCI6MjQwNTA1MDMsInNpZ25lYXN5X2FjY2Vzc190b2tlbiI6ImV5SmhiR2NpT2lKU1V6STFOaUlzSW5SNWNDSTZJa3BYVkNJc0ltdHBaQ0k2SWpkTUxYWjBWRE5pTjJwWWMySTJjVVpqTFZCaE55SjkuZXlKb2RIUndjem92TDNOcFoyNWxZWE41TG1OdmJTOWxiV0ZwYkNJNkltRnVhMmwwUUhScGJHbGphRzh1YVc0aUxDSm9kSFJ3Y3pvdkwzTnBaMjVsWVhONUxtTnZiUzkxYzJWeVgybGtJam9pTVRBM016YzROellpTENKb2RIUndjem92TDNOcFoyNWxZWE41TG1OdmJTOTBaWE4wWDIxdlpHVWlPaUl4SWl3aWFIUjBjSE02THk5emFXZHVaV0Z6ZVM1amIyMHZhWE5mZFhObGNsOXBiWEJ2Y25SbFpDSTZabUZzYzJVc0ltaDBkSEJ6T2k4dmMybG5ibVZoYzNrdVkyOXRMMnh2WjJsdVgyTnZkVzUwSWpveU15d2lhSFIwY0hNNkx5OXphV2R1WldGemVTNWpiMjB2YzI5MWNtTmxJam9pWlcxaGFXd2lMQ0pwYzNNaU9pSm9kSFJ3Y3pvdkwyRjFkR2d1YzJsbmJtVmhjM2t1WTI5dEx5SXNJbk4xWWlJNkltRjFkR2d3ZkRZelpXUmpNRFZrTXpBek1tVmxNVGhtTWpVd01XVmlaQ0lzSW1GMVpDSTZJbWgwZEhCek9pOHZZWEJwTFdWNGRDNXphV2R1WldGemVTNWpiMjB2SWl3aWFXRjBJam94Tmpnek56STBORFUwTENKbGVIQWlPakUyT0RZek1UWTBOVFFzSW1GNmNDSTZJa0o2TURKNGJubGlURXhIYURkdGRuUm5SVTgwUkZsU1pIVmhXRkZDVGxCeElpd2ljMk52Y0dVaU9pSnljenBqY21WaGRHVWdjbk02ZFhCa1lYUmxJRzl5YVdkcGJtRnNPbkpsWVdRZ2IzSnBaMmx1WVd3NlkzSmxZWFJsSUc5eWFXZHBibUZzT25Wd1pHRjBaU0J6YVdkdVpXUTZjbVZoWkNCemFXZHVaV1E2WTNKbFlYUmxJSE5wWjI1bFpEcDFjR1JoZEdVZ2RYTmxjanB5WldGa0lHWnBiR1Z6T25KbFlXUWdkWE5sY2pwamNtVmhkR1VnZEdWdGNHeGhkR1U2YldGdVlXZGxJSEp6T25OcFoyNXBibWQxY213Z2NuTTZjbVZoWkNCdlptWnNhVzVsWDJGalkyVnpjeUo5LkdEdUtyMXV3SWxyQ21fUTlpT1FPNDRHNkRMSDV4N1ZuOU1TclEzUU54R2pVTXVOdTBvbmU5TW9OWHpwalZDTG4tWXFod2hJTkdXbHluZHpVc1VXZ1lxVlpQV3NhTXFiM3NPVzZGdjNTVzE1R2dvRXduTm1UUGpXZWFSSE56d21WNGI0NUdjVnhwSzM5YjNhUUpMZDlHYXh0Q3lNTjVDLU4teDJjLV9GSVlLQnI0V1lJMFcwMFFDemFkS2gyQUtNMWkyRXdOV080UHNGbWstZndqd01Vd25SSjkzbFZRRFB0c1JDbUJzaXFlWVpIOFJ0SG5tMWQtcm01aHNHMVQwZVR0TUN6aFFLZ2hVNzg3bTlhbXZ3LVo3MzJtSzhDckZ6UEtqc3JiWW56a1hpazVMWDFCbDhyaXNiS0RydXNLTmluU3Q2a1lNbDlLYlA5S29BN05HT0NoZyIsImlhdCI6MTY4MzgyMjc5MSwiZXhwIjoxNjgzODUxNTkxfQ.wN9TkUQpR-ynM8dRiSHU0gF9iMwJioVnrG6R1sYXZ3M",
+          "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
         },
       })
         .then((docsData) => {
-          console.log(docsData);
-          docsData && (tempaltesData.current = docsData);
+          docsData && (tempaltesData.current = docsData?.data);
           sortHandler();
         })
         .catch((err) => {
@@ -190,7 +186,7 @@ function TemplateMapping() {
                 </div>
                 <div className="w-[35%] flex justify-between items-center px-[24px]">
                   <div className="text-[14px] text-[#374659] font-[500] leading-[19.12px]">
-                    {"2/24/2023 9:49:10 PM"}
+                    {dateHandler({ timestamp: template?.modified_time })}
                   </div>
                   <DropDown
                     enableSearch={false}

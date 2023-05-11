@@ -10,6 +10,7 @@ export const MultiTextInputDropdown = ({
   addFun = () => {},
   deleteFun = () => {},
   specificIndex = 0,
+  singleInput = false,
 }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   return (
@@ -74,7 +75,12 @@ export const MultiTextInputDropdown = ({
                   <div
                     className="py-[7px] text-[14px] font-lexend text-[#99A6BA] cursor-pointer select-none"
                     onClick={() => {
-                      addFun(item, specificIndex);
+                      !singleInput &&
+                        data?.length > 0 &&
+                        addFun(item, specificIndex);
+                      singleInput &&
+                        data?.length === 0 &&
+                        addFun(item, specificIndex);
                       setShowDropDown(false);
                     }}
                     key={index}
