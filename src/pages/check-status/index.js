@@ -299,7 +299,7 @@ const CheckStatus = () => {
           }
         ></div> */}
         <div className="absolute right-0 bg-[white] z-20 border-[1px] w-[100%] top-[25px]">
-          {subActions?.map((action) => (
+          {subActions?.map((action, index) => (
             <div
               className="py-[10px] px-[10px]"
               onClick={() => {
@@ -308,6 +308,7 @@ const CheckStatus = () => {
                 if (action === "certificate")
                   certificateDownloadHandler(downloadDropdown?.envelop);
               }}
+              key={index}
             >
               {action}
             </div>
