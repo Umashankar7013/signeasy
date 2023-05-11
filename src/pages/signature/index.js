@@ -225,7 +225,6 @@ function Signature() {
               source_id: 1,
             },
           ],
-          // original_file_id: selectedItem?.id,
           recipients: signersData,
           embedded_signing: false,
           is_ordered: false,

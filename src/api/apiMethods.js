@@ -12,7 +12,7 @@ export const getApi = async ({
     params,
     body,
     headers,
-  }).catch((err) => console.log("Error", err));
+  });
   return data?.data;
 };
 
@@ -23,5 +23,21 @@ export const deleteApi = async ({ endUrl = "", params = {}, body = {} }) => {
     params,
     body,
   }).catch((err) => console.log("Error", err));
+  return data?.data;
+};
+
+export const putMethod = async ({
+  endUrl = "",
+  params = {},
+  body = {},
+  headers = {},
+}) => {
+  const data = await axios({
+    method: "put",
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}${endUrl}`,
+    params,
+    body,
+    headers,
+  });
   return data?.data;
 };

@@ -67,7 +67,7 @@ export const MultiTextInputDropdown = ({
             className="ovarallPop fixed inset-0"
             onClick={() => setShowDropDown(false)}
           ></div>
-          <div className="absolute left-0 top-[35px] border-[1px] w-[100%] px-[10px] z-30 bg-[white]">
+          <div className="absolute left-0 top-[40px] border-[1px] w-[100%] px-[10px] z-30 bg-[white]">
             {dropDownData?.map(
               (item, index) =>
                 !data?.includes(item) && (

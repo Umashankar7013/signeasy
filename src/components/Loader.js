@@ -1,9 +1,15 @@
 import { LoadingOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 import React from "react";
 
-export const Loader = () => {
+export const Loader = ({ className = "h-[100vh]" }) => {
   return (
-    <div className="flex h-[60vh] w-[100vw] justify-center items-center">
+    <div
+      className={classNames(
+        "flex w-[100vw] justify-center items-center",
+        className
+      )}
+    >
       <LoadingOutlined />
     </div>
   );

@@ -33,13 +33,13 @@ export default function SigneasyApp() {
         title="Template Mapping"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[yellow]"
         titleClassName="font-lexend"
-        onClick={() => router.push("/template_mapping")}
+        onClick={() => router.push("/template-mapping")}
       />
       <PrimaryButton
         title="Check Status"
         className="w-fit px-[20px] py-[10px]  mt-[10px] bg-[yellow]"
         titleClassName="font-lexend"
-        onClick={() => router.push("/check_status")}
+        onClick={() => router.push("/check-status")}
       />
     </div>
   );

@@ -18,7 +18,12 @@ export const PrimaryButton = ({
       onClick={loading ? () => {} : onClick}
     >
       <div className="flex items-center">{image}</div>
-      <div className={classNames("font-[400] leading-[24px]", titleClassName)}>
+      <div
+        className={classNames(
+          "font-[400] leading-[24px] select-none",
+          titleClassName
+        )}
+      >
         {loading ? (
           <div className="flex items-center py-[5px]">
             <LoadingOutlined />

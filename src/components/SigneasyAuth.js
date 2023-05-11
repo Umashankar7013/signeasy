@@ -20,6 +20,7 @@ export const SigneasyAuth = ({
   });
   const [revokeLoader, setRevokeLoader] = useState(false);
   const [hubspotCredentials, setHubspotCredentials] = useState(hubSpotAuth);
+  const [browserWindow, setBrowserWindow] = useState();
 
   const revokeHandler = async ({ endUrl }) => {
     setRevokeLoader(true);
@@ -82,7 +83,7 @@ export const SigneasyAuth = ({
   };
 
   useEffect(() => {
-    if (window && onlySigneasy) {
+    if (browserWindow && onlySigneasy) {
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
       const userId = searchParams?.get("hubspot_user_id");
@@ -95,7 +96,7 @@ export const SigneasyAuth = ({
         }));
       }
     }
-  }, []);
+  }, [browserWindow]);
 
   useEffect(() => {
     popupObserver({ popup: signeasyPopup });
@@ -109,6 +110,10 @@ export const SigneasyAuth = ({
       location && location?.assign(signeasyAuth?.redirectionUrl);
     }
   }, [signeasyAuth]);
+
+  useEffect(() => {
+    setBrowserWindow(window);
+  }, []);
 
   return (
     <>

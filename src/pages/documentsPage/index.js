@@ -52,25 +52,45 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
         lastName: lastName,
         email: email,
       });
-      const data = await getApi({
+      await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
-      });
-      data && setJWTtoken(data?.token);
-      return data;
+      })
+        .then((data) => {
+          data && setJWTtoken(data?.token);
+          return data;
+        })
+        .catch((err) => {
+          openNotification({
+            message: "Error",
+            description: err.message,
+            type: "error",
+            api,
+          });
+        });
     }
   };
 
   const getDocumentsHandler = async () => {
     const data = await tokenHandler();
     if (window) {
-      const docsData = await getApi({
+      await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
           "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
         },
-      });
-      docsData && (itemsData.current = docsData?.data?.files);
-      setFilteredData(itemsData?.current);
+      })
+        .then((docsData) => {
+          docsData && (itemsData.current = docsData?.data?.files);
+          setFilteredData(itemsData?.current);
+        })
+        .catch((err) => {
+          openNotification({
+            message: "Error",
+            description: err.message,
+            type: "error",
+            api,
+          });
+        });
       setLoading(false);
     } else {
       console.log("Not able to access the window.");
@@ -80,14 +100,25 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const getTemplatesHandler = async () => {
     const data = await tokenHandler();
     if (window) {
-      const docsData = await getApi({
+      await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
           "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
         },
-      });
-      docsData && (itemsData.current = docsData?.data);
-      setFilteredData(itemsData?.current);
+      })
+        .then((docsData) => {
+          docsData && (itemsData.current = docsData?.data);
+          setFilteredData(itemsData?.current);
+        })
+        .catch((err) => {
+          openNotification({
+            message: "Error",
+            description: err.message,
+            type: "error",
+            api,
+          });
+        });
+
       setLoading(false);
     } else {
       console.log("Not able to access the window.");
@@ -181,7 +212,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     <>
       {contextHolder}
       {loading ? (
-        <Loader />
+        <Loader className="h-[60vh]" />
       ) : (
         <>
           {/* Search bar */}
@@ -217,12 +248,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
                   "flex items-center py-[12px] cursor-pointer text-center",
                   selectedHeader.current === item && "bg-[#ebf0f5]",
                   index === 0 && "flex-1 justify-start",
-                  index === 1
-                    ? headerData?.length === 2
-                      ? "flex-[0.4] justify-center"
-                      : "flex-[0.6] justify-center"
-                    : ""
-                  // index === 2 && "flex-[0.4] justify-center"
+                  index === 1 && "flex-[0.4] justify-center"
                 )}
                 key={index}
                 onClick={() => {
