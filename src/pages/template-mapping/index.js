@@ -91,7 +91,7 @@ function TemplateMapping() {
       await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
-          "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
+          "x-access-token": data?.token || JWTtoken,
         },
       })
         .then((docsData) => {
