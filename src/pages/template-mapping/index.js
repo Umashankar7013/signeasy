@@ -128,7 +128,10 @@ function TemplateMapping() {
   }, []);
 
   useEffect(() => {
-    return () => setJWTtoken("");
+    return () => {
+      console.log("return");
+      setJWTtoken("");
+    };
   }, []);
 
   return (
