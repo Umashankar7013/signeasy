@@ -24,7 +24,7 @@ function TemplateMapping() {
     { id: 12, name: "Dummy11" },
     { id: 13, name: "Dummy12" },
   ]);
-  const { setDocParams, JWTtoken, setJWTtoken, setSelectedItem } =
+  const { setDocParams, JWTtoken, setJWTtoken, setSelectedItem, docParams } =
     useContext(AppContext);
   const headerData = [
     { title: "TEMPLATE NAME", width: "35%" },
@@ -40,14 +40,15 @@ function TemplateMapping() {
 
   const tokenHandler = async () => {
     let apiData = {};
-    if (JWTtoken === "" || JWTtoken === "undefined") {
-      const currentUrl = window.location.href;
-      console.log(currentUrl, "url");
-      const searchParams = new URL(currentUrl).searchParams;
-      const authId = searchParams?.get("authId");
-      const userId = searchParams?.get("hubspot_user_id");
-      const portalId = searchParams?.get("hubspot_portal_id");
-      const page = searchParams?.get("page");
+    // if (JWTtoken === "" || JWTtoken === "undefined") {
+    const currentUrl = window.location.href;
+    const searchParams = new URL(currentUrl).searchParams;
+    const authId = searchParams?.get("authId");
+    const userId = searchParams?.get("hubspot_user_id");
+    const portalId = searchParams?.get("hubspot_portal_id");
+    const page = searchParams?.get("page");
+    setDocParams((prev) => ({ ...prev, authId }));
+    if (authId === docParams?.authId) {
       await getApi({
         endUrl: `set-up/auth?authId=${authId}&hubspot_user_id=${userId}&hubspot_portal_id=${portalId}&page=${page}`,
       })
@@ -63,6 +64,7 @@ function TemplateMapping() {
             api,
           });
         });
+      // }
     }
     return apiData;
   };
