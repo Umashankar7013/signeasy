@@ -131,13 +131,6 @@ function TemplateMapping() {
     setBrowserWindow(window);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      console.log("return");
-      setJWTtoken("");
-    };
-  }, []);
-
   return (
     <>
       {contextHolder}
