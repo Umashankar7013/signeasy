@@ -42,6 +42,7 @@ function TemplateMapping() {
     let apiData = {};
     if (JWTtoken === "" || JWTtoken === "undefined") {
       const currentUrl = window.location.href;
+      console.log(currentUrl, "url");
       const searchParams = new URL(currentUrl).searchParams;
       const authId = searchParams?.get("authId");
       const userId = searchParams?.get("hubspot_user_id");
@@ -118,7 +119,6 @@ function TemplateMapping() {
   };
 
   useEffect(() => {
-    setJWTtoken("");
     if (browserWindow) {
       getTemplatesHandler();
     }
@@ -128,11 +128,12 @@ function TemplateMapping() {
     setBrowserWindow(window);
   }, []);
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("return");
-  //   };
-  // }, []);
+  useEffect(() => {
+    return () => {
+      console.log("return");
+      setJWTtoken("");
+    };
+  }, []);
 
   return (
     <>
