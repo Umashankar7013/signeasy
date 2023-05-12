@@ -118,6 +118,7 @@ function TemplateMapping() {
   };
 
   useEffect(() => {
+    setJWTtoken("");
     if (browserWindow) {
       getTemplatesHandler();
     }
@@ -127,12 +128,11 @@ function TemplateMapping() {
     setBrowserWindow(window);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      console.log("return");
-      setJWTtoken("");
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     console.log("return");
+  //   };
+  // }, []);
 
   return (
     <>
