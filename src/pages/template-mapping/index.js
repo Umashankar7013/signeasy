@@ -125,6 +125,10 @@ function TemplateMapping() {
     setBrowserWindow(window);
   }, []);
 
+  useEffect(() => {
+    return () => localStorage.clear();
+  }, []);
+
   return (
     <>
       {contextHolder}
