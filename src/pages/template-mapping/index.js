@@ -49,7 +49,7 @@ function TemplateMapping() {
       const portalId = searchParams?.get("hubspot_portal_id");
       const page = searchParams?.get("page");
       await getApi({
-        endUrl: `set-up/auth?authId=${authId}&hubspot_user_id=${userId}&hubspot_portal_id=${portalId}`,
+        endUrl: `set-up/auth?authId=${authId}&hubspot_user_id=${userId}&hubspot_portal_id=${portalId}&page=${page}`,
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
