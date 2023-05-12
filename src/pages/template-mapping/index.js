@@ -40,7 +40,6 @@ function TemplateMapping() {
 
   const tokenHandler = async () => {
     let apiData = {};
-    // if (JWTtoken === "" || JWTtoken === "undefined") {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
@@ -48,7 +47,6 @@ function TemplateMapping() {
     const portalId = searchParams?.get("hubspot_portal_id");
     const page = searchParams?.get("page");
     setDocParams((prev) => ({ ...prev, authId }));
-    console.log(authId === docParams?.authId)
     if (authId !== docParams?.authId) {
       await getApi({
         endUrl: `set-up/auth?authId=${authId}&hubspot_user_id=${userId}&hubspot_portal_id=${portalId}&page=${page}`,
@@ -65,7 +63,6 @@ function TemplateMapping() {
             api,
           });
         });
-      // }
     }
     return apiData;
   };

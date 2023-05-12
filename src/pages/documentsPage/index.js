@@ -36,23 +36,23 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
 
   const tokenHandler = async () => {
     let apiData = {};
-    if (JWTtoken === "" || JWTtoken === "undefined") {
-      const currentUrl = window.location.href;
-      const searchParams = new URL(currentUrl).searchParams;
-      const authId = searchParams?.get("authId");
-      const objectId = searchParams?.get("object_id");
-      const objectType = searchParams?.get("object_type");
-      const firstName = searchParams?.get("first_name");
-      const lastName = searchParams?.get("last_name");
-      const email = searchParams?.get("email");
-      setDocParams({
-        authId: authId,
-        objectId: objectId,
-        objectType: objectType,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-      });
+    const currentUrl = window.location.href;
+    const searchParams = new URL(currentUrl).searchParams;
+    const authId = searchParams?.get("authId");
+    const objectId = searchParams?.get("object_id");
+    const objectType = searchParams?.get("object_type");
+    const firstName = searchParams?.get("first_name");
+    const lastName = searchParams?.get("last_name");
+    const email = searchParams?.get("email");
+    setDocParams({
+      authId: authId,
+      objectId: objectId,
+      objectType: objectType,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+    });
+    if (authId !== docParams?.authId) {
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       })
@@ -78,7 +78,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
-          "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
+          "x-access-token": data?.token || JWTtoken,
         },
       })
         .then((docsData) => {
@@ -105,7 +105,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
-          "x-access-token": JWTtoken !== "" ? JWTtoken : data?.token,
+          "x-access-token": data?.token || JWTtoken,
         },
       })
         .then((docsData) => {

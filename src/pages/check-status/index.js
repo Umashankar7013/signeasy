@@ -88,17 +88,17 @@ const CheckStatus = () => {
 
   const tokenHandler = async () => {
     let apiData = {};
-    if (JWTtoken === "" || JWTtoken === "undefined") {
-      const currentUrl = window.location.href;
-      const searchParams = new URL(currentUrl).searchParams;
-      const authId = searchParams?.get("authId");
-      const objectId = searchParams?.get("object_id");
-      const objectType = searchParams?.get("object_type");
-      setDocParams({
-        authId: authId,
-        objectId: objectId,
-        objectType: objectType,
-      });
+    const currentUrl = window.location.href;
+    const searchParams = new URL(currentUrl).searchParams;
+    const authId = searchParams?.get("authId");
+    const objectId = searchParams?.get("object_id");
+    const objectType = searchParams?.get("object_type");
+    setDocParams({
+      authId: authId,
+      objectId: objectId,
+      objectType: objectType,
+    });
+    if (authId !== docParams?.authId) {
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       })
@@ -125,7 +125,7 @@ const CheckStatus = () => {
         docParams?.objectType
       }&object_id=${Number(docParams?.objectId)}`,
       headers: {
-        "x-access-token": JWTtoken !== "" ? JWTtoken : token?.token,
+        "x-access-token": token?.token || JWTtoken,
       },
     })
       .then((data) => {
