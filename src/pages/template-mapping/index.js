@@ -128,7 +128,7 @@ function TemplateMapping() {
   }, []);
 
   useEffect(() => {
-    return () => localStorage.clear();
+    return () => setJWTtoken("");
   }, []);
 
   return (
