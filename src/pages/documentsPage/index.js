@@ -35,6 +35,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const [api, contextHolder] = notification.useNotification();
 
   const tokenHandler = async () => {
+    let apiData = {};
     if (JWTtoken === "" || JWTtoken === "undefined") {
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
@@ -57,7 +58,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
-          return data;
+          apiData = data;
         })
         .catch((err) => {
           openNotification({
@@ -68,6 +69,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
           });
         });
     }
+    return apiData;
   };
 
   const getDocumentsHandler = async () => {
@@ -206,6 +208,10 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
 
   useEffect(() => {
     setBrowserWindow(window);
+  }, []);
+
+  useEffect(() => {
+    return () => setJWTtoken("");
   }, []);
 
   return (

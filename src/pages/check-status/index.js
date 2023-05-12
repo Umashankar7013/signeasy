@@ -87,6 +87,7 @@ const CheckStatus = () => {
   };
 
   const tokenHandler = async () => {
+    let apiData = {};
     if (JWTtoken === "" || JWTtoken === "undefined") {
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
@@ -103,7 +104,7 @@ const CheckStatus = () => {
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
-          return data;
+          apiData = data;
         })
         .catch((err) => {
           openNotification({
@@ -114,6 +115,7 @@ const CheckStatus = () => {
           });
         });
     }
+    return apiData;
   };
 
   const getDataHandler = async () => {
@@ -324,6 +326,10 @@ const CheckStatus = () => {
 
   useEffect(() => {
     setBrowserWindow(window);
+  }, []);
+
+  useEffect(() => {
+    return () => setJWTtoken("");
   }, []);
 
   return (
