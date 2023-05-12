@@ -210,10 +210,6 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     setBrowserWindow(window);
   }, []);
 
-  useEffect(() => {
-    return () => setJWTtoken("");
-  }, []);
-
   return (
     <>
       {contextHolder}

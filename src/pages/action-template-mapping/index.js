@@ -93,9 +93,9 @@ function ActionTemplateMapping() {
     let dataObject = {};
     tabs?.map((tab) => {
       let array = [];
-      selectedItem?.metadata?.fields?.map((field) => {
+      selectedItem?.metadata?.merge_fields?.map((field) => {
         array.push({
-          name: field?.sub_type,
+          name: field?.label,
           dropDownData: tabsDropdownData[tab],
           selectedVariables: [],
         });

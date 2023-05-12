@@ -15,6 +15,7 @@ import { Loader } from "../../components/Loader";
 import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
+import { SignersData } from "../../components/SignersData";
 
 const CheckStatus = () => {
   const statusData = [
@@ -63,13 +64,20 @@ const CheckStatus = () => {
   const [browserWindow, setBrowserWindow] = useState();
   const { setDocParams, setJWTtoken, JWTtoken, docParams } =
     useContext(AppContext);
-  const [docsData, setDocsData] = useState();
+  const docsData = useRef();
   const [loading, setLoading] = useState(true);
   const [downloadDropdown, setDownloadDropdown] = useState({
     isVisible: false,
     envelop: {},
   });
   const [api, contextHolder] = notification.useNotification();
+  const signersData = useRef([]);
+  const [showSignersData, setShowSignersData] = useState(false);
+
+  const dataManipulator = () => {
+    const envelopes = docsData?.current?.envelopes;
+    console.log(envelopes);
+  };
 
   const sortHandler = (selectedHeader) => {
     const documentUtils = {
@@ -121,16 +129,15 @@ const CheckStatus = () => {
   const getDataHandler = async () => {
     const token = await tokenHandler();
     await getApi({
-      endUrl: `hubspot-card/check-status?object_type=${
-        docParams?.objectType
-      }&object_id=${Number(docParams?.objectId)}`,
+      endUrl: `hubspot-card/check-status?object_type=CONTACT&object_id=101`,
       headers: {
         "x-access-token": token?.token || JWTtoken,
       },
     })
       .then((data) => {
-        setDocsData(data?.data || {});
+        docsData.current = data?.data || {};
         setSortedData(data?.data?.envelopes);
+        // dataManipulator();
       })
       .catch((err) => {
         openNotification({
@@ -281,15 +288,7 @@ const CheckStatus = () => {
     const subActions = ["original", "certificate"];
     return (
       <>
-        {/* <div
-          className="ovarallPop fixed inset-0"
-          onClick={() =>
-            setDownloadDropdown({
-              isVisible: false,
-              envelop: {},
-            })
-          }
-        ></div> */}
+        <div className="ovarallPop fixed inset-0"></div>
         <div className="absolute right-0 bg-[white] z-20 border-[1px] w-[100%] top-[25px]">
           {subActions?.map((action, index) => (
             <div
@@ -311,13 +310,38 @@ const CheckStatus = () => {
   };
 
   const signersCountHandler = (data, status) => {
-    if (data?.length === 1 && status === "voided") {
-      return "You";
+    if (statusHandler(data) === "declined") {
+      const count = declinedMembersCount(data);
+      return count > 1 ? `${count} signers` : "1 signer";
     } else if (data?.length > 1) {
       return `${data?.length} signers`;
     } else if (data?.length === 1) {
       return "1 signer";
     }
+  };
+
+  const declinedMembersCount = (data) => {
+    let count = 0;
+    data?.recipients?.map((recipient) => {
+      if (recipient?.status === "declined") {
+        count += 1;
+      }
+    });
+    return count;
+  };
+
+  const statusHandler = (data) => {
+    let status;
+    let flag = 0;
+    data?.recipients?.map((recipient) => {
+      if (recipient?.status === "declined") {
+        flag = 1;
+        status = recipient?.status;
+        return;
+      }
+    });
+    if (flag === 0) return data?.status;
+    else return status;
   };
 
   useEffect(() => {
@@ -326,10 +350,6 @@ const CheckStatus = () => {
 
   useEffect(() => {
     setBrowserWindow(window);
-  }, []);
-
-  useEffect(() => {
-    return () => setJWTtoken("");
   }, []);
 
   return (
@@ -352,8 +372,8 @@ const CheckStatus = () => {
                 <div className="text-[#838b90] text-[14px]">{item?.title}</div>
                 <div className="font-[500]">
                   {item?.title === "Waiting for others"
-                    ? docsData?.pending
-                    : docsData?.[item?.title.toLowerCase()]}
+                    ? docsData?.current?.pending
+                    : docsData?.current?.[item?.title.toLowerCase()]}
                 </div>
               </div>
             ))}
@@ -392,12 +412,20 @@ const CheckStatus = () => {
                     {item?.name}
                   </div>
                 </div>
-                <div className="w-[20%]">
+                <div
+                  className="w-[20%] cursor-pointer select-none relative"
+                  onClick={() => {
+                    setShowSignersData(!showSignersData);
+                    signersData.current = item;
+                  }}
+                >
                   <div
                     style={{ color: statusUtils[item?.status].color }}
                     className="text-[14px] capitalize"
                   >
-                    {item?.status === "pending" ? "Waiting" : item?.status}
+                    {statusHandler(item) === "pending"
+                      ? "Waiting"
+                      : statusHandler(item)}
                   </div>
                   <div className="text-[14px] text-[#838b90]">
                     {statusUtils[item?.status]?.subText}
@@ -405,6 +433,10 @@ const CheckStatus = () => {
                       {signersCountHandler(item?.recipients, item?.status)}
                     </span>
                   </div>
+                  {showSignersData &&
+                    signersData.current?.envelope_id === item?.envelope_id && (
+                      <SignersData data={signersData.current?.recipients} />
+                    )}
                 </div>
                 <div className="w-[20%] text-[14px]">
                   {moment(item?.updatedAt).format("LLL")}
