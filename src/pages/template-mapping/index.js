@@ -39,7 +39,6 @@ function TemplateMapping() {
   const [api, contextHolder] = notification.useNotification();
 
   const tokenHandler = async () => {
-    let apiData = {};
     if (JWTtoken === "" || JWTtoken === "undefined") {
       const currentUrl = window.location.href;
       const searchParams = new URL(currentUrl).searchParams;
@@ -52,7 +51,7 @@ function TemplateMapping() {
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
-          apiData = data;
+          return data;
         })
         .catch((err) => {
           openNotification({
@@ -63,7 +62,6 @@ function TemplateMapping() {
           });
         });
     }
-    return apiData;
   };
 
   const sortHandler = () => {
