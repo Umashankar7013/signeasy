@@ -49,7 +49,7 @@ function TemplateMapping() {
     const page = searchParams?.get("page");
     setDocParams((prev) => ({ ...prev, authId }));
     console.log(authId === docParams?.authId)
-    if (authId === docParams?.authId) {
+    if (authId !== docParams?.authId) {
       await getApi({
         endUrl: `set-up/auth?authId=${authId}&hubspot_user_id=${userId}&hubspot_portal_id=${portalId}&page=${page}`,
       })
