@@ -71,8 +71,8 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   };
 
   const getDocumentsHandler = async () => {
-    const data = await tokenHandler();
     if (window) {
+      const data = await tokenHandler();
       await getApi({
         endUrl: "hubspot-card/documents",
         headers: {
@@ -98,8 +98,8 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   };
 
   const getTemplatesHandler = async () => {
-    const data = await tokenHandler();
     if (window) {
+      const data = await tokenHandler();
       await getApi({
         endUrl: "hubspot-card/templates",
         headers: {
@@ -197,10 +197,10 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   };
 
   useEffect(() => {
-    if (forTemplates) {
+    if (forTemplates && browserWindow) {
       getTemplatesHandler();
     } else {
-      getDocumentsHandler();
+      if (browserWindow) getDocumentsHandler();
     }
   }, [browserWindow]);
 
