@@ -6,8 +6,8 @@ export const SignersData = ({ data }) => {
     <>
       <div className="ovarallPop fixed inset-0"></div>
       <div className="absolute bg-[white] left-[-40px] z-20 rounded-[5px] p-[15px] max-h-[400px] overflow-y-scroll shadow-all top-[50px]">
-        {data?.map((item) => (
-          <div>
+        {data?.map((item, index) => (
+          <div key={index}>
             <div className="flex pb-[10px]">
               <UserOutlined className="pt-[3px]" />
               <div className="pl-[10px]">
