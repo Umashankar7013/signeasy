@@ -64,7 +64,7 @@ const CheckStatus = () => {
   const [browserWindow, setBrowserWindow] = useState();
   const { setDocParams, setJWTtoken, JWTtoken, docParams } =
     useContext(AppContext);
-  const docsData = useRef();
+  const docsData = useRef({});
   const [loading, setLoading] = useState(true);
   const [downloadDropdown, setDownloadDropdown] = useState({
     isVisible: false,
@@ -74,15 +74,53 @@ const CheckStatus = () => {
   const signersData = useRef([]);
   const [showSignersData, setShowSignersData] = useState(false);
 
+  const statusHandler = (data) => {
+    let status;
+    let flag = 0;
+    data?.recipients?.map((recipient) => {
+      if (recipient?.status === "declined") {
+        flag = 1;
+        status = recipient?.status;
+        return;
+      }
+    });
+    if (flag === 0) return data?.status;
+    else return status;
+  };
+
+  const statusSortHandler = (envelopes) => {
+    const statusOrder = ["voided", "declined", "pending", "completed"];
+    let sortedEnvelopes = [];
+    statusOrder?.map((status) => {
+      envelopes?.map((envelope) => {
+        if (envelope?.status === status) {
+          sortedEnvelopes.push(envelope);
+        }
+      });
+    });
+    return sortedEnvelopes;
+  };
+
   const dataManipulator = () => {
     const envelopes = docsData?.current?.envelopes;
-    console.log(envelopes);
+    docsData.current.pending = 0;
+    docsData.current.completed = 0;
+    docsData.current.declined = 0;
+    docsData.current.voided = 0;
+    let envelopesCopy = envelopes;
+    envelopes?.map((envelop, index) => {
+      const status = statusHandler(envelop);
+      envelopesCopy[index].status = status;
+      docsData.current[status] += 1;
+    });
+    docsData.current.envelopes = envelopesCopy;
+    const statusSortedData = statusSortHandler(envelopesCopy);
+    setSortedData(statusSortedData);
   };
 
   const sortHandler = (selectedHeader) => {
     const documentUtils = {
       "Document Name": "name",
-      Status: "status",
       "Last Modified": "last_modified",
     };
     const sortKey = documentUtils?.[selectedHeader];
@@ -129,15 +167,16 @@ const CheckStatus = () => {
   const getDataHandler = async () => {
     const token = await tokenHandler();
     await getApi({
-      endUrl: `hubspot-card/check-status?object_type=CONTACT&object_id=101`,
+      endUrl: `hubspot-card/check-status?object_type=${
+        docParams.objectType
+      }&object_id=${Number(docParams.objectId)}`,
       headers: {
         "x-access-token": token?.token || JWTtoken,
       },
     })
       .then((data) => {
         docsData.current = data?.data || {};
-        setSortedData(data?.data?.envelopes);
-        // dataManipulator();
+        dataManipulator();
       })
       .catch((err) => {
         openNotification({
@@ -309,7 +348,7 @@ const CheckStatus = () => {
     );
   };
 
-  const signersCountHandler = (data, status) => {
+  const signersCountHandler = (data) => {
     if (statusHandler(data) === "declined") {
       const count = declinedMembersCount(data);
       return count > 1 ? `${count} signers` : "1 signer";
@@ -328,20 +367,6 @@ const CheckStatus = () => {
       }
     });
     return count;
-  };
-
-  const statusHandler = (data) => {
-    let status;
-    let flag = 0;
-    data?.recipients?.map((recipient) => {
-      if (recipient?.status === "declined") {
-        flag = 1;
-        status = recipient?.status;
-        return;
-      }
-    });
-    if (flag === 0) return data?.status;
-    else return status;
   };
 
   useEffect(() => {
@@ -387,7 +412,16 @@ const CheckStatus = () => {
                   item?.title === "Actions" && "justify-end"
                 )}
                 style={{ width: item?.width }}
-                onClick={() => sortHandler(item?.title)}
+                onClick={() => {
+                  if (item?.title === "Status") {
+                    const sortedEnvelopes = statusSortHandler(
+                      docsData.current.envelopes
+                    );
+                    setSortedData(sortedEnvelopes);
+                  } else {
+                    sortHandler(item?.title);
+                  }
+                }}
                 key={index}
               >
                 <div className="text-[14px] text-[#838b90]">{item?.title}</div>
@@ -423,9 +457,7 @@ const CheckStatus = () => {
                     style={{ color: statusUtils[item?.status].color }}
                     className="text-[14px] capitalize"
                   >
-                    {statusHandler(item) === "pending"
-                      ? "Waiting"
-                      : statusHandler(item)}
+                    {item?.status === "pending" ? "Waiting" : item?.status}
                   </div>
                   <div className="text-[14px] text-[#838b90]">
                     {statusUtils[item?.status]?.subText}
