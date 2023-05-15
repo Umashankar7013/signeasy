@@ -128,14 +128,14 @@ function TemplateMapping() {
   }, []);
 
   return (
-    <>
+    <div className="">
       {contextHolder}
       {loading ? (
         <Loader />
       ) : (
         <div className="border-[1px] border-[#CDD6E1]">
           {/* Header */}
-          <div className="w-[100%] fixed z-50 top-0 flex border-b-[1px] border-b-[#CDD6E1]">
+          <div className="fixed w-[100%] z-50 flex border-b-[1px] border-b-[#CDD6E1]">
             {headerData?.map((header, index) => (
               <div
                 key={index}
@@ -143,11 +143,11 @@ function TemplateMapping() {
                   width: header?.width,
                 }}
                 onClick={() => {
-                  selectedHeader.current = header?.title;
+                  selectedHeader.current = header?.title || "";
                   sortHandler();
                 }}
                 className={classNames(
-                  "text-[12px] text-[#374659] font-[500] px-[24px] leading-[16.39px] py-[15px] cursor-pointer",
+                  "text-[12px] text-[#374659] font-[500] px-[24px] py-[15px] leading-[16.39px] cursor-pointer",
                   selectedHeader.current === header?.title
                     ? "bg-[#CDD6E1]"
                     : "bg-[#EBF0F5]"
@@ -183,10 +183,7 @@ function TemplateMapping() {
                     contentHeader="Actions"
                     className="w-[100px]"
                     showBottomContent={false}
-                    dropDownData={[
-                      { name: "Template mapping" },
-                      { name: "Edit" },
-                    ]}
+                    dropDownData={[{ name: "Template mapping" }]}
                     dropDownClassName="w-[200px] right-[0px]"
                     dropDownContentClassName="py-[15px] pl-[22px] text-[14px]"
                     onClick={actionsHandler}
@@ -198,7 +195,7 @@ function TemplateMapping() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

@@ -168,8 +168,8 @@ const CheckStatus = () => {
     const token = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
-        docParams.objectType
-      }&object_id=${Number(docParams.objectId)}`,
+        docParams.objectType || "CONTACT"
+      }&object_id=${Number(docParams.objectId || "101")}`,
       headers: {
         "x-access-token": token?.token || JWTtoken,
       },
@@ -198,7 +198,11 @@ const CheckStatus = () => {
       },
     })
       .then((data) => {
-        console.log(data);
+        openNotification({
+          message: "Success",
+          description: "Successfully sent the reminder.",
+          api,
+        });
       })
       .catch((err) => {
         openNotification({
@@ -219,14 +223,22 @@ const CheckStatus = () => {
       headers: {
         "x-access-token": JWTtoken,
       },
-    }).catch((err) => {
-      openNotification({
-        message: "Error",
-        description: err.message,
-        type: "error",
-        api,
+    })
+      .then((data) => {
+        openNotification({
+          message: "Success",
+          description: "Voided succesfully.",
+          api,
+        });
+      })
+      .catch((err) => {
+        openNotification({
+          message: "Error",
+          description: err.message,
+          type: "error",
+          api,
+        });
       });
-    });
     await getDataHandler();
     setLoading(false);
   };
@@ -350,8 +362,11 @@ const CheckStatus = () => {
 
   const signersCountHandler = (data, status) => {
     if (status === "declined") {
-      const count = declinedMembersCount(data);
-      return count > 1 ? `${count} signers` : "1 signer";
+      const count = statusMembersCount(data, "declined");
+      return count > 1 ? `${count} signers` : `${count} signer`;
+    } else if (status === "pending") {
+      const count = statusMembersCount(data, "not_viewed");
+      return count > 1 ? `${count} signers` : `${count} signer`;
     } else if (data?.length > 1) {
       return `${data?.length} signers`;
     } else if (data?.length === 1) {
@@ -359,10 +374,10 @@ const CheckStatus = () => {
     }
   };
 
-  const declinedMembersCount = (data) => {
+  const statusMembersCount = (data, status) => {
     let count = 0;
-    data?.recipients?.map((recipient) => {
-      if (recipient?.status === "declined") {
+    data?.map((recipient) => {
+      if (recipient?.status === status) {
         count += 1;
       }
     });

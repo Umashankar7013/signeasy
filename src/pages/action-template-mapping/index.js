@@ -110,7 +110,7 @@ function ActionTemplateMapping() {
   }, []);
 
   return (
-    <div>
+    <div className="p-[30px]">
       {/* Back Button */}
       <div
         className="flex items-center cursor-pointer w-fit pb-[15px]"
@@ -172,7 +172,7 @@ function ActionTemplateMapping() {
         </div>
       </div>
       {/* Save Button */}
-      <div className="fixed bottom-0 h-[68px] bg-[#F6F8FA] w-[100%] flex items-center">
+      <div className="fixed bottom-0 h-[68px] bg-[#F6F8FA] w-[94%] flex items-center">
         <PrimaryButton
           title="Save"
           className={classNames(
