@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
     firstName: "",
     lastName: "",
     email: "",
+    name: "",
   });
   const [JWTtoken, setJWTtoken] = useLocalStorage("JWTtoken", "");
   const [hubSpotAuth, setHubspotAuth] = useState({

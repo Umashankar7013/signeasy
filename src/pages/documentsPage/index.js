@@ -44,6 +44,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     const firstName = searchParams?.get("first_name");
     const lastName = searchParams?.get("last_name");
     const email = searchParams?.get("email");
+    const name = searchParams?.get("name");
     setDocParams({
       authId: authId,
       objectId: objectId,
@@ -51,6 +52,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       firstName: firstName,
       lastName: lastName,
       email: email,
+      name: name,
     });
     if (authId !== docParams?.authId) {
       await getApi({

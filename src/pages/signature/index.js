@@ -143,6 +143,10 @@ function Signature() {
       } else {
         params = {
           object_type: docParams?.objectType,
+          first_name: docParams?.firstName,
+          last_name: docParams?.lastName,
+          email: docParams?.email,
+          name: docParams?.name,
         };
         data = {
           sources: [
@@ -203,6 +207,7 @@ function Signature() {
         formattedEmails?.push({ email: item });
       });
       let data;
+      let params = {};
       if (type === "original") {
         data = {
           sources: [
@@ -221,6 +226,13 @@ function Signature() {
           is_ordered: false,
         };
       } else {
+        params = {
+          object_type: docParams?.objectType,
+          first_name: docParams?.firstName,
+          last_name: docParams?.lastName,
+          email: docParams?.email,
+          name: docParams?.name,
+        };
         data = {
           sources: [
             {
@@ -245,7 +257,8 @@ function Signature() {
         method: "post",
         url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
         headers: { "x-access-token": JWTtoken },
-        data: data,
+        data,
+        params,
       })
         .then(async (data) => {
           window?.open(data?.data?.data?.url, "_self");
