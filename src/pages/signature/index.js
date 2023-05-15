@@ -132,6 +132,7 @@ function Signature() {
       });
 
       let data;
+      let params = {};
       if (type === "original") {
         data = {
           original_file_id: selectedItem?.id,
@@ -140,6 +141,9 @@ function Signature() {
           is_ordered: 1,
         };
       } else {
+        params = {
+          object_type: docParams?.objectType,
+        };
         data = {
           sources: [
             {
@@ -164,7 +168,8 @@ function Signature() {
           type === "original" ? "documents" : "templates"
         }/send-envelope`,
         headers: { "x-access-token": JWTtoken },
-        data: data,
+        data,
+        params,
       })
         .then(async (data) => {
           await envelopSaveHandler({
