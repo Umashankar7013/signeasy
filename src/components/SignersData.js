@@ -1,24 +1,33 @@
-import { UserOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 import React from "react";
 
 export const SignersData = ({ data }) => {
   return (
     <>
       <div className="ovarallPop fixed inset-0"></div>
-      <div className="absolute bg-[white] left-[-40px] z-20 rounded-[5px] p-[15px] max-h-[400px] overflow-y-scroll shadow-all top-[50px]">
+      <div className="absolute bg-[white] left-[-40px] z-20 rounded-[5px] px-[15px] max-h-[400px] overflow-y-scroll shadow-all top-[50px]">
         {data?.map((item, index) => (
           <div key={index}>
-            <div className="flex pb-[10px]">
-              <UserOutlined className="pt-[3px]" />
+            <div
+              className={classNames(
+                "flex py-[10px] items-center",
+                index !== data?.length - 1 && "border-b-[1px]"
+              )}
+            >
               <div className="pl-[10px]">
-                <div className="text-[14px] font-lexend">{`${
-                  item?.first_name || ""
-                } ${item?.last_name || ""}`}</div>
                 <div className="text-[14px] font-lexend">
-                  {item?.email || ""}
+                  Name :
+                  <span className="font-[300]">
+                    {` ${item?.first_name || ""} ${item?.last_name || ""}`}
+                  </span>
                 </div>
                 <div className="text-[14px] font-lexend">
-                  {item?.status || ""}
+                  Email :
+                  <span className="font-[300]">{` ${item?.email || ""}`}</span>
+                </div>
+                <div className="text-[14px] font-lexend">
+                  Status :
+                  <span className="font-[300]">{` ${item?.status || ""}`}</span>
                 </div>
               </div>
             </div>

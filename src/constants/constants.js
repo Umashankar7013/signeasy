@@ -2,7 +2,7 @@ export const AUTH_REDIRECTION_URL = `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}au
 
 export const SIGNEASY_REDIRECTION_URL = `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}oauth/signeasy?only_signeasy=true`;
 
-const envelopes = {
+export const envelopes = {
   pending: 1,
   completed: 1,
   voided: 2,
