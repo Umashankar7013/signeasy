@@ -348,8 +348,8 @@ const CheckStatus = () => {
     );
   };
 
-  const signersCountHandler = (data) => {
-    if (statusHandler(data) === "declined") {
+  const signersCountHandler = (data, status) => {
+    if (status === "declined") {
       const count = declinedMembersCount(data);
       return count > 1 ? `${count} signers` : "1 signer";
     } else if (data?.length > 1) {
