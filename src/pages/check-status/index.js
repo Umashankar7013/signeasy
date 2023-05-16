@@ -143,11 +143,7 @@ const CheckStatus = () => {
     const authId = searchParams?.get("authId");
     const objectId = searchParams?.get("object_id");
     const objectType = searchParams?.get("object_type");
-    setDocParams({
-      authId: authId,
-      objectId: objectId,
-      objectType: objectType,
-    });
+    setDocParams((prev) => ({ ...prev, authId, objectId, objectType }));
     if (authId !== docParams?.authId) {
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
@@ -172,8 +168,8 @@ const CheckStatus = () => {
     const token = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
-        docParams.objectType
-      }&object_id=${Number(docParams.objectId)}`,
+        docParams?.objectType
+      }&object_id=${Number(docParams?.objectId)}`,
       headers: {
         "x-access-token": token?.token || JWTtoken,
       },
