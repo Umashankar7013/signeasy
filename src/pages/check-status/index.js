@@ -70,6 +70,10 @@ const CheckStatus = () => {
     isVisible: false,
     envelop: {},
   });
+  const [threeDotDropdown, setThreeDotDropdown] = useState({
+    isVisible: false,
+    envelop: {},
+  });
   const [api, contextHolder] = notification.useNotification();
   const signersData = useRef([]);
   const [showSignersData, setShowSignersData] = useState(false);
@@ -168,8 +172,8 @@ const CheckStatus = () => {
     const token = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
-        docParams.objectType || "CONTACT"
-      }&object_id=${Number(docParams.objectId || "101")}`,
+        docParams.objectType
+      }&object_id=${Number(docParams.objectId)}`,
       headers: {
         "x-access-token": token?.token || JWTtoken,
       },
@@ -230,6 +234,7 @@ const CheckStatus = () => {
           description: "Voided succesfully.",
           api,
         });
+        setThreeDotDropdown({ isVisible: false, envelop: {} });
       })
       .catch((err) => {
         openNotification({
@@ -335,24 +340,18 @@ const CheckStatus = () => {
     if (action === "Download") documentWithCertificateDownloadHandler(envelop);
   };
 
-  const ActionsDropdown = () => {
-    const subActions = ["original", "certificate"];
+  const ActionsDropdown = ({ subActions }) => {
     return (
       <>
         <div className="ovarallPop fixed inset-0"></div>
         <div className="absolute right-0 bg-[white] z-20 border-[1px] w-[100%] top-[25px]">
           {subActions?.map((action, index) => (
             <div
-              className="py-[10px] px-[10px]"
-              onClick={() => {
-                if (action === "original")
-                  originalDownloadHandler(downloadDropdown?.envelop);
-                if (action === "certificate")
-                  certificateDownloadHandler(downloadDropdown?.envelop);
-              }}
+              className="py-[10px] px-[10px] text-[14px] cursor-pointer"
+              onClick={action?.onClick}
               key={index}
             >
-              {action}
+              {action?.title}
             </div>
           ))}
         </div>
@@ -391,6 +390,24 @@ const CheckStatus = () => {
   useEffect(() => {
     setBrowserWindow(window);
   }, []);
+
+  const subActionsObject = [
+    {
+      title: "original",
+      onClick: () => originalDownloadHandler(downloadDropdown?.envelop),
+    },
+    {
+      title: "certificate",
+      onClick: () => certificateDownloadHandler(downloadDropdown?.envelop),
+    },
+  ];
+
+  const threeDotSubActionsObject = [
+    {
+      title: "Void",
+      onClick: () => voidHandler(threeDotDropdown?.envelop?.envelope_id),
+    },
+  ];
 
   return (
     <>
@@ -488,9 +505,9 @@ const CheckStatus = () => {
                 <div className="w-[20%] text-[14px]">
                   {moment(item?.updatedAt).format("LLL")}
                 </div>
-                <div className="flex items-center relative justify-end w-[20%] cursor-pointer select-none">
+                <div className="flex items-center relative justify-end w-[20%] select-none">
                   <div
-                    className="w-[50%] justify-end flex items-center text-[#3c9eeb] text-[14px]"
+                    className="w-[50%] justify-end flex items-center text-[#3c9eeb] text-[14px] cursor-pointer"
                     onClick={() =>
                       item?.status === "completed"
                         ? setDownloadDropdown((prev) => ({
@@ -507,9 +524,30 @@ const CheckStatus = () => {
                     )}
                     {downloadDropdown?.isVisible &&
                       downloadDropdown?.envelop?.envelope_id ===
-                        item?.envelope_id && <ActionsDropdown />}
+                        item?.envelope_id && (
+                        <ActionsDropdown subActions={subActionsObject} />
+                      )}
                   </div>
-                  <EllipsisOutlined className="pl-[20px]" />
+                  <div
+                    className="text-[#3c9eeb] cursor-pointer"
+                    onClick={() =>
+                      item?.status === "pending" &&
+                      setThreeDotDropdown((prev) => ({
+                        ...prev,
+                        isVisible: !prev.isVisible,
+                        envelop: item,
+                      }))
+                    }
+                  >
+                    <EllipsisOutlined className="pl-[20px] cursor-pointer" />
+                    {threeDotDropdown?.isVisible &&
+                      threeDotDropdown?.envelop?.envelope_id ===
+                        item?.envelope_id && (
+                        <ActionsDropdown
+                          subActions={threeDotSubActionsObject}
+                        />
+                      )}
+                  </div>
                 </div>
               </div>
             ))}
