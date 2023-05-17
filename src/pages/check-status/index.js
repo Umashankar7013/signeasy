@@ -65,7 +65,7 @@ const CheckStatus = () => {
   const [browserWindow, setBrowserWindow] = useState();
   const { setDocParams, setJWTtoken, JWTtoken, docParams } =
     useContext(AppContext);
-  const docsData = useRef(envelopes);
+  const docsData = useRef({});
   const [loading, setLoading] = useState(true);
   const [downloadDropdown, setDownloadDropdown] = useState({
     isVisible: false,
