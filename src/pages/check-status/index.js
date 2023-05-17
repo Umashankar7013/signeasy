@@ -16,6 +16,7 @@ import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
+import { envelopes } from "../../constants/constants";
 
 const CheckStatus = () => {
   const statusData = [
@@ -64,7 +65,7 @@ const CheckStatus = () => {
   const [browserWindow, setBrowserWindow] = useState();
   const { setDocParams, setJWTtoken, JWTtoken, docParams } =
     useContext(AppContext);
-  const docsData = useRef({});
+  const docsData = useRef(envelopes);
   const [loading, setLoading] = useState(true);
   const [downloadDropdown, setDownloadDropdown] = useState({
     isVisible: false,
@@ -134,6 +135,24 @@ const CheckStatus = () => {
       else if (a?.[sortKey] === b?.[sortKey]) return 0;
     });
     laterSort && setSortedData([...laterSort]);
+  };
+
+  const getSignedFileId = async (envelopeId) => {
+    const data = await axios({
+      method: "get",
+      url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId}`,
+      headers: {
+        "x-access-token": JWTtoken,
+      },
+    }).catch((err) => {
+      openNotification({
+        message: "Error",
+        description: err.message,
+        type: "error",
+        api,
+      });
+    });
+    return data?.id;
   };
 
   const tokenHandler = async () => {
@@ -256,8 +275,10 @@ const CheckStatus = () => {
 
   const originalDownloadHandler = async (envelope) => {
     setLoading(true);
-    await getApi({
-      endUrl: `actions/download/original/${envelope?.envelope_id}`,
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    await axios({
+      method: "get",
+      url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
       headers: {
         "x-access-token": JWTtoken,
       },
@@ -283,8 +304,10 @@ const CheckStatus = () => {
 
   const certificateDownloadHandler = async (envelope) => {
     setLoading(true);
-    await getApi({
-      endUrl: `actions/download/certificate/${envelope?.envelope_id}`,
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    await axios({
+      method: "get",
+      url: `https://api.signeasy.com/v3/rs/envelope/signed/${signed_file_id}/certificate`,
       headers: {
         "x-access-token": JWTtoken,
       },
@@ -310,14 +333,21 @@ const CheckStatus = () => {
 
   const documentWithCertificateDownloadHandler = async (envelope) => {
     setLoading(true);
-    await getApi({
-      endUrl: `actions/download/certificate-original/${envelope?.envelope_id}`,
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    await axios({
+      method: "get",
+      url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=true`,
       headers: {
         "x-access-token": JWTtoken,
       },
     })
       .then(async (data) => {
         await pdfDownloadHandler(data, envelope?.name);
+        setDownloadDropdown((prev) => ({
+          ...prev,
+          isVisible: false,
+          envelop: {},
+        }));
       })
       .catch((err) => {
         openNotification({
@@ -333,7 +363,7 @@ const CheckStatus = () => {
   const actionsHandler = (action, envelop) => {
     if (action === "Send Reminder") sendReminderHandler(envelop?.envelope_id);
     if (action === "Void") voidHandler(envelop?.envelope_id);
-    if (action === "Download") documentWithCertificateDownloadHandler(envelop);
+    // if (action === "Download") documentWithCertificateDownloadHandler(envelop);
   };
 
   const ActionsDropdown = ({ subActions }) => {
@@ -389,11 +419,16 @@ const CheckStatus = () => {
 
   const subActionsObject = [
     {
-      title: "original",
+      title: "Signed Envelope with Certificate",
+      onClick: () =>
+        documentWithCertificateDownloadHandler(downloadDropdown?.envelop),
+    },
+    {
+      title: "Signed Envelope",
       onClick: () => originalDownloadHandler(downloadDropdown?.envelop),
     },
     {
-      title: "certificate",
+      title: "Certificate",
       onClick: () => certificateDownloadHandler(downloadDropdown?.envelop),
     },
   ];
