@@ -47,6 +47,7 @@ function TemplateMapping() {
     // const page = searchParams?.get("page");
     setDocParams((prev) => ({ ...prev, authId }));
     if (authId !== docParams?.authId) {
+      localStorage?.clear();
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       })

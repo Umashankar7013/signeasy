@@ -55,6 +55,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       name: name,
     });
     if (authId !== docParams?.authId) {
+      localStorage?.clear();
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       })

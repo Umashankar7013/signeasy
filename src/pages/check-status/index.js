@@ -16,7 +16,6 @@ import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
-import { envelopes } from "../../constants/constants";
 
 const CheckStatus = () => {
   const statusData = [
@@ -65,7 +64,7 @@ const CheckStatus = () => {
   const [browserWindow, setBrowserWindow] = useState();
   const { setDocParams, setJWTtoken, JWTtoken, docParams } =
     useContext(AppContext);
-  const docsData = useRef(envelopes);
+  const docsData = useRef({});
   const [loading, setLoading] = useState(true);
   const [downloadDropdown, setDownloadDropdown] = useState({
     isVisible: false,
@@ -146,6 +145,7 @@ const CheckStatus = () => {
     const objectType = searchParams?.get("object_type");
     setDocParams((prev) => ({ ...prev, authId, objectId, objectType }));
     if (authId !== docParams?.authId) {
+      localStorage?.clear();
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       })
@@ -166,7 +166,6 @@ const CheckStatus = () => {
   };
 
   const getDataHandler = async () => {
-    dataManipulator();
     const token = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
