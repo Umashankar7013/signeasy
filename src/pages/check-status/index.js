@@ -16,6 +16,7 @@ import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
+import { envelopes } from "../../constants/constants";
 
 const CheckStatus = () => {
   const statusData = [
@@ -64,7 +65,7 @@ const CheckStatus = () => {
   const [browserWindow, setBrowserWindow] = useState();
   const { setDocParams, setJWTtoken, JWTtoken, docParams } =
     useContext(AppContext);
-  const docsData = useRef({});
+  const docsData = useRef(envelopes);
   const [loading, setLoading] = useState(true);
   const [downloadDropdown, setDownloadDropdown] = useState({
     isVisible: false,
@@ -125,7 +126,7 @@ const CheckStatus = () => {
   const sortHandler = (selectedHeader) => {
     const documentUtils = {
       "Document Name": "name",
-      "Last Modified": "last_modified",
+      "Last Modified": "updatedAt",
     };
     const sortKey = documentUtils?.[selectedHeader];
     const laterSort = sortedData?.sort((a, b) => {
@@ -165,6 +166,7 @@ const CheckStatus = () => {
   };
 
   const getDataHandler = async () => {
+    dataManipulator();
     const token = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
@@ -268,7 +270,6 @@ const CheckStatus = () => {
           isVisible: false,
           envelop: {},
         }));
-        setLoading(false);
       })
       .catch((err) => {
         openNotification({
@@ -278,6 +279,7 @@ const CheckStatus = () => {
           api,
         });
       });
+    setLoading(false);
   };
 
   const certificateDownloadHandler = async (envelope) => {
@@ -304,7 +306,6 @@ const CheckStatus = () => {
           api,
         });
       });
-
     setLoading(false);
   };
 

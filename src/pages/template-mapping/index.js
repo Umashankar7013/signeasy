@@ -42,13 +42,13 @@ function TemplateMapping() {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
-    const userId = searchParams?.get("hubspot_user_id");
-    const portalId = searchParams?.get("hubspot_portal_id");
-    const page = searchParams?.get("page");
+    // const userId = searchParams?.get("hubspot_user_id");
+    // const portalId = searchParams?.get("hubspot_portal_id");
+    // const page = searchParams?.get("page");
     setDocParams((prev) => ({ ...prev, authId }));
     if (authId !== docParams?.authId) {
       await getApi({
-        endUrl: `set-up/auth?authId=${authId}&hubspot_user_id=${userId}&hubspot_portal_id=${portalId}&page=${page}`,
+        endUrl: `set-up/auth?authId=${authId}`,
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
