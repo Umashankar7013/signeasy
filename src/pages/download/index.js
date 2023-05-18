@@ -30,7 +30,7 @@ const Download = () => {
     return data;
   };
 
-  const pdfDownloadHandler = async (data, name) => {
+  const pdfDownloadHandler = async (data, name, type) => {
     const blob = new Blob([data?.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
