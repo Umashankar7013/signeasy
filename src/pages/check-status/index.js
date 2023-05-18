@@ -283,6 +283,7 @@ const CheckStatus = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
+      responseType: 'blob'
     })
       .then(async (data) => {
         await pdfDownloadHandler(data, envelope?.name);
