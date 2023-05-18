@@ -153,7 +153,6 @@ const CheckStatus = () => {
         api,
       });
     });
-    console.log(data)
     return data?.data?.id;
   };
 
@@ -278,7 +277,6 @@ const CheckStatus = () => {
   const originalDownloadHandler = async (envelope) => {
     setLoading(true);
     const signed_file_id = await getSignedFileId(envelope?.envelope_id);
-    console.log(signed_file_id, 'here')
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
