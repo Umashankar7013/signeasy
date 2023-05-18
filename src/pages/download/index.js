@@ -144,7 +144,7 @@ const Download = () => {
         } else if (object === "certificate") {
           await certificateDownloadHandler(enevelope_id, data?.token);
         }
-        window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
+       // window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
         openNotification({
