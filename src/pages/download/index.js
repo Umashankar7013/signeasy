@@ -125,7 +125,7 @@ const Download = () => {
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
     const object = searchParams?.get("object");
-    const enevelope_id = searchParams?.get("enevelope_id");
+    const enevelope_id = searchParams?.get("envelope_id");
     await getApi({
       endUrl: `set-up/auth?authId=${authId}`,
     })
