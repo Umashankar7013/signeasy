@@ -156,25 +156,22 @@ const CheckStatus = () => {
     return data?.data?.id;
   };
 
-  const tokenHandler = async (type='token') => {
-    console.log('in token handler')
+  const tokenHandler = async () => {
     let apiData = {};
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
     const objectId = searchParams?.get("object_id");
     const objectType = searchParams?.get("object_type");
-    const envelope_id = searchParams?.get("envelope_id");
-    console.log(searchParams, 'in token handler')
-    setDocParams((prev) => ({ ...prev, authId, objectId, objectType, envelope_id }));
-    if (authId !== docParams?.authId && (!envelope_id || envelope_id && type === 'download')) {
+    setDocParams((prev) => ({ ...prev, authId, objectId, objectType }));
+    if (authId !== docParams?.authId) {
       localStorage?.clear();
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
-          apiData = { objectId, objectType, envelope_id, data };
+          apiData = { objectId, objectType, data };
         })
         .catch((err) => {
           openNotification({
@@ -189,7 +186,6 @@ const CheckStatus = () => {
   };
 
   const getDataHandler = async () => {
-    console.log('getDataHandler')
     const { objectId, objectType, data } = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
@@ -280,54 +276,37 @@ const CheckStatus = () => {
 
   const originalDownloadHandler = async (envelope) => {
     setLoading(true);
-    let apiData
-    console.log(envelope, 'in envelope')
-    if (!envelope?.envelope_id) {
-      console.log(envelope, 'apiData')
-      apiData = await tokenHandler('download')
-    }
-    if (envelope?.envelope_id || apiData?.envelope_id) {
-      console.log(apiData, 'apiData')
-      const signed_file_id = await getSignedFileId(envelope?.envelope_id || apiData.envelope_id);
-      await axios({
-        method: "get",
-        url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
-        headers: {
-          Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
-        },
-        responseType: 'blob'
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    await axios({
+      method: "get",
+      url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
+      headers: {
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
+      },
+      responseType: 'blob'
+    })
+      .then(async (data) => {
+        await pdfDownloadHandler(data, envelope?.name, 'signed');
+        setDownloadDropdown((prev) => ({
+          ...prev,
+          isVisible: false,
+          envelop: {},
+        }));
       })
-        .then(async (data) => {
-          await pdfDownloadHandler(data, envelope?.name, 'signed');
-          setDownloadDropdown((prev) => ({
-            ...prev,
-            isVisible: false,
-            envelop: {},
-          }));
-        })
-        .catch((err) => {
-          openNotification({
-            message: "Error",
-            description: err.message,
-            type: "error",
-            api,
-          });
+      .catch((err) => {
+        openNotification({
+          message: "Error",
+          description: err.message,
+          type: "error",
+          api,
+        });
       });
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
   const certificateDownloadHandler = async (envelope) => {
     setLoading(true);
-    let apiData
-    console.log(envelope, 'in envelope')
-    if (!envelope?.envelope_id) {
-      console.log(envelope, 'apiData')
-      apiData = await tokenHandler('download')
-    }
-    if (envelope?.envelope_id || apiData?.envelope_id) {
-      console.log(apiData, 'apiData')
-    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/${signed_file_id}/certificate`,
@@ -353,20 +332,11 @@ const CheckStatus = () => {
         });
       });
     setLoading(false);
-    }
   };
 
   const documentWithCertificateDownloadHandler = async (envelope) => {
     setLoading(true);
-    let apiData
-    console.log(envelope, 'in envelope')
-    if (!envelope?.envelope_id) {
-      console.log(envelope, 'apiData')
-      apiData = await tokenHandler('download')
-    }
-    if (envelope?.envelope_id || apiData?.envelope_id) {
-      console.log(apiData, 'apiData')
-    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=true`,
@@ -392,7 +362,6 @@ const CheckStatus = () => {
         });
       });
     setLoading(false);
-    }
   };
 
   const actionsHandler = (action, envelop) => {
