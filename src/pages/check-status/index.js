@@ -285,6 +285,7 @@ const CheckStatus = () => {
       },
       responseType: 'blob'
     })
+     .then(r => r.blob())
       .then(async (data) => {
         await pdfDownloadHandler(data, envelope?.name);
         setDownloadDropdown((prev) => ({
