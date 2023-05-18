@@ -266,6 +266,7 @@ const CheckStatus = () => {
   };
 
   const pdfDownloadHandler = async (data, name) => {
+    console.log(data)
     const blob = new Blob([data?.body], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
