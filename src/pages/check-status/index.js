@@ -16,7 +16,6 @@ import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
-import { envelopes } from "../../constants/constants";
 
 const CheckStatus = () => {
   const statusData = [
