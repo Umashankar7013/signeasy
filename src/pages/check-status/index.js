@@ -156,7 +156,8 @@ const CheckStatus = () => {
     return data?.data?.id;
   };
 
-  const tokenHandler = async () => {
+  const tokenHandler = async (type='token') => {
+    console.log('in token handler')
     let apiData = {};
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
@@ -164,8 +165,9 @@ const CheckStatus = () => {
     const objectId = searchParams?.get("object_id");
     const objectType = searchParams?.get("object_type");
     const envelope_id = searchParams?.get("envelope_id");
+    console.log(searchParams, 'in token handler')
     setDocParams((prev) => ({ ...prev, authId, objectId, objectType, envelope_id }));
-    if (authId !== docParams?.authId && !envelope_id) {
+    if (authId !== docParams?.authId && (!envelope_id || envelope_id && type === 'download')) {
       localStorage?.clear();
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
@@ -187,6 +189,7 @@ const CheckStatus = () => {
   };
 
   const getDataHandler = async () => {
+    console.log('getDataHandler')
     const { objectId, objectType, data } = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
@@ -278,11 +281,14 @@ const CheckStatus = () => {
   const originalDownloadHandler = async (envelope) => {
     setLoading(true);
     let apiData
+    console.log(envelope, 'in envelope')
     if (!envelope?.envelope_id) {
-      apiData = await tokenHandler()
+      console.log(envelope, 'apiData')
+      apiData = await tokenHandler('download')
     }
-    if (envelope?.envelope_id || apiData.envelope_id) {
-      const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    if (envelope?.envelope_id || apiData?.envelope_id) {
+      console.log(apiData, 'apiData')
+      const signed_file_id = await getSignedFileId(envelope?.envelope_id || apiData.envelope_id);
       await axios({
         method: "get",
         url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
