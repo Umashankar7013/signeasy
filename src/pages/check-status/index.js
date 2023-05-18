@@ -266,7 +266,7 @@ const CheckStatus = () => {
   };
 
   const pdfDownloadHandler = async (data, name) => {
-    const blob = new Blob([data], { type: "application/pdf" });
+    const blob = new Blob([data?.body], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = name;
@@ -285,7 +285,6 @@ const CheckStatus = () => {
       },
       responseType: 'blob'
     })
-     .then(r => r.blob())
       .then(async (data) => {
         await pdfDownloadHandler(data, envelope?.name);
         setDownloadDropdown((prev) => ({
