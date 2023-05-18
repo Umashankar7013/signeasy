@@ -42,9 +42,6 @@ function TemplateMapping() {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
-    // const userId = searchParams?.get("hubspot_user_id");
-    // const portalId = searchParams?.get("hubspot_portal_id");
-    // const page = searchParams?.get("page");
     setDocParams((prev) => ({ ...prev, authId }));
     if (authId !== docParams?.authId) {
       localStorage?.clear();

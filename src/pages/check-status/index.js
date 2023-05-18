@@ -186,9 +186,9 @@ const CheckStatus = () => {
   const getDataHandler = async () => {
     const { objectId, objectType, data } = await tokenHandler();
     await getApi({
-      endUrl: `hubspot-card/check-status?object_type=${objectType}&object_id=${Number(
-        objectId
-      )}`,
+      endUrl: `hubspot-card/check-status?object_type=${
+        objectType || docParams?.objectType
+      }&object_id=${Number(objectId || docParams?.objectId)}`,
       headers: {
         "x-access-token": data?.token || JWTtoken,
       },
