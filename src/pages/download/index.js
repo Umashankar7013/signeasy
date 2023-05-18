@@ -64,6 +64,7 @@ const Download = () => {
         });
       });
     setLoading(false);
+    window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
   };
 
   const certificateDownloadHandler = async (envelope_id, JWTtoken) => {
@@ -91,6 +92,7 @@ const Download = () => {
         });
       });
     setLoading(false);
+    window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
   };
 
   const documentWithCertificateDownloadHandler = async (
@@ -121,6 +123,7 @@ const Download = () => {
         });
       });
     setLoading(false);
+    window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
   };
 
   const tokenHandler = async () => {
@@ -136,16 +139,13 @@ const Download = () => {
       .then(async (data) => {
         if (object === "envelope") {
           await originalDownloadHandler(enevelope_id, data?.token);
-          window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
         } else if (object === "envelope-certificate") {
           await documentWithCertificateDownloadHandler(
             enevelope_id,
             data?.token
           );
-          window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
         } else if (object === "certificate") {
           await certificateDownloadHandler(enevelope_id, data?.token);
-          window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
         }
        // window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
