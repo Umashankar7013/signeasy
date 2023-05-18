@@ -163,7 +163,8 @@ const CheckStatus = () => {
     const authId = searchParams?.get("authId");
     const objectId = searchParams?.get("object_id");
     const objectType = searchParams?.get("object_type");
-    setDocParams((prev) => ({ ...prev, authId, objectId, objectType }));
+    const envelope_id = searchParams?.get("envelope_id")
+    setDocParams((prev) => ({ ...prev, authId, objectId, objectType, envelope_id }));
     if (authId !== docParams?.authId) {
       localStorage?.clear();
       await getApi({
@@ -171,7 +172,7 @@ const CheckStatus = () => {
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
-          apiData = { objectId, objectType, data };
+          apiData = { objectId, objectType, envelope_id, data };
         })
         .catch((err) => {
           openNotification({
@@ -265,18 +266,18 @@ const CheckStatus = () => {
     setLoading(false);
   };
 
-  const pdfDownloadHandler = async (data, name) => {
+  const pdfDownloadHandler = async (data, name, type) => {
     const blob = new Blob([data?.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = name;
+    link.download = `${name.replace('/.pdf/', '')}_${type}.pdf`;
     link.click();
     URL.revokeObjectURL(link.href);
   };
 
   const originalDownloadHandler = async (envelope) => {
     setLoading(true);
-    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
@@ -286,7 +287,7 @@ const CheckStatus = () => {
       responseType: 'blob'
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, envelope?.name);
+        await pdfDownloadHandler(data, envelope?.name, 'signed');
         setDownloadDropdown((prev) => ({
           ...prev,
           isVisible: false,
@@ -306,7 +307,7 @@ const CheckStatus = () => {
 
   const certificateDownloadHandler = async (envelope) => {
     setLoading(true);
-    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/${signed_file_id}/certificate`,
@@ -316,7 +317,7 @@ const CheckStatus = () => {
       responseType: 'blob'
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, envelope?.name);
+        await pdfDownloadHandler(data, envelope?.name, 'certificate');
         setDownloadDropdown((prev) => ({
           ...prev,
           isVisible: false,
@@ -336,7 +337,7 @@ const CheckStatus = () => {
 
   const documentWithCertificateDownloadHandler = async (envelope) => {
     setLoading(true);
-    const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=true`,
@@ -346,7 +347,7 @@ const CheckStatus = () => {
       responseType: 'blob'
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, envelope?.name);
+        await pdfDownloadHandler(data, envelope?.name, 'certificate_with_signed');
         setDownloadDropdown((prev) => ({
           ...prev,
           isVisible: false,
