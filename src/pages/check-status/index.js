@@ -78,6 +78,7 @@ const CheckStatus = () => {
   const [api, contextHolder] = notification.useNotification();
   const signersData = useRef([]);
   const [showSignersData, setShowSignersData] = useState(false);
+  const [envelopeid, setEnvelopeId] = useState(0)
 
   const statusHandler = (data) => {
     let status;
@@ -164,6 +165,8 @@ const CheckStatus = () => {
     const objectId = searchParams?.get("object_id");
     const objectType = searchParams?.get("object_type");
     const envelope_id = searchParams?.get("envelope_id")
+    setEnvelopeId((prev) => envelope_id)
+    console.log(envelope_id, 'envelope_id')
     setDocParams((prev) => ({ ...prev, authId, objectId, objectType, envelope_id }));
     if (authId !== docParams?.authId) {
       localStorage?.clear();
@@ -270,14 +273,14 @@ const CheckStatus = () => {
     const blob = new Blob([data?.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${name.replace('/.pdf/', '')}_${type}.pdf`;
+    link.download = `${name.replace('.pdf', '')}_${type}.pdf`;
     link.click();
     URL.revokeObjectURL(link.href);
   };
 
   const originalDownloadHandler = async (envelope) => {
     setLoading(true);
-    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
+    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id || envelopeid);
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
