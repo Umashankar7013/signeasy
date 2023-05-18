@@ -142,7 +142,8 @@ const CheckStatus = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId}`,
       headers: {
-        "x-access-token": JWTtoken,
+        //"x-access-token": JWTtoken,
+        "Authorization": `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
       },
     }).catch((err) => {
       openNotification({
