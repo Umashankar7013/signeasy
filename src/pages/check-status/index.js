@@ -266,7 +266,6 @@ const CheckStatus = () => {
   };
 
   const pdfDownloadHandler = async (data, name) => {
-    console.log(data)
     const blob = new Blob([data?.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -314,6 +313,7 @@ const CheckStatus = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
+      responseType: 'blob'
     })
       .then(async (data) => {
         await pdfDownloadHandler(data, envelope?.name);
@@ -343,6 +343,7 @@ const CheckStatus = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
+      responseType: 'blob'
     })
       .then(async (data) => {
         await pdfDownloadHandler(data, envelope?.name);
