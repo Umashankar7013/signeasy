@@ -16,7 +16,8 @@ const Download = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId}`,
       headers: {
-        "x-access-token": JWTtoken,
+        //"x-access-token": JWTtoken,
+        "Authorization": `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
       },
     }).catch((err) => {
       openNotification({
@@ -30,10 +31,10 @@ const Download = () => {
   };
 
   const pdfDownloadHandler = async (data, name) => {
-    const blob = new Blob([data], { type: "application/pdf" });
+    const blob = new Blob([data?.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = name;
+    link.download = `${name.replace('.pdf', '')}_${type}.pdf`;
     link.click();
     URL.revokeObjectURL(link.href);
   };
@@ -49,9 +50,10 @@ const Download = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
+      responseType: 'blob'
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, name);
+        await pdfDownloadHandler(data, name, 'signed');
       })
       .catch((err) => {
         openNotification({
@@ -75,9 +77,10 @@ const Download = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
+      responseType: 'blob'
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, name);
+        await pdfDownloadHandler(data, name, 'certificate');
       })
       .catch((err) => {
         openNotification({
@@ -104,9 +107,10 @@ const Download = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
+      responseType: 'blob'
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, name);
+        await pdfDownloadHandler(data, name, 'certificate_with_signed');
       })
       .catch((err) => {
         openNotification({
