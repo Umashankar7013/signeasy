@@ -13,6 +13,7 @@ export const getApi = async ({
     body,
     headers,
   });
+  console.log(data)
   return data?.data;
 };
 
