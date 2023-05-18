@@ -113,6 +113,7 @@ const Download = () => {
     })
       .then(async (data) => {
         await pdfDownloadHandler(data, name, 'certificate_with_signed');
+        window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
         openNotification({
@@ -123,7 +124,6 @@ const Download = () => {
         });
       });
     setLoading(false);
-    window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
   };
 
   const tokenHandler = async () => {
