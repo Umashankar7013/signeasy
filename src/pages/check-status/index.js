@@ -284,6 +284,7 @@ const CheckStatus = () => {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     })
+      .then(resp => resp.arrayBuffer())
       .then(async (data) => {
         await pdfDownloadHandler(data, envelope?.name);
         setDownloadDropdown((prev) => ({
