@@ -153,7 +153,8 @@ const CheckStatus = () => {
         api,
       });
     });
-    return data?.id;
+    console.log(data)
+    return data?.data?.id;
   };
 
   const tokenHandler = async () => {
