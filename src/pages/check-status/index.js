@@ -139,9 +139,11 @@ const CheckStatus = () => {
   };
 
   const getSignedFileId = async (envelopeId) => {
+    const searchParams = new URL(window.location.href).searchParams;
+    const envelope_id = searchParams?.get("envelope_id")
     const data = await axios({
       method: "get",
-      url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId}`,
+      url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId ?? envelope_id}`,
       headers: {
         //"x-access-token": JWTtoken,
         "Authorization": `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
