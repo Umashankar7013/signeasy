@@ -42,7 +42,7 @@ const Download = () => {
   const originalDownloadHandler = async (envelope_id, JWTtoken) => {
     setLoading(true);
     const signed_file = await getSignedFileId(envelope_id, JWTtoken);
-    const signed_file_id = signed_file?.id;
+    const signed_file_id = signed_file?.data?.id;
     const name = signed_file?.name;
     await axios({
       method: "get",
@@ -69,7 +69,7 @@ const Download = () => {
   const certificateDownloadHandler = async (envelope_id, JWTtoken) => {
     setLoading(true);
     const signed_file = await getSignedFileId(envelope_id, JWTtoken);
-    const signed_file_id = signed_file?.id;
+    const signed_file_id = signed_file?.data?.id;
     const name = signed_file?.name;
     await axios({
       method: "get",
@@ -99,7 +99,7 @@ const Download = () => {
   ) => {
     setLoading(true);
     const signed_file = await getSignedFileId(envelope_id, JWTtoken);
-    const signed_file_id = signed_file?.id;
+    const signed_file_id = signed_file?.data?.id;
     const name = signed_file?.name;
     await axios({
       method: "get",
@@ -136,13 +136,16 @@ const Download = () => {
       .then(async (data) => {
         if (object === "envelope") {
           await originalDownloadHandler(enevelope_id, data?.token);
+          window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
         } else if (object === "envelope-certificate") {
           await documentWithCertificateDownloadHandler(
             enevelope_id,
             data?.token
           );
+          window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
         } else if (object === "certificate") {
           await certificateDownloadHandler(enevelope_id, data?.token);
+          window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
         }
        // window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
