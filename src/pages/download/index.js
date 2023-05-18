@@ -4,6 +4,7 @@ import { openNotification } from "../../utils/functions";
 import axios from "axios";
 import { Loader } from "../../components/Loader";
 import { notification } from "antd";
+import jwt_decode from "jwt-decode";
 
 const Download = () => {
   const [loading, setLoading] = useState(true);
@@ -46,7 +47,7 @@ const Download = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
       headers: {
-        "x-access-token": JWTtoken,
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     })
       .then(async (data) => {
@@ -72,7 +73,7 @@ const Download = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/${signed_file_id}/certificate`,
       headers: {
-        "x-access-token": JWTtoken,
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     })
       .then(async (data) => {
@@ -101,7 +102,7 @@ const Download = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=true`,
       headers: {
-        "x-access-token": JWTtoken,
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     })
       .then(async (data) => {

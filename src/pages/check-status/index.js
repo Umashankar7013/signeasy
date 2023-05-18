@@ -16,6 +16,7 @@ import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
+import jwt_decode from "jwt-decode";
 
 const CheckStatus = () => {
   const statusData = [
@@ -279,7 +280,7 @@ const CheckStatus = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
       headers: {
-        "x-access-token": JWTtoken,
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     })
       .then(async (data) => {
@@ -308,7 +309,7 @@ const CheckStatus = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/${signed_file_id}/certificate`,
       headers: {
-        "x-access-token": JWTtoken,
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     })
       .then(async (data) => {
@@ -337,7 +338,7 @@ const CheckStatus = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=true`,
       headers: {
-        "x-access-token": JWTtoken,
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     })
       .then(async (data) => {
