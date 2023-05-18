@@ -78,7 +78,6 @@ const CheckStatus = () => {
   const [api, contextHolder] = notification.useNotification();
   const signersData = useRef([]);
   const [showSignersData, setShowSignersData] = useState(false);
-  const [envelopeid, setEnvelopeId] = useState(0)
 
   const statusHandler = (data) => {
     let status;
@@ -139,11 +138,9 @@ const CheckStatus = () => {
   };
 
   const getSignedFileId = async (envelopeId) => {
-    const searchParams = new URL(window.location.href).searchParams;
-    const envelope_id = searchParams?.get("envelope_id")
     const data = await axios({
       method: "get",
-      url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId ?? envelope_id}`,
+      url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId}`,
       headers: {
         //"x-access-token": JWTtoken,
         "Authorization": `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
@@ -166,11 +163,9 @@ const CheckStatus = () => {
     const authId = searchParams?.get("authId");
     const objectId = searchParams?.get("object_id");
     const objectType = searchParams?.get("object_type");
-    const envelope_id = searchParams?.get("envelope_id")
-    setEnvelopeId((prev) => envelope_id)
-    console.log(envelope_id, 'envelope_id')
+    const envelope_id = searchParams?.get("envelope_id");
     setDocParams((prev) => ({ ...prev, authId, objectId, objectType, envelope_id }));
-    if (authId !== docParams?.authId) {
+    if (authId !== docParams?.authId && !envelope_id) {
       localStorage?.clear();
       await getApi({
         endUrl: `set-up/auth?authId=${authId}`,
@@ -282,32 +277,38 @@ const CheckStatus = () => {
 
   const originalDownloadHandler = async (envelope) => {
     setLoading(true);
-    const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id || envelopeid);
-    await axios({
-      method: "get",
-      url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
-      headers: {
-        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
-      },
-      responseType: 'blob'
-    })
-      .then(async (data) => {
-        await pdfDownloadHandler(data, envelope?.name, 'signed');
-        setDownloadDropdown((prev) => ({
-          ...prev,
-          isVisible: false,
-          envelop: {},
-        }));
+    let apiData
+    if (!envelope?.envelope_id) {
+      apiData = await tokenHandler()
+    }
+    if (envelope?.envelope_id || apiData.envelope_id) {
+      const signed_file_id = await getSignedFileId(envelope?.envelope_id);
+      await axios({
+        method: "get",
+        url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
+        headers: {
+          Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
+        },
+        responseType: 'blob'
       })
-      .catch((err) => {
-        openNotification({
-          message: "Error",
-          description: err.message,
-          type: "error",
-          api,
-        });
+        .then(async (data) => {
+          await pdfDownloadHandler(data, envelope?.name, 'signed');
+          setDownloadDropdown((prev) => ({
+            ...prev,
+            isVisible: false,
+            envelop: {},
+          }));
+        })
+        .catch((err) => {
+          openNotification({
+            message: "Error",
+            description: err.message,
+            type: "error",
+            api,
+          });
       });
-    setLoading(false);
+      setLoading(false);
+    }
   };
 
   const certificateDownloadHandler = async (envelope) => {
