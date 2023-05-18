@@ -319,6 +319,14 @@ const CheckStatus = () => {
 
   const certificateDownloadHandler = async (envelope) => {
     setLoading(true);
+    let apiData
+    console.log(envelope, 'in envelope')
+    if (!envelope?.envelope_id) {
+      console.log(envelope, 'apiData')
+      apiData = await tokenHandler('download')
+    }
+    if (envelope?.envelope_id || apiData?.envelope_id) {
+      console.log(apiData, 'apiData')
     const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
     await axios({
       method: "get",
@@ -345,10 +353,19 @@ const CheckStatus = () => {
         });
       });
     setLoading(false);
+    }
   };
 
   const documentWithCertificateDownloadHandler = async (envelope) => {
     setLoading(true);
+    let apiData
+    console.log(envelope, 'in envelope')
+    if (!envelope?.envelope_id) {
+      console.log(envelope, 'apiData')
+      apiData = await tokenHandler('download')
+    }
+    if (envelope?.envelope_id || apiData?.envelope_id) {
+      console.log(apiData, 'apiData')
     const signed_file_id = await getSignedFileId(envelope?.envelope_id || docParams?.envelope_id);
     await axios({
       method: "get",
@@ -375,6 +392,7 @@ const CheckStatus = () => {
         });
       });
     setLoading(false);
+    }
   };
 
   const actionsHandler = (action, envelop) => {
