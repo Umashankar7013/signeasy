@@ -169,7 +169,7 @@ const CheckStatus = () => {
       })
         .then((data) => {
           data && setJWTtoken(data?.token);
-          apiData = data;
+          apiData = { objectId, objectType, data };
         })
         .catch((err) => {
           openNotification({
@@ -184,13 +184,13 @@ const CheckStatus = () => {
   };
 
   const getDataHandler = async () => {
-    const token = await tokenHandler();
+    const { objectId, objectType, data } = await tokenHandler();
     await getApi({
-      endUrl: `hubspot-card/check-status?object_type=${
-        docParams?.objectType
-      }&object_id=${Number(docParams?.objectId)}`,
+      endUrl: `hubspot-card/check-status?object_type=${objectType}&object_id=${Number(
+        objectId
+      )}`,
       headers: {
-        "x-access-token": token?.token || JWTtoken,
+        "x-access-token": data?.token || JWTtoken,
       },
     })
       .then((data) => {
