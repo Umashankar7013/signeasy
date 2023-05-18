@@ -43,7 +43,7 @@ const Download = () => {
     setLoading(true);
     const signed_file = await getSignedFileId(envelope_id, JWTtoken);
     const signed_file_id = signed_file?.data?.id;
-    const name = signed_file?.name;
+    const name = signed_file?.data?.name;
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=false`,
@@ -54,6 +54,7 @@ const Download = () => {
     })
       .then(async (data) => {
         await pdfDownloadHandler(data, name, 'signed');
+        window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
         openNotification({
@@ -71,7 +72,7 @@ const Download = () => {
     setLoading(true);
     const signed_file = await getSignedFileId(envelope_id, JWTtoken);
     const signed_file_id = signed_file?.data?.id;
-    const name = signed_file?.name;
+    const name = signed_file?.data?.name;
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/${signed_file_id}/certificate`,
@@ -82,6 +83,7 @@ const Download = () => {
     })
       .then(async (data) => {
         await pdfDownloadHandler(data, name, 'certificate');
+        window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
         openNotification({
@@ -102,7 +104,7 @@ const Download = () => {
     setLoading(true);
     const signed_file = await getSignedFileId(envelope_id, JWTtoken);
     const signed_file_id = signed_file?.data?.id;
-    const name = signed_file?.name;
+    const name = signed_file?.data?.name;
     await axios({
       method: "get",
       url: `https://api.signeasy.com/v3/signed/${signed_file_id}/download?type=merged&include_certificate=true`,
