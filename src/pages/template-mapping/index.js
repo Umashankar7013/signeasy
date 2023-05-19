@@ -170,7 +170,19 @@ function TemplateMapping() {
                   {template?.name}
                 </div>
                 <div className="w-[30%] text-[14px] text-[#374659] font-[500] leading-[19.12px] px-[24px]">
-                  {"Role"}
+                  {template?.metadata?.roles?.map((role, index) => {
+                    return (
+                      <span
+                        style={{
+                          color: `rgb${role?.color}`,
+                        }}
+                      >{` ${role?.name} ${
+                        index !== template?.metadata?.roles?.length - 1
+                          ? ","
+                          : ""
+                      }`}</span>
+                    );
+                  })}
                 </div>
                 <div className="w-[35%] flex justify-between items-center px-[24px]">
                   <div className="text-[14px] text-[#374659] font-[500] leading-[19.12px]">
