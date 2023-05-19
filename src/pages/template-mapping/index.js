@@ -181,7 +181,7 @@ function TemplateMapping() {
                         {role?.name}
                         <span className="text-[black]">
                           {index !== template?.metadata?.roles?.length - 1
-                            ? ","
+                            ? ", "
                             : ""}
                         </span>
                       </span>
