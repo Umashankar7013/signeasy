@@ -176,6 +176,7 @@ function TemplateMapping() {
                         style={{
                           color: `rgb${role?.color}`,
                         }}
+                        key={index}
                       >{` ${role?.name} ${
                         index !== template?.metadata?.roles?.length - 1
                           ? ","
