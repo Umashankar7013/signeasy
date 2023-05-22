@@ -3,27 +3,27 @@ import axios from "axios";
 export const getApi = async ({
   endUrl = "",
   params = {},
-  body = {},
+  data = {},
   headers = {},
 }) => {
-  const data = await axios({
+  const apiData = await axios({
     method: "get",
     url: `${process.env.NEXT_PUBLIC_BASE_URL}${endUrl}`,
     params,
-    body,
+    data,
     headers,
   });
-  return data?.data;
+  return apiData?.data;
 };
 
-export const deleteApi = async ({ endUrl = "", params = {}, body = {} }) => {
-  const data = await axios({
+export const deleteApi = async ({ endUrl = "", params = {}, data = {} }) => {
+  const apiData = await axios({
     method: "delete",
     url: `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}${endUrl}`,
     params,
-    body,
+    data,
   }).catch((err) => console.log("Error", err));
-  return data?.data;
+  return apiData?.data;
 };
 
 export const putMethod = async ({
