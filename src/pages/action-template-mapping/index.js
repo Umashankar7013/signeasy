@@ -98,31 +98,54 @@ function ActionTemplateMapping() {
       });
   };
 
+  const selectedVariablesHandler = (data, value) => {
+    let returnValue = [];
+    data?.map((item) => {
+      if (item?.signeasy_field === value) {
+        returnValue.push(item?.hubspot_field);
+        return;
+      }
+    });
+    return returnValue;
+  };
+
   const getSavedTemplateData = async () => {
     await getApi({
       endUrl: `set-up/settings/mapping/${selectedItem?.id}`,
       headers: {
         "x-access-token": JWTtoken,
       },
-    }).then((data) => console.log(data));
-  };
-
-  useEffect(() => {
-    let tabs = ["Contacts", "Company", "Deals"];
-    let dataObject = {};
-    tabs?.map((tab) => {
-      let array = [];
-      selectedItem?.metadata?.merge_fields?.map((field) => {
-        array.push({
-          name: field?.label,
-          dropDownData: tabsDropdownData[tab],
-          selectedVariables: [],
+    })
+      .then((data) => {
+        let tabs = ["Contacts", "Company", "Deals"];
+        const tabUtils = {
+          Contacts: "contact",
+          Company: "company",
+          Deals: "deal",
+        };
+        let dataObject = {};
+        tabs?.map((tab) => {
+          let array = [];
+          selectedItem?.metadata?.merge_fields?.map((field) => {
+            array.push({
+              name: field?.label,
+              dropDownData: tabsDropdownData[tab],
+              selectedVariables: selectedVariablesHandler(data, field?.label),
+            });
+          });
+          dataObject[tab] = array;
+        });
+        setData(dataObject);
+      })
+      .catch((err) => {
+        openNotification({
+          message: "Error",
+          description: err.message,
+          type: "error",
+          api,
         });
       });
-      dataObject[tab] = array;
-    });
-    setData(dataObject);
-  }, []);
+  };
 
   useEffect(() => {
     getSavedTemplateData();

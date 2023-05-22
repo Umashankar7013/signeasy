@@ -25,7 +25,6 @@ function Signature() {
       first_name: docParams?.firstName || "",
       last_name: docParams?.lastName || "",
       email: docParams?.email || "",
-      recipient_id: 1,
     },
   ]);
   const [api, contextHolder] = notification.useNotification();
@@ -33,7 +32,6 @@ function Signature() {
     first_name: "",
     last_name: "",
     email: "",
-    recipient_id: signersData?.length + 1,
   };
   const [emails, setEmails] = useState([]);
   const [emailSubject, setEmailSubject] = useState("");
@@ -143,8 +141,8 @@ function Signature() {
       } else {
         params = {
           object_type: docParams?.objectType,
-          first_name: docParams?.firstName,
-          last_name: docParams?.lastName,
+          firstname: docParams?.firstName,
+          lastname: docParams?.lastName,
           email: docParams?.email,
           name: docParams?.name,
         };
@@ -157,7 +155,7 @@ function Signature() {
               source_id: 1,
             },
           ],
-          recipients: signersData,
+          recipients: recipientIdHandler(),
           embedded_signing: false,
           is_ordered: false,
           name: emailSubject !== "" ? emailSubject : selectedItem?.name,
@@ -198,6 +196,14 @@ function Signature() {
     }
   };
 
+  const recipientIdHandler = () => {
+    let clone = [];
+    signersData?.map((item, index) => {
+      clone.push({ ...item, recipient_id: index + 1 });
+    });
+    return clone;
+  };
+
   const editHandler = async (e) => {
     e.preventDefault();
     if (requiredFieldsCheckHandler()) {
@@ -228,8 +234,8 @@ function Signature() {
       } else {
         params = {
           object_type: docParams?.objectType,
-          first_name: docParams?.firstName,
-          last_name: docParams?.lastName,
+          firstname: docParams?.firstName,
+          lastname: docParams?.lastName,
           email: docParams?.email,
           name: docParams?.name,
         };
@@ -242,7 +248,7 @@ function Signature() {
               source_id: 1,
             },
           ],
-          recipients: signersData,
+          recipients: recipientIdHandler(),
           embedded_signing: false,
           is_ordered: false,
           name: emailSubject !== "" ? emailSubject : selectedItem?.name,
