@@ -98,9 +98,9 @@ function ActionTemplateMapping() {
       });
   };
 
-  const selectedVariablesHandler = (data, value) => {
+  const selectedVariablesHandler = (data, tab, value) => {
     let returnValue = [];
-    data?.map((item) => {
+    data?.[tab]?.map((item) => {
       if (item?.signeasy_field === value) {
         returnValue.push(item?.hubspot_field);
         return;
@@ -130,7 +130,11 @@ function ActionTemplateMapping() {
             array.push({
               name: field?.label,
               dropDownData: tabsDropdownData[tab],
-              selectedVariables: selectedVariablesHandler(data, field?.label),
+              selectedVariables: selectedVariablesHandler(
+                data?.data,
+                tabUtils[tab],
+                field?.label
+              ),
             });
           });
           dataObject[tab] = array;
