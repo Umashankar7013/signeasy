@@ -9,6 +9,7 @@ import { AppContext } from "../_app";
 import { getApi, putMethod } from "../../api/apiMethods";
 import { openNotification } from "../../utils/functions";
 import { notification } from "antd";
+import { Loader } from "../../components/Loader";
 
 function ActionTemplateMapping() {
   const router = useRouter();
@@ -17,6 +18,7 @@ function ActionTemplateMapping() {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const headerData = ["SIGNEASY", "HUBSPOT VARIABLES"];
   const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState(true);
 
   const onChangeTabHandler = (tab) => {
     setSelectedTab(tab);
@@ -58,6 +60,7 @@ function ActionTemplateMapping() {
   };
 
   const saveHandler = async () => {
+    setLoading(true);
     const tabUtils = {
       Contacts: "contact",
       Company: "company",
@@ -96,6 +99,7 @@ function ActionTemplateMapping() {
           api,
         });
       });
+    setLoading(false);
   };
 
   const selectedVariablesHandler = (data, tab, value) => {
@@ -149,6 +153,7 @@ function ActionTemplateMapping() {
           api,
         });
       });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -158,79 +163,83 @@ function ActionTemplateMapping() {
   return (
     <>
       {contextHolder}
-      <div className="p-[30px]">
-        {/* Back Button */}
-        <div
-          className="flex items-center cursor-pointer w-fit pb-[15px]"
-          onClick={() => router.back()}
-        >
-          <LeftOutlined className="text-[#3F8FAB] text-[10px]" />
-          <div className="text-[14px] text-[#3F8FAB] pl-[7px] font-lexend font-[500]">
-            Back to templates
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="p-[30px]">
+          {/* Back Button */}
+          <div
+            className="flex items-center cursor-pointer w-fit pb-[15px]"
+            onClick={() => router.back()}
+          >
+            <LeftOutlined className="text-[#3F8FAB] text-[10px]" />
+            <div className="text-[14px] text-[#3F8FAB] pl-[7px] font-lexend font-[500]">
+              Back to templates
+            </div>
           </div>
-        </div>
-        {/* Template Name */}
-        <div className="text-[18px] font-lexend leading-[22.5px] text-[#374659] pb-[20px]">
-          {selectedItem?.name || "name"}
-        </div>
-        {/* Tabs */}
-        <div className="pb-[23px]">
-          <Tabs tabs={tabs} onChangeTab={onChangeTabHandler} />
-        </div>
-        {/* Table */}
-        <div className="border-[1px] mb-[70px]">
-          {/* Header */}
-          <div className="flex w-[100%] bg-[#F6F8FA] border-b-[1px]">
-            {headerData?.map((header, index) => (
-              <div
-                className="w-[50%] py-[14px] pl-[25px] text-[14px] text-[#374659] font-[700] font-lexend leading-[17.5px]"
-                key={index}
-              >
-                {header}
-              </div>
-            ))}
+          {/* Template Name */}
+          <div className="text-[18px] font-lexend leading-[22.5px] text-[#374659] pb-[20px]">
+            {selectedItem?.name || "name"}
           </div>
-          {/* Variables data */}
-          <div>
-            {data?.[selectedTab]?.map((item, index) => (
-              <div
-                className={classNames(
-                  "flex items-center",
-                  index !== data?.length && "border-b-[1px]"
-                )}
-                key={index}
-              >
-                <div className="w-[50%] pl-[25px] text-[14px] text-[#374659] font-[400] font-lexend">
-                  {item?.name}
+          {/* Tabs */}
+          <div className="pb-[23px]">
+            <Tabs tabs={tabs} onChangeTab={onChangeTabHandler} />
+          </div>
+          {/* Table */}
+          <div className="border-[1px] mb-[70px]">
+            {/* Header */}
+            <div className="flex w-[100%] bg-[#F6F8FA] border-b-[1px]">
+              {headerData?.map((header, index) => (
+                <div
+                  className="w-[50%] py-[14px] pl-[25px] text-[14px] text-[#374659] font-[700] font-lexend leading-[17.5px]"
+                  key={index}
+                >
+                  {header}
                 </div>
-                <div className="w-[200px] pl-[25px] py-[19px]">
-                  <MultiTextInputDropdown
-                    placeHolder="Select variables"
-                    className="justify-between bg-[#F6F8FA] h-[36px]"
-                    dropDownData={item?.dropDownData}
-                    data={item?.selectedVariables}
-                    addFun={addVariablesHandler}
-                    deleteFun={deleteVariableHandler}
-                    specificIndex={index}
-                    singleInput={true}
-                  />
+              ))}
+            </div>
+            {/* Variables data */}
+            <div>
+              {data?.[selectedTab]?.map((item, index) => (
+                <div
+                  className={classNames(
+                    "flex items-center",
+                    index !== data?.length && "border-b-[1px]"
+                  )}
+                  key={index}
+                >
+                  <div className="w-[50%] pl-[25px] text-[14px] text-[#374659] font-[400] font-lexend">
+                    {item?.name}
+                  </div>
+                  <div className="w-[200px] pl-[25px] py-[19px]">
+                    <MultiTextInputDropdown
+                      placeHolder="Select variables"
+                      className="justify-between bg-[#F6F8FA] h-[36px]"
+                      dropDownData={item?.dropDownData}
+                      data={item?.selectedVariables}
+                      addFun={addVariablesHandler}
+                      deleteFun={deleteVariableHandler}
+                      specificIndex={index}
+                      singleInput={true}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          {/* Save Button */}
+          <div className="fixed bottom-0 h-[68px] bg-[#F6F8FA] w-[94%] flex items-center">
+            <PrimaryButton
+              title="Save"
+              className={classNames(
+                "px-[25px] py-[11px] text-[#FFFFFF] bg-[#EE8162] font-[600] ml-[25px]",
+                activateSaveHandler() ? "opacity-100" : "opacity-50"
+              )}
+              onClick={() => activateSaveHandler() && saveHandler()}
+            />
           </div>
         </div>
-        {/* Save Button */}
-        <div className="fixed bottom-0 h-[68px] bg-[#F6F8FA] w-[94%] flex items-center">
-          <PrimaryButton
-            title="Save"
-            className={classNames(
-              "px-[25px] py-[11px] text-[#FFFFFF] bg-[#EE8162] font-[600] ml-[25px]",
-              activateSaveHandler() ? "opacity-100" : "opacity-50"
-            )}
-            onClick={() => activateSaveHandler() && saveHandler()}
-          />
-        </div>
-      </div>
+      )}
     </>
   );
 }
