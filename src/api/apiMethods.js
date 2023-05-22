@@ -13,7 +13,7 @@ export const getApi = async ({
     body,
     headers,
   });
-  console.log(data)
+  console.log(data);
   return data?.data;
 };
 
@@ -30,14 +30,14 @@ export const deleteApi = async ({ endUrl = "", params = {}, body = {} }) => {
 export const putMethod = async ({
   endUrl = "",
   params = {},
-  body = {},
+  data = {},
   headers = {},
 }) => {
   const data = await axios({
     method: "put",
     url: `${process.env.NEXT_PUBLIC_BASE_URL}${endUrl}`,
     params,
-    body,
+    data,
     headers,
   });
   return data?.data;
