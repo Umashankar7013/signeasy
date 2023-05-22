@@ -120,6 +120,14 @@ function Signature() {
     return mappingArray;
   };
 
+  const recipientIdHandler = () => {
+    let clone = [];
+    signersData?.map((item, index) => {
+      clone.push({ ...item, recipient_id: index + 1 });
+    });
+    return clone;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (requiredFieldsCheckHandler()) {
@@ -191,17 +199,8 @@ function Signature() {
             api,
           });
           setLoading(false);
-          console.log(error, "Error");
         });
     }
-  };
-
-  const recipientIdHandler = () => {
-    let clone = [];
-    signersData?.map((item, index) => {
-      clone.push({ ...item, recipient_id: index + 1 });
-    });
-    return clone;
   };
 
   const editHandler = async (e) => {
@@ -277,7 +276,6 @@ function Signature() {
             api,
           });
           setLoading(false);
-          console.log(error, "Error");
         });
     }
   };
