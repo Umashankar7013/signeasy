@@ -534,8 +534,10 @@ function Signature() {
                     <div
                       className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
                       onClick={() => {
-                        setSignersData((prev) => [...prev, signer]);
-                        setRoles((prev) => [...prev, { name: "Role name" }]);
+                        type === "original" &&
+                          setSignersData((prev) => [...prev, signer]);
+                        type === "original" &&
+                          setRoles((prev) => [...prev, { name: "Role name" }]);
                       }}
                     >
                       <PlusIcon />
