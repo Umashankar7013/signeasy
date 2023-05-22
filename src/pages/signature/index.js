@@ -223,7 +223,7 @@ function Signature() {
               name: selectedItem?.name,
             },
           ],
-          recipients: signersData,
+          recipients: recipientIdHandler(),
           redirect_url: encodeURI(
             `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
           ),
