@@ -438,16 +438,18 @@ function Signature() {
                           </div>
                           <div
                             onClick={() => {
-                              setSignersData((prev) => {
-                                return prev.filter(
-                                  (item, index1) => index !== index1
-                                );
-                              });
-                              setRoles((prev) => {
-                                return prev.filter(
-                                  (item, index1) => index !== index1
-                                );
-                              });
+                              type === "original" &&
+                                setSignersData((prev) => {
+                                  return prev.filter(
+                                    (item, index1) => index !== index1
+                                  );
+                                });
+                              type === "original" &&
+                                setRoles((prev) => {
+                                  return prev.filter(
+                                    (item, index1) => index !== index1
+                                  );
+                                });
                             }}
                           >
                             <CrossIcon />
