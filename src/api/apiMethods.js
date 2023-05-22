@@ -30,14 +30,14 @@ export const deleteApi = async ({ endUrl = "", params = {}, body = {} }) => {
 export const putMethod = async ({
   endUrl = "",
   params = {},
-  data = {},
+  body = {},
   headers = {},
 }) => {
   const data = await axios({
     method: "put",
     url: `${process.env.NEXT_PUBLIC_BASE_URL}${endUrl}`,
     params,
-    data,
+    body,
     headers,
   });
   return data?.data;
