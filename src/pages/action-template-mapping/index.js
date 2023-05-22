@@ -78,7 +78,7 @@ function ActionTemplateMapping() {
       headers: {
         "x-access-token": JWTtoken,
       },
-      body: formattedData,
+      data: formattedData,
     })
       .then(() => {
         openNotification({
