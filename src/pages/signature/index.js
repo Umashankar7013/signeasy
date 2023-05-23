@@ -226,16 +226,16 @@ function Signature() {
           ],
           recipients: recipientIdHandler(),
           redirect_url: encodeURI(
-            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`
+            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.object_type}&object_id=${docParams?.object_id}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstname}&last_name=${docParams?.lastname}&email=${docParams?.email}`
           ),
           embedded_signing: false,
           is_ordered: false,
         };
       } else {
         params = {
-          object_type: docParams?.objectType,
-          firstname: docParams?.firstName,
-          lastname: docParams?.lastName,
+          object_type: docParams?.object_type,
+          firstname: docParams?.firstname,
+          lastname: docParams?.lastname,
           email: docParams?.email,
           name: docParams?.name,
         };
@@ -255,7 +255,7 @@ function Signature() {
           message: message,
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
-          redirect_url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.objectType}&object_id=${docParams?.objectId}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstName}&last_name=${docParams?.lastName}&email=${docParams?.email}`,
+          redirect_url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.object_type}&object_id=${docParams?.object_id}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstname}&last_name=${docParams?.lastname}&email=${docParams?.email}`,
         };
       }
 
