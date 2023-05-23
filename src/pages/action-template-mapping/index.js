@@ -70,8 +70,9 @@ function ActionTemplateMapping() {
     Object?.keys(data)?.map((key) => {
       let array = [];
       data[key]?.map((item) => {
-        item?.selectedVariables?.map((item1) => {
-          array.push({ signeasy_field: item?.name, hubspot_field: item1 });
+        array.push({
+          signeasy_field: item?.name,
+          hubspot_field: item?.selectedVariables,
         });
       });
       formattedData[tabUtils[key]] = array;
@@ -103,10 +104,10 @@ function ActionTemplateMapping() {
   };
 
   const selectedVariablesHandler = (data, tab, value) => {
-    let returnValue = [];
+    let returnValue;
     data?.[tab]?.map((item) => {
       if (item?.signeasy_field === value) {
-        returnValue.push(item?.hubspot_field);
+        returnValue = item?.hubspot_field;
         return;
       }
     });
@@ -220,7 +221,6 @@ function ActionTemplateMapping() {
                       addFun={addVariablesHandler}
                       deleteFun={deleteVariableHandler}
                       specificIndex={index}
-                      singleInput={true}
                     />
                   </div>
                 </div>

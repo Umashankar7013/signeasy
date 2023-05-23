@@ -75,12 +75,7 @@ export const MultiTextInputDropdown = ({
                   <div
                     className="py-[7px] text-[14px] font-lexend text-[#99A6BA] cursor-pointer select-none"
                     onClick={() => {
-                      !singleInput &&
-                        data?.length > 0 &&
-                        addFun(item, specificIndex);
-                      singleInput &&
-                        data?.length === 0 &&
-                        addFun(item, specificIndex);
+                      addFun(item, specificIndex);
                       setShowDropDown(false);
                     }}
                     key={index}
