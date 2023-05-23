@@ -23,8 +23,14 @@ function TemplateMapping() {
     { id: 12, name: "Dummy11" },
     { id: 13, name: "Dummy12" },
   ]);
-  const { setDocParams, JWTtoken, setJWTtoken, setSelectedItem, docParams } =
-    useContext(AppContext);
+  const {
+    setDocParams,
+    JWTtoken,
+    setJWTtoken,
+    setSelectedItem,
+    docParams,
+    setTabsDropdownData,
+  } = useContext(AppContext);
   const headerData = [
     { title: "TEMPLATE NAME", width: "35%" },
     { title: "ROLES", width: "30%" },
@@ -88,9 +94,26 @@ function TemplateMapping() {
           "x-access-token": data?.token || JWTtoken,
         },
       })
-        .then((docsData) => {
+        .then(async (docsData) => {
           docsData && (tempaltesData.current = docsData?.data);
           sortHandler();
+          await getApi({
+            endUrl: "set-up/settings/objects",
+            headers: {
+              "x-access-token": data?.token || JWTtoken,
+            },
+          })
+            .then((data) => {
+              setTabsDropdownData(data?.data || {});
+            })
+            .catch((err) => {
+              openNotification({
+                message: "Error",
+                description: err.message,
+                type: "error",
+                api,
+              });
+            });
         })
         .catch((err) => {
           openNotification({
@@ -126,7 +149,7 @@ function TemplateMapping() {
   }, []);
 
   return (
-    <div className="">
+    <div>
       {contextHolder}
       {loading ? (
         <Loader />

@@ -39,21 +39,13 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
-    const objectId = searchParams?.get("object_id");
-    const objectType = searchParams?.get("object_type");
-    const firstName = searchParams?.get("first_name");
-    const lastName = searchParams?.get("last_name");
-    const email = searchParams?.get("email");
-    const name = searchParams?.get("name");
-    setDocParams({
-      authId: authId,
-      objectId: objectId,
-      objectType: objectType,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      name: name,
-    });
+    const urlParams = new URLSearchParams(location.search.substring(1));
+    const entries = urlParams.entries();
+    const result = {};
+    for (const [key, value] of entries) {
+      result[key] = value;
+    }
+    setDocParams(result);
     if (authId !== docParams?.authId) {
       localStorage?.clear();
       await getApi({

@@ -128,6 +128,14 @@ function Signature() {
     return clone;
   };
 
+  const paramsHandler = () => {
+    let copy = docParams;
+    delete copy.authId;
+    delete copy.hubspot_user_id;
+    delete copy.hubspot_portal_id;
+    return copy;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (requiredFieldsCheckHandler()) {
@@ -138,7 +146,7 @@ function Signature() {
       });
 
       let data;
-      let params = {};
+      let params = paramsHandler();
       if (type === "original") {
         data = {
           original_file_id: selectedItem?.id,
@@ -147,13 +155,6 @@ function Signature() {
           is_ordered: 1,
         };
       } else {
-        params = {
-          object_type: docParams?.objectType,
-          firstname: docParams?.firstName,
-          lastname: docParams?.lastName,
-          email: docParams?.email,
-          name: docParams?.name,
-        };
         data = {
           sources: [
             {

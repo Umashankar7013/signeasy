@@ -13,22 +13,22 @@ import { Loader } from "../../components/Loader";
 
 function ActionTemplateMapping() {
   const router = useRouter();
-  const { selectedItem, JWTtoken } = useContext(AppContext);
+  const { selectedItem, JWTtoken, tabsDropdownData } = useContext(AppContext);
   const tabs = ["Contacts", "Company", "Deals"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const headerData = ["SIGNEASY", "HUBSPOT VARIABLES"];
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(true);
+  const tabsDropdownDataUtils = {
+    Contacts: "contacts",
+    Company: "companies",
+    Deals: "deals",
+  };
 
   const onChangeTabHandler = (tab) => {
     setSelectedTab(tab);
   };
 
-  const tabsDropdownData = {
-    Contacts: ["firstname", "lastname", "email"],
-    Company: ["name"],
-    Deals: [],
-  };
   const [data, setData] = useState({});
 
   const addVariablesHandler = (item, index) => {
@@ -133,7 +133,7 @@ function ActionTemplateMapping() {
           selectedItem?.metadata?.merge_fields?.map((field) => {
             array.push({
               name: field?.label,
-              dropDownData: tabsDropdownData[tab],
+              dropDownData: tabsDropdownData[tabsDropdownDataUtils[tab]],
               selectedVariables: selectedVariablesHandler(
                 data?.data,
                 tabUtils[tab],
