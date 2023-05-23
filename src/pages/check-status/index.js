@@ -142,8 +142,7 @@ const CheckStatus = () => {
       method: "get",
       url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId}`,
       headers: {
-        //"x-access-token": JWTtoken,
-        "Authorization": `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     }).catch((err) => {
       openNotification({
@@ -269,7 +268,7 @@ const CheckStatus = () => {
     const blob = new Blob([data?.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${name.replace('.pdf', '')}_${type}.pdf`;
+    link.download = `${name.replace(".pdf", "")}_${type}.pdf`;
     link.click();
     URL.revokeObjectURL(link.href);
   };
@@ -283,10 +282,10 @@ const CheckStatus = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
-      responseType: 'blob'
+      responseType: "blob",
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, envelope?.name, 'signed');
+        await pdfDownloadHandler(data, envelope?.name, "signed");
         setDownloadDropdown((prev) => ({
           ...prev,
           isVisible: false,
@@ -313,10 +312,10 @@ const CheckStatus = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
-      responseType: 'blob'
+      responseType: "blob",
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, envelope?.name, 'certificate');
+        await pdfDownloadHandler(data, envelope?.name, "certificate");
         setDownloadDropdown((prev) => ({
           ...prev,
           isVisible: false,
@@ -343,10 +342,14 @@ const CheckStatus = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
-      responseType: 'blob'
+      responseType: "blob",
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, envelope?.name, 'certificate_with_signed');
+        await pdfDownloadHandler(
+          data,
+          envelope?.name,
+          "certificate_with_signed"
+        );
         setDownloadDropdown((prev) => ({
           ...prev,
           isVisible: false,

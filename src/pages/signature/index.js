@@ -22,8 +22,8 @@ function Signature() {
   const type = router.query?.type;
   const [signersData, setSignersData] = useState([
     {
-      first_name: docParams?.firstName || "",
-      last_name: docParams?.lastName || "",
+      first_name: docParams?.firstname || "",
+      last_name: docParams?.lastname || "",
       email: docParams?.email || "",
     },
   ]);
@@ -71,8 +71,8 @@ function Signature() {
       data: {
         name: name,
         envelope_id: id,
-        object_type: objectType ? objectType : docParams?.objectType,
-        object_id: objectId ? Number(objectId) : Number(docParams?.objectId),
+        object_type: objectType ? objectType : docParams?.object_type,
+        object_id: objectId ? Number(objectId) : Number(docParams?.object_id),
       },
     })
       .then((response) => {
