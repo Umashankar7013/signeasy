@@ -531,21 +531,25 @@ function Signature() {
                         </div>
                       </div>
                     ))}
-
-                    <div
-                      className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
-                      onClick={() => {
-                        type === "original" &&
-                          setSignersData((prev) => [...prev, signer]);
-                        type === "original" &&
-                          setRoles((prev) => [...prev, { name: "Role name" }]);
-                      }}
-                    >
-                      <PlusIcon />
-                      <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
-                        Add new recipient
+                    {type === "original" && (
+                      <div
+                        className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
+                        onClick={() => {
+                          type === "original" &&
+                            setSignersData((prev) => [...prev, signer]);
+                          type === "original" &&
+                            setRoles((prev) => [
+                              ...prev,
+                              { name: "Role name" },
+                            ]);
+                        }}
+                      >
+                        <PlusIcon />
+                        <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
+                          Add new recipient
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                   {/* Step3 */}
                   <div>

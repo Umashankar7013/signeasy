@@ -82,13 +82,14 @@ const CheckStatus = () => {
   const statusHandler = (data) => {
     let status;
     let flag = 0;
-    data?.recipients?.map((recipient) => {
-      if (recipient?.status === "declined") {
-        flag = 1;
-        status = recipient?.status;
-        return;
-      }
-    });
+    data?.status !== "voided" &&
+      data?.recipients?.map((recipient) => {
+        if (recipient?.status === "declined") {
+          flag = 1;
+          status = recipient?.status;
+          return;
+        }
+      });
     if (flag === 0) return data?.status;
     else return status;
   };
@@ -188,8 +189,8 @@ const CheckStatus = () => {
     const { objectId, objectType, data } = await tokenHandler();
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
-        objectType || docParams?.objectType
-      }&object_id=${Number(objectId || docParams?.objectId)}`,
+        objectType || docParams?.objectType || "CONTACT"
+      }&object_id=${Number(objectId || docParams?.objectId || "251")}`,
       headers: {
         "x-access-token": data?.token || JWTtoken,
       },
