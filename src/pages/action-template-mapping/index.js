@@ -104,7 +104,7 @@ function ActionTemplateMapping() {
   };
 
   const selectedVariablesHandler = (data, tab, value) => {
-    let returnValue;
+    let returnValue = [];
     data?.[tab]?.map((item) => {
       if (item?.signeasy_field === value) {
         returnValue = item?.hubspot_field;
