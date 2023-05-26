@@ -15,6 +15,7 @@ import { ErrorPage } from "../../components/ErrorPage";
 function ActionTemplateMapping() {
   const router = useRouter();
   const { selectedItem, JWTtoken, tabsDropdownData } = useContext(AppContext);
+  const [browserWindow, setBrowserWindow] = useState();
   const tabs = ["Contacts", "Company", "Deals"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const headerData = ["SIGNEASY", "HUBSPOT VARIABLES"];
@@ -160,9 +161,10 @@ function ActionTemplateMapping() {
 
   useEffect(() => {
     getSavedTemplateData();
+    setBrowserWindow(window);
   }, []);
 
-  return typeof window?.localStorage !== "undefined" ? (
+  return typeof browserWindow?.localStorage !== "undefined" ? (
     <ErrorPage />
   ) : (
     <>

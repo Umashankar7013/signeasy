@@ -19,6 +19,7 @@ import { ErrorPage } from "../../components/ErrorPage";
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setDocParams } =
     useContext(AppContext);
+  const [browserWindow, setBrowserWindow] = useState();
   const router = useRouter();
   const type = router.query?.type;
   const [signersData, setSignersData] = useState([
@@ -395,9 +396,10 @@ function Signature() {
 
   useEffect(() => {
     popupObserver();
+    setBrowserWindow(window);
   }, []);
 
-  return typeof window?.localStorage !== "undefined" ? (
+  return typeof browserWindow?.localStorage !== "undefined" ? (
     <ErrorPage />
   ) : (
     <>
