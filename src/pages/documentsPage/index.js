@@ -11,6 +11,7 @@ import jwt_decode from "jwt-decode";
 import { notification } from "antd";
 import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
+import { ErrorPage } from "../../components/ErrorPage";
 
 function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const itemsData = useRef([]);
@@ -205,7 +206,9 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     setBrowserWindow(window);
   }, []);
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <>
       {contextHolder}
       {loading ? (

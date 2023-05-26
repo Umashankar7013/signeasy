@@ -14,6 +14,7 @@ import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { Loader } from "../../components/Loader";
+import { ErrorPage } from "../../components/ErrorPage";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setDocParams } =
@@ -396,7 +397,9 @@ function Signature() {
     popupObserver();
   }, []);
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <>
       {contextHolder}
       <div>

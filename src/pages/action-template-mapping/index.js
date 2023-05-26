@@ -10,6 +10,7 @@ import { getApi, putMethod } from "../../api/apiMethods";
 import { openNotification } from "../../utils/functions";
 import { notification } from "antd";
 import { Loader } from "../../components/Loader";
+import { ErrorPage } from "../../components/ErrorPage";
 
 function ActionTemplateMapping() {
   const router = useRouter();
@@ -161,7 +162,9 @@ function ActionTemplateMapping() {
     getSavedTemplateData();
   }, []);
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <>
       {contextHolder}
       {loading ? (

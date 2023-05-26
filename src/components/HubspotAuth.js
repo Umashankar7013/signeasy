@@ -6,6 +6,7 @@ import { AuthLabels } from "./AuthLabels";
 import { RevokeButton } from "./RevokeButton";
 import { AuthorizeButton } from "./AuthorizeButton";
 import { AppContext } from "../pages/_app";
+import { ErrorPage } from "./ErrorPage";
 
 export const HubspotAuth = ({ api }) => {
   const [hubspotPopup, setHubspotPopup] = useState(null);
@@ -72,7 +73,9 @@ export const HubspotAuth = ({ api }) => {
     popupObserver({ popup: hubspotPopup });
   }, [hubspotPopup]);
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <div className="flex flex-col items-center">
       <AuthLabels
         imageName={"hubSpotIcon"}

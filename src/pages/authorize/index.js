@@ -5,12 +5,15 @@ import { HubspotAuth } from "../../components/HubspotAuth";
 import { SigneasyAuth } from "../../components/SigneasyAuth";
 import { AppContext } from "../_app";
 import { AUTH_REDIRECTION_URL } from "../../constants/constants";
+import { ErrorPage } from "../../components/ErrorPage";
 
 const Authorize = () => {
   const [api, contextHolder] = notification.useNotification();
   const { hubSpotAuth } = useContext(AppContext);
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <>
       {contextHolder}
       <div className="w-[100vw] h-[100vh] flex flex-col items-center">

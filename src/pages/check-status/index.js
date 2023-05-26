@@ -17,6 +17,7 @@ import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
 import jwt_decode from "jwt-decode";
+import { ErrorPage } from "../../components/ErrorPage";
 
 const CheckStatus = () => {
   const statusData = [
@@ -448,7 +449,9 @@ const CheckStatus = () => {
     },
   ];
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <>
       {contextHolder}
       {loading ? (

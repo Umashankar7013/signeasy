@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { Loader } from "../../components/Loader";
 import { notification } from "antd";
 import { dateHandler, openNotification } from "../../utils/functions";
+import { ErrorPage } from "../../components/ErrorPage";
 
 function TemplateMapping() {
   const tempaltesData = useRef([
@@ -148,7 +149,9 @@ function TemplateMapping() {
     setBrowserWindow(window);
   }, []);
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <div>
       {contextHolder}
       {loading ? (

@@ -5,6 +5,7 @@ import { RevokeButton } from "./RevokeButton";
 import { AuthorizeButton } from "./AuthorizeButton";
 import { deleteApi } from "../api/apiMethods";
 import { AppContext } from "../pages/_app";
+import { ErrorPage } from "./ErrorPage";
 
 export const SigneasyAuth = ({
   api,
@@ -115,7 +116,9 @@ export const SigneasyAuth = ({
     setBrowserWindow(window);
   }, []);
 
-  return (
+  return typeof window?.localStorage !== "undefined" ? (
+    <ErrorPage />
+  ) : (
     <>
       <div className="flex flex-col items-center">
         <AuthLabels
