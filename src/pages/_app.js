@@ -4,13 +4,7 @@ import { Layout } from "../components/Layout";
 import { ErrorPage } from "../components/ErrorPage";
 
 function MyApp({ Component, pageProps }) {
-  // const [cookieEnabled, setCookieEnabled] = useState(true);
-
-  // useEffect(() => {
-  //   setCookieEnabled(navigator.cookieEnabled);
-  // }, []);
-
-  return navigator.cookieEnabled ? (
+  return typeof navigator !== "undefined" && navigator.cookieEnabled ? (
     <Layout>
       <Component {...pageProps} />
     </Layout>
