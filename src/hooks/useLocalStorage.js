@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 function getStorageValue(key, defaultValue) {
   if (typeof window !== "undefined") {
-    const stored = localStorage?.getItem(key);
+    const stored = window?.localStorage?.getItem(key);
     return stored !== "undefined" && stored !== null
       ? JSON?.parse(stored)
       : defaultValue;
@@ -21,12 +21,12 @@ export const useLocalStorage = (key, defaultValue) => {
   useEffect(() => {
     if (key === "selectedItem") {
       if (Object.keys(value)?.length > 0) {
-        typeof window !== "undefined" &&
+        typeof window?.localStorage !== "undefined" &&
           localStorage?.setItem(key, JSON.stringify(value));
       }
     } else {
       typeof window !== "undefined" &&
-        localStorage?.setItem(key, JSON.stringify(value));
+        window?.localStorage?.setItem(key, JSON.stringify(value));
     }
   }, [key, value]);
 
