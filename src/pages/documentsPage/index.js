@@ -206,9 +206,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     setBrowserWindow(window);
   }, []);
 
-  return typeof browserWindow?.localStorage === "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <>
       {contextHolder}
       {loading ? (

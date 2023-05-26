@@ -16,9 +16,7 @@ const Authorize = () => {
     setBrowserWindow(window);
   }, []);
 
-  return typeof browserWindow?.localStorage === "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <>
       {contextHolder}
       <div className="w-[100vw] h-[100vh] flex flex-col items-center">

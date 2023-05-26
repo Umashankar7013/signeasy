@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "../../styles/globals.css";
 import { Layout } from "../components/Layout";
 import { ErrorPage } from "../components/ErrorPage";

@@ -12,9 +12,7 @@ const SigneasyAuthPage = () => {
     setBrowserWindow(window);
   }, []);
 
-  return typeof browserWindow?.localStorage === "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <>
       {contextHolder}
       <SigneasyAuth

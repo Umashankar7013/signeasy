@@ -149,9 +149,7 @@ function TemplateMapping() {
     setBrowserWindow(window);
   }, []);
 
-  return typeof browserWindow?.localStorage === "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <div>
       {contextHolder}
       {loading ? (

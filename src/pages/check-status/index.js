@@ -449,9 +449,7 @@ const CheckStatus = () => {
     },
   ];
 
-  return typeof browserWindow?.localStorage === "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <>
       {contextHolder}
       {loading ? (

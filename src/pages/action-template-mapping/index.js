@@ -164,9 +164,7 @@ function ActionTemplateMapping() {
     setBrowserWindow(window);
   }, []);
 
-  return typeof browserWindow?.localStorage === "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <>
       {contextHolder}
       {loading ? (
