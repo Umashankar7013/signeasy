@@ -12,8 +12,6 @@ function getStorageValue(key, defaultValue) {
 }
 
 export const useLocalStorage = (key, defaultValue) => {
-  if (typeof window !== "undefined" && typeof localStorage === "undefined")
-    return null;
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
@@ -29,6 +27,9 @@ export const useLocalStorage = (key, defaultValue) => {
       localStorage.setItem(key, JSON.stringify(value));
     }
   }, [key, value]);
+
+  if (typeof window !== "undefined" && typeof localStorage === "undefined")
+    return null;
 
   return [value, setValue];
 };
