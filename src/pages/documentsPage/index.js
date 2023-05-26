@@ -6,12 +6,12 @@ import { SearchBar } from "../../components/SearchBar";
 import { RadioButton } from "../../components/RadioButton";
 import classNames from "classnames";
 import { dateHandler, openNotification } from "../../utils/functions";
-import { AppContext } from "../_app";
 import jwt_decode from "jwt-decode";
 import { notification } from "antd";
 import { Loader } from "../../components/Loader";
 import { BottomButtons } from "../../components/BottomButtons";
 import { ErrorPage } from "../../components/ErrorPage";
+import { AppContext } from "../../components/Layout";
 
 function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const itemsData = useRef([]);

@@ -3,9 +3,9 @@ import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { notification } from "antd";
 import { HubspotAuth } from "../../components/HubspotAuth";
 import { SigneasyAuth } from "../../components/SigneasyAuth";
-import { AppContext } from "../_app";
 import { AUTH_REDIRECTION_URL } from "../../constants/constants";
 import { ErrorPage } from "../../components/ErrorPage";
+import { AppContext } from "../../components/Layout";
 
 const Authorize = () => {
   const [api, contextHolder] = notification.useNotification();

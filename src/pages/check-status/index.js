@@ -9,7 +9,6 @@ import {
 import classNames from "classnames";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { getApi, putMethod } from "../../api/apiMethods";
-import { AppContext } from "../_app";
 import moment from "moment/moment";
 import { Loader } from "../../components/Loader";
 import axios from "axios";
@@ -18,6 +17,7 @@ import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
 import jwt_decode from "jwt-decode";
 import { ErrorPage } from "../../components/ErrorPage";
+import { AppContext } from "../../components/Layout";
 
 const CheckStatus = () => {
   const statusData = [

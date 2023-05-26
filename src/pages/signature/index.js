@@ -9,12 +9,12 @@ import { TextArea } from "../../components/TextArea";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import { useRouter } from "next/router";
-import { AppContext } from "../_app";
 import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { Loader } from "../../components/Loader";
 import { ErrorPage } from "../../components/ErrorPage";
+import { AppContext } from "../../components/Layout";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setDocParams } =

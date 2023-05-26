@@ -4,7 +4,7 @@ import { AuthLabels } from "./AuthLabels";
 import { RevokeButton } from "./RevokeButton";
 import { AuthorizeButton } from "./AuthorizeButton";
 import { deleteApi } from "../api/apiMethods";
-import { AppContext } from "../pages/_app";
+import { AppContext } from "./Layout";
 import { ErrorPage } from "./ErrorPage";
 
 export const SigneasyAuth = ({

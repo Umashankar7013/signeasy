@@ -5,7 +5,7 @@ import { AUTH_REDIRECTION_URL } from "../constants/constants";
 import { AuthLabels } from "./AuthLabels";
 import { RevokeButton } from "./RevokeButton";
 import { AuthorizeButton } from "./AuthorizeButton";
-import { AppContext } from "../pages/_app";
+import { AppContext } from "./Layout";
 import { ErrorPage } from "./ErrorPage";
 
 export const HubspotAuth = ({ api }) => {

@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
-import { AppContext } from "../pages/_app";
 import { PrimaryButton } from "./PrimaryButton";
 import classNames from "classnames";
+import { AppContext } from "./Layout";
 
 export const BottomButtons = ({ forTemplates = false }) => {
   const { selectedItem } = useContext(AppContext);

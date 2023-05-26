@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { getApi } from "../../api/apiMethods";
-import { AppContext } from "../_app";
 import { DropDown } from "../../components/DropDown";
 import classNames from "classnames";
 import { useRouter } from "next/router";
@@ -8,6 +7,7 @@ import { Loader } from "../../components/Loader";
 import { notification } from "antd";
 import { dateHandler, openNotification } from "../../utils/functions";
 import { ErrorPage } from "../../components/ErrorPage";
+import { AppContext } from "../../components/Layout";
 
 function TemplateMapping() {
   const tempaltesData = useRef([

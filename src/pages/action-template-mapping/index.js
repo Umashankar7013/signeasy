@@ -5,12 +5,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Tabs } from "../../components/Tabs";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { MultiTextInputDropdown } from "../../components/MultiTextInputDropdown";
-import { AppContext } from "../_app";
 import { getApi, putMethod } from "../../api/apiMethods";
 import { openNotification } from "../../utils/functions";
 import { notification } from "antd";
 import { Loader } from "../../components/Loader";
 import { ErrorPage } from "../../components/ErrorPage";
+import { AppContext } from "../../components/Layout";
 
 function ActionTemplateMapping() {
   const router = useRouter();
