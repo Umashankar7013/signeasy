@@ -21,10 +21,12 @@ export const useLocalStorage = (key, defaultValue) => {
   useEffect(() => {
     if (key === "selectedItem") {
       if (Object.keys(value)?.length > 0) {
-        localStorage?.setItem(key, JSON.stringify(value));
+        typeof window !== "undefined" &&
+          localStorage?.setItem(key, JSON.stringify(value));
       }
     } else {
-      localStorage?.setItem(key, JSON.stringify(value));
+      typeof window !== "undefined" &&
+        localStorage?.setItem(key, JSON.stringify(value));
     }
   }, [key, value]);
 
