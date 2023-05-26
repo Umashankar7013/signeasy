@@ -116,9 +116,7 @@ export const SigneasyAuth = ({
     setBrowserWindow(window);
   }, []);
 
-  return typeof window?.localStorage !== "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <>
       <div className="flex flex-col items-center">
         <AuthLabels

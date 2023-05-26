@@ -73,9 +73,7 @@ export const HubspotAuth = ({ api }) => {
     popupObserver({ popup: hubspotPopup });
   }, [hubspotPopup]);
 
-  return typeof window?.localStorage !== "undefined" ? (
-    <ErrorPage />
-  ) : (
+  return (
     <div className="flex flex-col items-center">
       <AuthLabels
         imageName={"hubSpotIcon"}

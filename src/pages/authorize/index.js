@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { notification } from "antd";
 import { HubspotAuth } from "../../components/HubspotAuth";
@@ -10,8 +10,13 @@ import { ErrorPage } from "../../components/ErrorPage";
 const Authorize = () => {
   const [api, contextHolder] = notification.useNotification();
   const { hubSpotAuth } = useContext(AppContext);
+  const [browserWindow, setBrowserWindow] = useState();
 
-  return typeof window?.localStorage !== "undefined" ? (
+  useEffect(() => {
+    setBrowserWindow(window);
+  }, []);
+
+  return typeof browserWindow?.localStorage !== "undefined" ? (
     <ErrorPage />
   ) : (
     <>

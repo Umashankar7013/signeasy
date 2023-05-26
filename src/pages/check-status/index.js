@@ -449,7 +449,7 @@ const CheckStatus = () => {
     },
   ];
 
-  return typeof window?.localStorage !== "undefined" ? (
+  return typeof browserWindow?.localStorage !== "undefined" ? (
     <ErrorPage />
   ) : (
     <>
