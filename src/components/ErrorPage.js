@@ -2,7 +2,7 @@ import React from "react";
 
 export const ErrorPage = () => {
   return (
-    <div className="h-[100vh] w-[100vw] flex justify-center items-center">
+    <div className="h-[100vh] w-[100vw] flex flex-col justify-center items-center">
       <div className="text-[16px] font-lexend font-[600] text-center">
         Sorry, something went wrong.
       </div>
