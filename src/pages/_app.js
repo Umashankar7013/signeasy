@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import "../../styles/globals.css";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 export const AppContext = createContext();
 
@@ -38,7 +39,9 @@ function MyApp({ Component, pageProps }) {
         setTabsDropdownData,
       }}
     >
-      <Component {...pageProps} />
+      <ErrorBoundary>
+        <Component {...pageProps} />
+      </ErrorBoundary>
     </AppContext.Provider>
   );
 }
