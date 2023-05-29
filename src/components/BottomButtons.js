@@ -23,7 +23,7 @@ export const BottomButtons = ({ forTemplates = false }) => {
       <PrimaryButton
         title="Next"
         className={classNames(
-          "px-[40px] py-[10px]",
+          "px-[40px] py-[10px] rounded-[3px]",
           Object.keys(selectedItem)?.length > 0
             ? "bg-[#ee8162]"
             : "bg-[#ebf0f5]"

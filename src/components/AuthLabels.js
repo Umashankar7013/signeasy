@@ -23,7 +23,7 @@ export const AuthLabels = ({
         />
       </div>
       <div className="text-[30px] font-inter font-bold pt-[30px]">{title}</div>
-      <div className="text-[13px] py-[60px] font-[600] text-gray-400 font-inter">
+      <div className="text-[13px] py-[30px] font-[600] text-gray-400 font-inter">
         WE NEED PERMISSION TO ACCESS YOUR ACCOUNTS
       </div>
     </>

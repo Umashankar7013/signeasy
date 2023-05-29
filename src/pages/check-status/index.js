@@ -12,7 +12,7 @@ import { getApi, putMethod } from "../../api/apiMethods";
 import moment from "moment/moment";
 import { Loader } from "../../components/Loader";
 import axios from "axios";
-import { notification } from "antd";
+import { Modal, notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { SignersData } from "../../components/SignersData";
 import jwt_decode from "jwt-decode";
@@ -79,6 +79,10 @@ const CheckStatus = () => {
   const [api, contextHolder] = notification.useNotification();
   const signersData = useRef([]);
   const [showSignersData, setShowSignersData] = useState(false);
+  const [showVoidPopUp, setShowVoidPopUp] = useState({
+    isVisible: false,
+    id: "",
+  });
 
   const statusHandler = (data) => {
     let status;
@@ -123,6 +127,62 @@ const CheckStatus = () => {
     docsData.current.envelopes = envelopesCopy;
     const statusSortedData = statusSortHandler(envelopesCopy);
     setSortedData(statusSortedData);
+  };
+
+  const VoidPopUp = ({ open = false }) => {
+    return (
+      <Modal
+        open={open}
+        footer={null}
+        closable={false}
+        style={{ borderRadius: 0, padding: 0 }}
+        onCancel={() =>
+          setShowVoidPopUp((prev) => ({
+            ...prev,
+            isVisible: false,
+            id: "",
+          }))
+        }
+      >
+        <div className="text-[14px] font-[500]">Reason for voiding request</div>
+        <div className="text-[12px] font-[500] pt-[15px]">
+          Once voided,signers can no longer access this document.They will
+          receive an email notification,along with your reason for voiding this
+          request.
+        </div>
+        <textarea
+          placeholder="Add your reason here(max 255 characters)"
+          className="w-[100%] outline-none border-[1px] rounded-[3px] text-[12px] mt-[15px] flex h-[100px] resize-none p-[7px]"
+        />
+        <div className="flex items-center justify-end mt-[15px]">
+          <div
+            className="h-[30px] w-[67px] text-[12px] font-[500] flex text-[#4e90e2] bg-[#f5fafe] items-center justify-center border-[1px] border-[#4e90e2] mr-[10px] rounded-[3px] cursor-pointer"
+            onClick={() =>
+              setShowVoidPopUp((prev) => ({
+                ...prev,
+                isVisible: false,
+                id: "",
+              }))
+            }
+          >
+            Cancel
+          </div>
+          <div
+            className="h-[30px] text-[12px] flex w-[67px] font-[500] text-[#fff] bg-[#e6716d] items-center justify-center rounded-[3px] cursor-pointer"
+            onClick={async () => {
+              await voidHandler(showVoidPopUp.id);
+              setShowVoidPopUp((prev) => ({
+                ...prev,
+                isVisible: false,
+                id: "",
+              }));
+            }}
+          >
+            Void
+          </div>
+        </div>
+      </Modal>
+    );
   };
 
   const sortHandler = (selectedHeader) => {
@@ -371,7 +431,13 @@ const CheckStatus = () => {
 
   const actionsHandler = (action, envelop) => {
     if (action === "Send Reminder") sendReminderHandler(envelop?.envelope_id);
-    if (action === "Void") voidHandler(envelop?.envelope_id);
+    if (action === "Void") {
+      setShowVoidPopUp((prev) => ({
+        ...prev,
+        isVisible: true,
+        id: envelop?.envelope_id,
+      }));
+    }
     // if (action === "Download") documentWithCertificateDownloadHandler(envelop);
   };
 
@@ -445,7 +511,12 @@ const CheckStatus = () => {
   const threeDotSubActionsObject = [
     {
       title: "Void",
-      onClick: () => voidHandler(threeDotDropdown?.envelop?.envelope_id),
+      onClick: () =>
+        setShowVoidPopUp((prev) => ({
+          ...prev,
+          isVisible: true,
+          id: threeDotDropdown?.envelop?.envelope_id,
+        })),
     },
   ];
 
@@ -456,6 +527,7 @@ const CheckStatus = () => {
         <Loader />
       ) : (
         <div className="">
+          <VoidPopUp open={showVoidPopUp.isVisible} />
           <div className="font-[500]">Signeasy documents</div>
           <div className="flex border-[1px] w-fit py-[15px] rounded-[4px] mt-[20px] mb-[40px]">
             {statusData?.map((item, index) => (

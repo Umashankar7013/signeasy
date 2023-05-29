@@ -5,7 +5,7 @@ import DocumentsPage from "../documentsPage";
 import { Tabs } from "../../components/Tabs";
 
 function TemplatesAndDocs() {
-  const tabs = ["templates", "documents"];
+  const tabs = ["Templates", "Documents"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const onChangeTabHandler = (tab) => {
@@ -19,8 +19,8 @@ function TemplatesAndDocs() {
         this contact
       </div>
       <Tabs tabs={tabs} onChangeTab={onChangeTabHandler} />
-      {selectedTab === "templates" && <Templates />}
-      {selectedTab === "documents" && <DocumentsPage />}
+      {selectedTab === "Templates" && <Templates />}
+      {selectedTab === "Documents" && <DocumentsPage />}
     </div>
   );
 }

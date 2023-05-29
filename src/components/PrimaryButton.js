@@ -12,7 +12,7 @@ export const PrimaryButton = ({
   return (
     <div
       className={classNames(
-        "flex items-center justify-center border-[1px] rounded-[8px] cursor-pointer",
+        "flex items-center justify-center border-[1px] cursor-pointer",
         className
       )}
       onClick={loading ? () => {} : onClick}

@@ -10,9 +10,10 @@ export const TextArea = ({
   required = false,
   value,
   rows = 2,
+  width,
 }) => {
   return (
-    <div>
+    <div style={{ width }}>
       <div className="font-lexend font-[500] text-[14px] leading-[17px] text-[#374659]">
         {`${title} ${required ? "*" : ""}`}
       </div>

@@ -170,7 +170,7 @@ function ActionTemplateMapping() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="p-[30px]">
+        <div>
           {/* Back Button */}
           <div
             className="flex items-center cursor-pointer w-fit pb-[15px]"
@@ -231,11 +231,11 @@ function ActionTemplateMapping() {
             </div>
           </div>
           {/* Save Button */}
-          <div className="fixed bottom-0 h-[68px] bg-[#F6F8FA] w-[94%] flex items-center">
+          <div className="fixed bottom-0 h-[68px] bg-[#F6F8FA] w-[100%] flex items-center">
             <PrimaryButton
               title="Save"
               className={classNames(
-                "px-[25px] py-[11px] text-[#FFFFFF] bg-[#EE8162] font-[600] ml-[25px]",
+                "px-[25px] py-[11px] text-[#FFFFFF] bg-[#FF7A59] font-[600] ml-[25px] rounded-[3px]",
                 activateSaveHandler() ? "opacity-100" : "opacity-50"
               )}
               onClick={() => activateSaveHandler() && saveHandler()}

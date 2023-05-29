@@ -6,18 +6,23 @@ export const Tabs = ({ tabs, onChangeTab = () => {} }) => {
   return (
     <div className="border-b-2 flex pt-[19px]">
       {tabs?.map((tab, index) => (
-        <div
-          className={classNames(
-            "px-[20px] cursor-pointer font-lexend text-[#374659] text-[14px] pb-[12px] font-[500] leading-[17.5px] select-none",
-            selectedTab === tab && "border-b-[5px] border-b-[#374659]"
+        <div>
+          <div
+            className={classNames(
+              "px-[20px] cursor-pointer font-lexend text-[#374659] text-[14px] pb-[12px] leading-[17.5px] select-none",
+              selectedTab === tab ? "font-[500]" : "font-[300]"
+            )}
+            onClick={() => {
+              onChangeTab(tab);
+              setSelectedTab(tab);
+            }}
+            key={index}
+          >
+            {tab}
+          </div>
+          {selectedTab === tab && (
+            <div className="h-[5px] w-[100%] bg-[#374659] rounded-[10px]"></div>
           )}
-          onClick={() => {
-            onChangeTab(tab);
-            setSelectedTab(tab);
-          }}
-          key={index}
-        >
-          {tab}
         </div>
       ))}
     </div>

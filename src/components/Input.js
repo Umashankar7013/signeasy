@@ -13,9 +13,10 @@ export const Input = ({
   index,
   clearFun = () => {},
   showError = false,
+  width = "",
 }) => {
   return (
-    <div>
+    <div style={{ width }}>
       <div className="font-lexend font-[500] text-[14px] leading-[17px] text-[#374659]">
         {`${title} ${required ? "*" : ""}`}
       </div>

@@ -7,7 +7,7 @@ export const RevokeButton = ({ onClick = () => {}, loading }) => (
     </div>
     <PrimaryButton
       title="Revoke"
-      className="w-[250px] border-[#F76868]"
+      className="w-[250px] border-[#F76868] rounded-[8px]"
       titleClassName="py-[5px] text-[#F76868]"
       onClick={onClick}
       loading={loading}

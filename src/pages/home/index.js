@@ -27,7 +27,7 @@ const Home = () => {
             className="mr-[8px]"
           />
         }
-        className="bg-[#1088E7] px-[14px] py-[10px] mt-[30px]"
+        className="bg-[#1088E7] px-[14px] py-[10px] mt-[30px] rounded-[8px] border-[#1088E7]"
         titleClassName="text-white"
         onClick={() => router.push("/authorize")}
       />

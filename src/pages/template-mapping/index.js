@@ -171,8 +171,8 @@ function TemplateMapping() {
                 className={classNames(
                   "text-[12px] text-[#374659] font-[500] px-[24px] py-[15px] leading-[16.39px] cursor-pointer",
                   selectedHeader.current === header?.title
-                    ? "bg-[#CDD6E1]"
-                    : "bg-[#EBF0F5]"
+                    ? "bg-[#CFD6E0]"
+                    : "bg-[#ECF0F4]"
                 )}
               >
                 {header?.title}
@@ -197,10 +197,11 @@ function TemplateMapping() {
                   {template?.metadata?.roles?.map((role, index) => {
                     return (
                       <span
-                        style={{
-                          color: `rgb${role?.color}`,
-                        }}
+                        // style={{
+                        //   color: `rgb${role?.color}`,
+                        // }}
                         key={index}
+                        className="text-[#374659]"
                       >
                         {role?.name}
                         <span className="text-[black]">

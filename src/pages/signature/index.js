@@ -13,7 +13,6 @@ import axios from "axios";
 import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { Loader } from "../../components/Loader";
-import { ErrorPage } from "../../components/ErrorPage";
 import { AppContext } from "../../components/Layout";
 
 function Signature() {
@@ -316,7 +315,7 @@ function Signature() {
         text1="4. Send copies of signed documents"
         text2=" Copies of signed document can be shared to the below contact."
       />
-      <div className="mt-[14px] pl-[17px]">
+      <div className="mt-[14px] pl-[17px] w-[75%]">
         <div className="font-lexend font-[500] mb-[3px] text-[14px] leading-[17px] text-[#374659]">
           Email
         </div>
@@ -569,8 +568,9 @@ function Signature() {
                             e.target.value.match(/^([^]{0,60})/)[0];
                           setEmailSubject(e.target.value);
                         }}
+                        width="75%"
                       />
-                      <div className="mt-[47px]">
+                      <div className="mt-[30px]">
                         <TextArea
                           title="Message for signers"
                           limit={200 - message.length}
@@ -580,6 +580,7 @@ function Signature() {
                             setMessage(e.target.value);
                           }}
                           rows={3}
+                          width="75%"
                         />
                       </div>
                     </div>
@@ -594,25 +595,25 @@ function Signature() {
                       <LeftOutlined
                         style={{
                           fontSize: 12,
-                          color: "#ee8162",
+                          color: "#FF7A59",
                         }}
                       />
                     }
-                    className="pl-[5px] py-[7px] pr-[15px] border-[#ee8162]"
-                    titleClassName="pl-[10px] font-bold text-[#ee8162] text-[14px]"
+                    className="pl-[5px] py-[7px] pr-[15px] border-[#FF7A59] rounded-[3px]"
+                    titleClassName="pl-[10px] font-bold text-[#FF7A59] text-[14px]"
                     onClick={() => router.back()}
                   />
                   <div className="flex w-[100%] xs:w-fit xs:mt-[0px] mt-[10px]">
                     <input
                       type="submit"
                       value="Edit in Signeasy"
-                      className="border-[1px] px-[15px] py-[7px] cursor-pointer w-[50%] rounded-[8px] border-[#ee8162] text-[#ee8162] font-bold text-[14px]"
+                      className="border-[1px] px-[15px] py-[7px] cursor-pointer w-[50%] rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
                       onClick={(e) => editHandler(e)}
                     />
                     <input
                       type="submit"
                       value="Send for signature"
-                      className="border-[1px] px-[15px] ml-[10px] py-[7px] cursor-pointer w-[50%] rounded-[8px] bg-[#ee8162] font-bold text-[14px] text-white"
+                      className="border-[1px] px-[15px] ml-[10px] py-[7px] cursor-pointer w-[50%] rounded-[3px] bg-[#FF7A59] font-bold text-[14px] text-white"
                       onClick={(e) => submitHandler(e)}
                     />
                   </div>

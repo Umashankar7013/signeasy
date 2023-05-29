@@ -256,7 +256,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
               >
                 <div
                   className={classNames(
-                    "font-lexend font-medium text-[14px]",
+                    "font-lexend font-[600] text-[14px]",
                     index === 0 && "md:pl-[60px] pl-[47px]"
                   )}
                 >
@@ -290,8 +290,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
               <div
                 key={index}
                 className={classNames(
-                  "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px]",
-                  index === filteredData?.length - 1 && "shadow-lg"
+                  "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px]"
                 )}
               >
                 <div
@@ -306,19 +305,19 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
                     isActive={document?.id === selectedItem?.id}
                     isDisabled={document?.name === undefined}
                   />
-                  <div className="md:pl-[30px] pl-[15px] pr-[10px] text-[14px] font-lexend font-medium">
+                  <div className="md:pl-[30px] pl-[15px] pr-[10px] text-[14px] font-lexend font-[500]">
                     {document?.name}
                   </div>
                 </div>
                 <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
-                  <div className="font-lexend">
+                  <div className="font-lexend font-[400]">
                     {
                       dateHandler({
                         timestamp: document?.last_modified_time,
                       })[0]
                     }
                   </div>
-                  <div className="font-lexend text-[14px]">
+                  <div className="font-lexend text-[14px] font-[400]">
                     {
                       dateHandler({
                         timestamp: document?.last_modified_time,
@@ -330,7 +329,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
             ))}
           </div>
           {/* Bottom Buttons */}
-          <div className="fixed bottom-0 bg-[white] w-[100%] py-[15px] px-[20px]">
+          <div className="fixed bottom-0 bg-[white] w-[100%] py-[15px]">
             <BottomButtons forTemplates={forTemplates} />
           </div>
         </>
