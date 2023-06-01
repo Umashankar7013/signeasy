@@ -14,8 +14,8 @@ const Home = () => {
         Agree, the easy way.
       </div>
       <div className="text-center font-inter text-[18px] md:w-[500px] mx-[20px] leading-[24px] pt-[15px] font-[400]">
-        Easy-to-use eSignature and contract workflow platform to sign, send, and
-        manage business agreements.
+        Easy-to-use eSignature and contract workflow platform to sign and manage
+        business agreements.
       </div>
       <PrimaryButton
         title="Enable"
