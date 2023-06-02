@@ -112,6 +112,27 @@ const CheckStatus = () => {
     return sortedEnvelopes;
   };
 
+  const sortOnUpdateHandler = (envelopes) => {
+    return envelopes?.sort((a, b) => {
+      if (a?.["updatedAt"] < b?.["updatedAt"]) return 1;
+      else if (a?.["updatedAt"] > b?.["updatedAt"]) return -1;
+      else if (a?.["updatedAt"] === b?.["updatedAt"]) return 0;
+    });
+  };
+
+  const sortHandler = (selectedHeader) => {
+    const documentUtils = {
+      "Document Name": "name",
+    };
+    const sortKey = documentUtils?.[selectedHeader];
+    const laterSort = sortedData?.sort((a, b) => {
+      if (a?.[sortKey] > b?.[sortKey]) return 1;
+      else if (a?.[sortKey] < b?.[sortKey]) return -1;
+      else if (a?.[sortKey] === b?.[sortKey]) return 0;
+    });
+    laterSort && setSortedData([...laterSort]);
+  };
+
   const dataManipulator = () => {
     const envelopes = docsData?.current?.envelopes;
     docsData.current.pending = 0;
@@ -125,7 +146,7 @@ const CheckStatus = () => {
       docsData.current[status] += 1;
     });
     docsData.current.envelopes = envelopesCopy;
-    const statusSortedData = statusSortHandler(envelopesCopy);
+    const statusSortedData = sortOnUpdateHandler(envelopesCopy);
     setSortedData(statusSortedData);
   };
 
@@ -185,20 +206,6 @@ const CheckStatus = () => {
     );
   };
 
-  const sortHandler = (selectedHeader) => {
-    const documentUtils = {
-      "Document Name": "name",
-      "Last Modified": "updatedAt",
-    };
-    const sortKey = documentUtils?.[selectedHeader];
-    const laterSort = sortedData?.sort((a, b) => {
-      if (a?.[sortKey] > b?.[sortKey]) return 1;
-      else if (a?.[sortKey] < b?.[sortKey]) return -1;
-      else if (a?.[sortKey] === b?.[sortKey]) return 0;
-    });
-    laterSort && setSortedData([...laterSort]);
-  };
-
   const getSignedFileId = async (envelopeId) => {
     const data = await axios({
       method: "get",
@@ -251,7 +258,7 @@ const CheckStatus = () => {
     await getApi({
       endUrl: `hubspot-card/check-status?object_type=${
         objectType || docParams?.objectType || "CONTACT"
-      }&object_id=${Number(objectId || docParams?.objectId || "251")}`,
+      }&object_id=${Number(objectId || docParams?.objectId || "151")}`,
       headers: {
         "x-access-token": data?.token || JWTtoken,
       },
@@ -559,6 +566,11 @@ const CheckStatus = () => {
                 onClick={() => {
                   if (item?.title === "Status") {
                     const sortedEnvelopes = statusSortHandler(
+                      docsData.current.envelopes
+                    );
+                    setSortedData(sortedEnvelopes);
+                  } else if (item?.title === "Last Modified") {
+                    const sortedEnvelopes = sortOnUpdateHandler(
                       docsData.current.envelopes
                     );
                     setSortedData(sortedEnvelopes);
