@@ -67,7 +67,7 @@ function Signature() {
     setLoading(true);
     await axios({
       method: "post",
-      url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/envelope",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}hubspot-card/envelope`,
       headers: { "x-access-token": token },
       data: {
         name: name,
@@ -176,7 +176,7 @@ function Signature() {
       }
       await axios({
         method: "post",
-        url: `https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/${
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}hubspot-card/${
           type === "original" ? "documents" : "templates"
         }/send-envelope`,
         headers: { "x-access-token": JWTtoken },
@@ -262,7 +262,7 @@ function Signature() {
 
       await axios({
         method: "post",
-        url: "https://api-stg-hubspot-signeasy.tilicho.in/api/v1/hubspot-card/documents/embed-edit",
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}hubspot-card/documents/embed-edit`,
         headers: { "x-access-token": JWTtoken },
         data,
         params,
