@@ -107,7 +107,7 @@ function TemplateMapping() {
       })
         .then(async (docsData) => {
           docsData && (tempaltesData.current = docsData?.data);
-          sortHandler("acce");
+          sortHandler("dec");
           await getApi({
             endUrl: "set-up/settings/objects",
             headers: {
