@@ -468,7 +468,7 @@ function Signature() {
                       >
                         <div className="flex justify-between items-center">
                           <div className="font-lexend font-[500] text-[14px] text-[#374659]">
-                            {item?.name}
+                            {item?.name || `Signer ${index + 1}`}
                           </div>
                           <div
                             onClick={() => {

@@ -31,7 +31,7 @@ function TemplateMapping() {
   const [sortedData, setSortedData] = useState([]);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
-  const sortAccending = useRef(false);
+  const sortAccending = useRef(true);
 
   const showToastHandler = () => {
     openNotification({
@@ -181,9 +181,11 @@ function TemplateMapping() {
                 }}
                 onClick={() => {
                   if (selectedHeader.current === header?.title) {
-                    sortAccending.current = true;
-                  } else {
-                    sortAccending.current = false;
+                    if (sortAccending.current === true) {
+                      sortAccending.current = false;
+                    } else {
+                      sortAccending.current = true;
+                    }
                   }
                   selectedHeader.current = header?.title || "";
                   sortHandler(sortAccending.current ? "acce" : "dec");

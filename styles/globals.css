@@ -108,4 +108,5 @@ div::-webkit-scrollbar {
 .ant-modal .ant-modal-content {
   padding: 20px;
   border-radius: 4px;
+  margin-top: 30px;
 }
