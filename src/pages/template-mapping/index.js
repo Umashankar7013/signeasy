@@ -161,9 +161,9 @@ function TemplateMapping() {
                   selectedHeader.current = header?.title || "";
                   sortHandler();
                 }}
+                key={index}
               >
                 <div
-                  key={index}
                   className={classNames(
                     "text-[12px] text-[#374659] font-[500] font-lexend px-[24px] py-[15px] leading-[16.39px]"
                   )}
