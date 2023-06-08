@@ -445,11 +445,11 @@ function Signature() {
                     }}
                   />
                   <div className="ml-[5px] text-[20px]">
-                    Sucessfully sent the document for the signature.Taking you
-                    back to the main screen.
+                    Contract sent out for signature successfully.Taking you back
+                    to the main screen.
                   </div>
                 </div>
-                <div>{`${timer} Sec`}</div>
+                <div className="text-[20px]">{`${timer} Sec`}</div>
               </div>
             ) : (
               <form>

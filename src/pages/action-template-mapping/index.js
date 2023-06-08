@@ -7,14 +7,15 @@ import { PrimaryButton } from "../../components/PrimaryButton";
 import { MultiTextInputDropdown } from "../../components/MultiTextInputDropdown";
 import { getApi, putMethod } from "../../api/apiMethods";
 import { openNotification } from "../../utils/functions";
-import { notification } from "antd";
+import { Button, Modal, notification } from "antd";
 import { Loader } from "../../components/Loader";
 import { ErrorPage } from "../../components/ErrorPage";
 import { AppContext } from "../../components/Layout";
 
 function ActionTemplateMapping() {
   const router = useRouter();
-  const { selectedItem, JWTtoken, tabsDropdownData } = useContext(AppContext);
+  const { selectedItem, JWTtoken, tabsDropdownData, docParams } =
+    useContext(AppContext);
   const [browserWindow, setBrowserWindow] = useState();
   const tabs = ["Contacts", "Company", "Deals"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
@@ -26,6 +27,13 @@ function ActionTemplateMapping() {
     Company: "companies",
     Deals: "deals",
   };
+  const [showConformationModal, setShowConformationModal] = useState(false);
+  const [removeConformationModal, setRemoveConformationModal] = useState({
+    isVisible: false,
+    title: "",
+    index: -1,
+    variable: "",
+  });
 
   const onChangeTabHandler = (tab) => {
     setSelectedTab(tab);
@@ -46,16 +54,14 @@ function ActionTemplateMapping() {
         index
       ]?.selectedVariables?.filter((item) => item !== variable);
       if (filteredData?.length === 0) {
-        const prompt = window?.prompt(
-          `Are you sure want to empty the ${prev?.[selectedTab]?.[index]?.name} variables`,
-          "continue"
-        );
-        if (prompt) {
-          prev[selectedTab][index].selectedVariables = filteredData;
-          return { ...prev };
-        } else {
-          return { ...prev };
-        }
+        setRemoveConformationModal((previous) => ({
+          ...previous,
+          isVisible: true,
+          title: prev?.[selectedTab]?.[index]?.name,
+          index,
+          variable,
+        }));
+        return { ...prev };
       } else {
         prev[selectedTab][index].selectedVariables = filteredData;
         return { ...prev };
@@ -105,7 +111,7 @@ function ActionTemplateMapping() {
           description: "Mapping stored successfully",
           api,
         });
-        setTimeout(() => router.back(), 1000);
+        setShowConformationModal(true);
       })
       .catch((err) => {
         openNotification({
@@ -180,6 +186,77 @@ function ActionTemplateMapping() {
   return (
     <>
       {contextHolder}
+      {
+        <Modal
+          open={showConformationModal}
+          footer={[
+            <Button
+              className="text-[14px] border-[0px] shadow-none font-lexend"
+              onClick={() => setShowConformationModal(false)}
+            >
+              Stay on this page
+            </Button>,
+            <Button
+              className="text-[14px] font-lexend"
+              onClick={() =>
+                window?.open(
+                  `https://signeasy.vercel.app/template-mapping?showToast=show&authId=${docParams?.authId}`
+                )
+              }
+            >
+              Go back
+            </Button>,
+          ]}
+          closable={false}
+        >
+          <div className="text-[15px] font-lexend">Please choose wisely</div>
+        </Modal>
+      }
+      {
+        <Modal
+          open={removeConformationModal?.isVisible}
+          footer={[
+            <Button
+              className="text-[14px] border-[0px] shadow-none font-lexend"
+              onClick={() =>
+                setRemoveConformationModal((prev) => ({
+                  ...prev,
+                  isVisible: false,
+                }))
+              }
+            >
+              Cancel
+            </Button>,
+            <Button
+              className="text-[14px] font-lexend"
+              onClick={() => {
+                setData((prev) => {
+                  const filteredData = prev?.[selectedTab]?.[
+                    removeConformationModal?.index
+                  ]?.selectedVariables?.filter(
+                    (item) => item !== removeConformationModal?.variable
+                  );
+                  prev[selectedTab][
+                    removeConformationModal?.index
+                  ].selectedVariables = filteredData;
+                  return { ...prev };
+                });
+                setRemoveConformationModal({
+                  isVisible: false,
+                  title: "",
+                  index: -1,
+                  variable: "",
+                });
+              }}
+            >
+              Ok
+            </Button>,
+          ]}
+          closable={false}
+        >
+          <div className="text-[15px] font-lexend">{`Are you sure want to empty the ${removeConformationModal?.title} variable`}</div>
+        </Modal>
+      }
       {loading ? (
         <Loader />
       ) : (

@@ -32,11 +32,23 @@ function TemplateMapping() {
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
 
+  const showToastHandler = () => {
+    openNotification({
+      message: "Success",
+      description: "Mapping stored successfully",
+      api,
+    });
+  };
+
   const tokenHandler = async () => {
     let apiData = {};
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const authId = searchParams?.get("authId");
+    const showToast = searchParams?.get("showToast");
+    if (showToast === "show") {
+      showToastHandler();
+    }
     setDocParams((prev) => ({ ...prev, authId }));
     if (authId !== docParams?.authId) {
       localStorage?.clear();
