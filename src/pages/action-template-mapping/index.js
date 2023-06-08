@@ -193,6 +193,7 @@ function ActionTemplateMapping() {
             <Button
               className="text-[14px] border-[0px] shadow-none font-lexend"
               onClick={() => setShowConformationModal(false)}
+              key={1}
             >
               Stay on this page
             </Button>,
@@ -203,6 +204,7 @@ function ActionTemplateMapping() {
                   `https://signeasy.vercel.app/template-mapping?showToast=show&authId=${docParams?.authId}`
                 )
               }
+              key={2}
             >
               Go back
             </Button>,
@@ -224,6 +226,7 @@ function ActionTemplateMapping() {
                   isVisible: false,
                 }))
               }
+              key={1}
             >
               Cancel
             </Button>,
@@ -248,6 +251,7 @@ function ActionTemplateMapping() {
                   variable: "",
                 });
               }}
+              key={2}
             >
               Ok
             </Button>,
