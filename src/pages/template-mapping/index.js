@@ -31,6 +31,7 @@ function TemplateMapping() {
   const [sortedData, setSortedData] = useState([]);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
+  const sortAccending = useRef(false);
 
   const showToastHandler = () => {
     openNotification({
@@ -71,18 +72,27 @@ function TemplateMapping() {
     return apiData;
   };
 
-  const sortHandler = () => {
+  const sortHandler = (value) => {
     const templateUtils = {
       "TEMPLATE NAME": "name",
       ROLE: "role",
       "LAST MODIFIED": "modified_time",
     };
     const sortKey = templateUtils?.[selectedHeader?.current];
-    const sortedData = tempaltesData?.current?.sort((a, b) => {
-      if (a?.[sortKey] > b?.[sortKey]) return 1;
-      else if (a?.[sortKey] < b?.[sortKey]) return -1;
-      else if (a?.[sortKey] === b?.[sortKey]) return 0;
-    });
+    let sortedData;
+    if (value === "acce") {
+      sortedData = tempaltesData?.current?.sort((a, b) => {
+        if (a?.[sortKey] > b?.[sortKey]) return 1;
+        else if (a?.[sortKey] < b?.[sortKey]) return -1;
+        else if (a?.[sortKey] === b?.[sortKey]) return 0;
+      });
+    } else {
+      sortedData = tempaltesData?.current?.sort((a, b) => {
+        if (a?.[sortKey] < b?.[sortKey]) return 1;
+        else if (a?.[sortKey] > b?.[sortKey]) return -1;
+        else if (a?.[sortKey] === b?.[sortKey]) return 0;
+      });
+    }
     sortedData && setSortedData([...sortedData]);
   };
 
@@ -97,7 +107,7 @@ function TemplateMapping() {
       })
         .then(async (docsData) => {
           docsData && (tempaltesData.current = docsData?.data);
-          sortHandler();
+          sortHandler("acce");
           await getApi({
             endUrl: "set-up/settings/objects",
             headers: {
@@ -170,14 +180,19 @@ function TemplateMapping() {
                   width: header?.width,
                 }}
                 onClick={() => {
+                  if (selectedHeader.current === header?.title) {
+                    sortAccending.current = true;
+                  } else {
+                    sortAccending.current = false;
+                  }
                   selectedHeader.current = header?.title || "";
-                  sortHandler();
+                  sortHandler(sortAccending.current ? "acce" : "dec");
                 }}
                 key={index}
               >
                 <div
                   className={classNames(
-                    "text-[12px] text-[#374659] font-[500] font-lexend px-[24px] py-[15px] leading-[16.39px]"
+                    "text-[12px] text-[#373859] font-[500] font-lexend px-[24px] py-[15px] leading-[16.39px]"
                   )}
                 >
                   {header?.title}
