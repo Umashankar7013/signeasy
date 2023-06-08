@@ -436,7 +436,7 @@ function Signature() {
         ) : (
           <>
             {showSuccessMessage ? (
-              <div className="flex justify-center items-center h-[100vh] w-[100vw]">
+              <div className="flex justify-center flex-col items-center h-[100vh] w-[100vw]">
                 <div className="flex items-center justify-center">
                   <CheckCircleFilled
                     style={{
