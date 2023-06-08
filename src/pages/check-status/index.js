@@ -258,7 +258,7 @@ const CheckStatus = () => {
     }).catch((err) => {
       openNotification({
         message: "Error",
-        description: err.message,
+        description: err?.response?.data?.message,
         type: "error",
         api,
       });
@@ -286,7 +286,7 @@ const CheckStatus = () => {
         .catch((err) => {
           openNotification({
             message: "Error",
-            description: err.message,
+            description: err?.response?.data?.message,
             type: "error",
             api,
           });
@@ -312,7 +312,7 @@ const CheckStatus = () => {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });
@@ -338,7 +338,7 @@ const CheckStatus = () => {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });
@@ -366,7 +366,7 @@ const CheckStatus = () => {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });
@@ -406,7 +406,7 @@ const CheckStatus = () => {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });
@@ -436,7 +436,7 @@ const CheckStatus = () => {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });
@@ -470,7 +470,7 @@ const CheckStatus = () => {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });

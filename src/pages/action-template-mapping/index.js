@@ -116,7 +116,7 @@ function ActionTemplateMapping() {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });
@@ -170,7 +170,7 @@ function ActionTemplateMapping() {
       .catch((err) => {
         openNotification({
           message: "Error",
-          description: err.message,
+          description: err?.response?.data?.message,
           type: "error",
           api,
         });

@@ -22,7 +22,7 @@ export const deleteApi = async ({ endUrl = "", params = {}, data = {} }) => {
     url: `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}${endUrl}`,
     params,
     data,
-  }).catch((err) => console.log("Error", err));
+  }).catch((err) => console.log("Error", err?.response?.data?.message));
   return apiData?.data;
 };
 
