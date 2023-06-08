@@ -35,6 +35,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
   const timeVariable = forTemplates ? "modified_time" : "last_modified_time";
+  const sortAccending = useRef(false);
 
   const tokenHandler = async () => {
     let apiData = {};
@@ -136,7 +137,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     }
   };
 
-  const sortHandler = () => {
+  const sortHandler = (value) => {
     const templateUtils = {
       "TEMPLATE NAME": "name",
       "DOCUMENT NAME": "name",
@@ -144,11 +145,20 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       "LAST CHANGE": timeVariable,
     };
     const sortKey = templateUtils?.[selectedHeader?.current];
-    const sortedData = itemsData?.current?.sort((a, b) => {
-      if (a?.[sortKey] > b?.[sortKey]) return 1;
-      else if (a?.[sortKey] < b?.[sortKey]) return -1;
-      else if (a?.[sortKey] === b?.[sortKey]) return 0;
-    });
+    let sortedData;
+    if (value === "acce") {
+      sortedData = itemsData?.current?.sort((a, b) => {
+        if (a?.[sortKey] > b?.[sortKey]) return 1;
+        else if (a?.[sortKey] < b?.[sortKey]) return -1;
+        else if (a?.[sortKey] === b?.[sortKey]) return 0;
+      });
+    } else {
+      sortedData = itemsData?.current?.sort((a, b) => {
+        if (a?.[sortKey] < b?.[sortKey]) return 1;
+        else if (a?.[sortKey] > b?.[sortKey]) return -1;
+        else if (a?.[sortKey] === b?.[sortKey]) return 0;
+      });
+    }
     sortedData && setFilteredData([...sortedData]);
   };
 
@@ -251,8 +261,15 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
                 )}
                 key={index}
                 onClick={() => {
-                  selectedHeader.current = item;
-                  sortHandler();
+                  if (selectedHeader.current === item) {
+                    if (sortAccending.current === true) {
+                      sortAccending.current = false;
+                    } else {
+                      sortAccending.current = true;
+                    }
+                  }
+                  selectedHeader.current = item || "";
+                  sortHandler(sortAccending.current ? "acce" : "dec");
                 }}
               >
                 <div
