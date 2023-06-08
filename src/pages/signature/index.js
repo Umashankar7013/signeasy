@@ -318,7 +318,7 @@ function Signature() {
 
   if (timer === 0) {
     clearInterval(timeIntervel.current);
-    window?.close();
+    window?.parent?.postMessage(JSON.stringify({ action: "DONE" }), "*");
   }
 
   const Step1 = () => (
@@ -436,8 +436,8 @@ function Signature() {
         ) : (
           <>
             {showSuccessMessage ? (
-              <div className="grid h-screen place-items-center text-center">
-                <div className="flex items-center justify-center h-screen">
+              <div className="flex justify-center items-center h-[100vh] w-[100vw]">
+                <div className="flex items-center justify-center">
                   <CheckCircleFilled
                     style={{
                       fontSize: 24,
