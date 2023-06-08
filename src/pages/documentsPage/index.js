@@ -34,6 +34,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
   const inputFileRef = useRef(null);
   const [browserWindow, setBrowserWindow] = useState();
   const [api, contextHolder] = notification.useNotification();
+  const timeVariable = forTemplates ? "modified_time" : "last_modified_time";
 
   const tokenHandler = async () => {
     let apiData = {};
@@ -140,7 +141,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
       "TEMPLATE NAME": "name",
       "DOCUMENT NAME": "name",
       OWNER: "ownerName",
-      "LAST CHANGE": "modified_time",
+      "LAST CHANGE": timeVariable,
     };
     const sortKey = templateUtils?.[selectedHeader?.current];
     const sortedData = itemsData?.current?.sort((a, b) => {
@@ -313,14 +314,14 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
                   <div className="font-lexend font-[400]">
                     {
                       dateHandler({
-                        timestamp: document?.last_modified_time,
+                        timestamp: document?.[timeVariable],
                       })[0]
                     }
                   </div>
                   <div className="font-lexend text-[14px] font-[400]">
                     {
                       dateHandler({
-                        timestamp: document?.last_modified_time,
+                        timestamp: document?.[timeVariable],
                       })[1]
                     }
                   </div>

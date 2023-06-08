@@ -17,7 +17,7 @@ const Download = () => {
       url: `https://api.signeasy.com/v3/rs/envelope/signed/pending/${envelopeId}`,
       headers: {
         //"x-access-token": JWTtoken,
-        "Authorization": `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`
+        Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
     }).catch((err) => {
       openNotification({
@@ -34,7 +34,7 @@ const Download = () => {
     const blob = new Blob([data?.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${name.replace('.pdf', '')}_${type}.pdf`;
+    link.download = `${name.replace(".pdf", "")}_${type}.pdf`;
     link.click();
     URL.revokeObjectURL(link.href);
   };
@@ -50,10 +50,10 @@ const Download = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
-      responseType: 'blob'
+      responseType: "blob",
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, name, 'signed');
+        await pdfDownloadHandler(data, name, "signed");
         window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
@@ -79,10 +79,10 @@ const Download = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
-      responseType: 'blob'
+      responseType: "blob",
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, name, 'certificate');
+        await pdfDownloadHandler(data, name, "certificate");
         window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
@@ -111,10 +111,10 @@ const Download = () => {
       headers: {
         Authorization: `Bearer ${jwt_decode(JWTtoken).signeasy_access_token}`,
       },
-      responseType: 'blob'
+      responseType: "blob",
     })
       .then(async (data) => {
-        await pdfDownloadHandler(data, name, 'certificate_with_signed');
+        await pdfDownloadHandler(data, name, "certificate_with_signed");
         window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
@@ -149,7 +149,7 @@ const Download = () => {
         } else if (object === "certificate") {
           await certificateDownloadHandler(enevelope_id, data?.token);
         }
-       // window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
+        // window.parent.postMessage(JSON.stringify({ action: "DONE" }), "*");
       })
       .catch((err) => {
         openNotification({
@@ -174,7 +174,13 @@ const Download = () => {
   return (
     <>
       {contextHolder}
-      {loading ? <Loader /> : <div></div>}
+      {loading ? (
+        <div className="h-[100vh] w-[100vw] justify-center items-center text-[14px] font-lexend">
+          Download is in progress. Please wait..
+        </div>
+      ) : (
+        <div></div>
+      )}
     </>
   );
 };

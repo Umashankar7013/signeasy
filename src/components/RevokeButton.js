@@ -2,9 +2,6 @@ import { PrimaryButton } from "./PrimaryButton";
 
 export const RevokeButton = ({ onClick = () => {}, loading }) => (
   <div>
-    <div className="text-[green] font-inter text-center pb-[10px]">
-      Authorized Succesfully
-    </div>
     <PrimaryButton
       title="Revoke"
       className="w-[250px] border-[#F76868] rounded-[8px]"
@@ -12,5 +9,8 @@ export const RevokeButton = ({ onClick = () => {}, loading }) => (
       onClick={onClick}
       loading={loading}
     />
+    <div className="text-[green] font-inter text-center pt-[10px]">
+      Authorized Succesfully
+    </div>
   </div>
 );

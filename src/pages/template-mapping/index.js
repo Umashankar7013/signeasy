@@ -10,20 +10,7 @@ import { ErrorPage } from "../../components/ErrorPage";
 import { AppContext } from "../../components/Layout";
 
 function TemplateMapping() {
-  const tempaltesData = useRef([
-    { id: 1, name: "Dummy1" },
-    { id: 2, name: "Dummy2" },
-    { id: 3, name: "Dummy3" },
-    { id: 4, name: "Dummy4" },
-    { id: 5, name: "Dummy4" },
-    { id: 6, name: "Dummy5" },
-    { id: 7, name: "Dummy6" },
-    { id: 8, name: "Dummy7" },
-    { id: 9, name: "Dummy8" },
-    { id: 11, name: "Dummy10" },
-    { id: 12, name: "Dummy11" },
-    { id: 13, name: "Dummy12" },
-  ]);
+  const tempaltesData = useRef([]);
   const {
     setDocParams,
     JWTtoken,

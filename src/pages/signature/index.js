@@ -44,8 +44,6 @@ function Signature() {
     type === "original" ? signersData : selectedItem?.metadata?.roles
   );
 
-  console.log('')
-
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
       "First name": "first_name",
