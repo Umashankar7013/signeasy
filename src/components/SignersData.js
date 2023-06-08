@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import moment from "moment";
 import React from "react";
 
 export const SignersData = ({ data }) => {
@@ -6,7 +7,7 @@ export const SignersData = ({ data }) => {
     <>
       <div className="ovarallPop fixed inset-0"></div>
       <div className="absolute bg-[white] left-[-40px] z-20 rounded-[5px] px-[15px] max-h-[400px] overflow-y-scroll shadow-all top-[50px]">
-        {data?.map((item, index) => (
+        {data?.recipients?.map((item, index) => (
           <div key={index}>
             <div
               className={classNames(
@@ -27,7 +28,11 @@ export const SignersData = ({ data }) => {
                 </div>
                 <div className="text-[14px] font-lexend">
                   Status :
-                  <span className="font-[300]">{` ${item?.status || ""}`}</span>
+                  <span className="font-[300] ml-[2px]">
+                    {data?.status === "completed"
+                      ? `Signed on ${moment(item?.updatedAt).format("LLL")}`
+                      : `${item?.status || ""}`}
+                  </span>
                 </div>
               </div>
             </div>

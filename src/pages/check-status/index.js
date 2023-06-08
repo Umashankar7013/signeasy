@@ -36,12 +36,38 @@ const CheckStatus = () => {
       color: "#3ead5e",
       subText: "Signed by",
       action: "Download",
+      actionData: [
+        {
+          title: "Signed Envelope with Certificate",
+          onClick: () =>
+            documentWithCertificateDownloadHandler(threeDotDropdown?.envelop),
+        },
+        {
+          title: "Signed Envelope",
+          onClick: () => originalDownloadHandler(threeDotDropdown?.envelop),
+        },
+        {
+          title: "Certificate",
+          onClick: () => certificateDownloadHandler(threeDotDropdown?.envelop),
+        },
+      ],
     },
     declined: {
       icon: <CloseCircleOutlined className="text-[15px]" />,
       color: "#c85353",
       subText: "by",
       action: "Void",
+      actionData: [
+        {
+          title: "Void",
+          onClick: () =>
+            setShowVoidPopUp((prev) => ({
+              ...prev,
+              isVisible: true,
+              id: threeDotDropdown?.envelop?.envelope_id,
+            })),
+        },
+      ],
     },
     voided: {
       icon: <StopOutlined className="text-[15px]" />,
@@ -54,6 +80,22 @@ const CheckStatus = () => {
       color: "#fea07c",
       subText: "for",
       action: "Send Reminder",
+      actionData: [
+        {
+          title: "Void",
+          onClick: () =>
+            setShowVoidPopUp((prev) => ({
+              ...prev,
+              isVisible: true,
+              id: threeDotDropdown?.envelop?.envelope_id,
+            })),
+        },
+        {
+          title: "Send Reminder",
+          onClick: () =>
+            sendReminderHandler(threeDotDropdown?.envelop?.envelope_id),
+        },
+      ],
     },
   };
   const headerData = [
@@ -603,10 +645,15 @@ const CheckStatus = () => {
                   </div>
                 </div>
                 <div
-                  className="w-[20%] cursor-pointer select-none relative"
+                  className={classNames(
+                    "w-[20%] select-none relative",
+                    item?.status !== "voided" && "cursor-pointer "
+                  )}
                   onClick={() => {
-                    setShowSignersData(!showSignersData);
-                    signersData.current = item;
+                    if (item?.status !== "voided") {
+                      setShowSignersData(!showSignersData);
+                      signersData.current = item;
+                    }
                   }}
                 >
                   <div
@@ -618,19 +665,21 @@ const CheckStatus = () => {
                   <div className="text-[14px] text-[#838b90]">
                     {statusUtils[item?.status]?.subText}
                     <span className="pl-[3px] text-[#3c9eeb]">
-                      {signersCountHandler(item?.recipients, item?.status)}
+                      {item?.status === "voided"
+                        ? " You"
+                        : signersCountHandler(item?.recipients, item?.status)}
                     </span>
                   </div>
                   {showSignersData &&
                     signersData.current?.envelope_id === item?.envelope_id && (
-                      <SignersData data={signersData.current?.recipients} />
+                      <SignersData data={signersData.current} />
                     )}
                 </div>
                 <div className="w-[20%] text-[14px]">
                   {moment(item?.updatedAt).format("LLL")}
                 </div>
                 <div className="flex items-center relative justify-end w-[20%] select-none">
-                  <div
+                  {/* <div
                     className="w-[50%] justify-end flex items-center text-[#3c9eeb] text-[14px] cursor-pointer"
                     onClick={() =>
                       item?.status === "completed"
@@ -651,27 +700,28 @@ const CheckStatus = () => {
                         item?.envelope_id && (
                         <ActionsDropdown subActions={subActionsObject} />
                       )}
-                  </div>
-                  <div
-                    className="text-[#3c9eeb] cursor-pointer"
-                    onClick={() =>
-                      item?.status === "pending" &&
-                      setThreeDotDropdown((prev) => ({
-                        ...prev,
-                        isVisible: !prev.isVisible,
-                        envelop: item,
-                      }))
-                    }
-                  >
-                    <EllipsisOutlined className="pl-[20px] cursor-pointer" />
-                    {threeDotDropdown?.isVisible &&
-                      threeDotDropdown?.envelop?.envelope_id ===
-                        item?.envelope_id && (
-                        <ActionsDropdown
-                          subActions={threeDotSubActionsObject}
-                        />
-                      )}
-                  </div>
+                  </div> */}
+                  {item?.status !== "voided" && (
+                    <div
+                      className="text-[#3c9eeb] cursor-pointer"
+                      onClick={() =>
+                        setThreeDotDropdown((prev) => ({
+                          ...prev,
+                          isVisible: !prev.isVisible,
+                          envelop: item,
+                        }))
+                      }
+                    >
+                      <EllipsisOutlined className="pl-[20px] cursor-pointer" />
+                      {threeDotDropdown?.isVisible &&
+                        threeDotDropdown?.envelop?.envelope_id ===
+                          item?.envelope_id && (
+                          <ActionsDropdown
+                            subActions={statusUtils[item?.status]?.actionData}
+                          />
+                        )}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

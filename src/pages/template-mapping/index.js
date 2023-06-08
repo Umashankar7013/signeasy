@@ -8,6 +8,7 @@ import { notification } from "antd";
 import { dateHandler, openNotification } from "../../utils/functions";
 import { ErrorPage } from "../../components/ErrorPage";
 import { AppContext } from "../../components/Layout";
+import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
 function TemplateMapping() {
   const tempaltesData = useRef([]);
@@ -24,7 +25,7 @@ function TemplateMapping() {
     { title: "ROLES", width: "30%" },
     { title: "LAST MODIFIED", width: "35%" },
   ];
-  const selectedHeader = useRef(headerData[0]?.title);
+  const selectedHeader = useRef(headerData[2]?.title);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [sortedData, setSortedData] = useState([]);
@@ -147,7 +148,12 @@ function TemplateMapping() {
           <div className="fixed w-[100%] z-50 flex border-b-[1px] border-b-[#CDD6E1]">
             {headerData?.map((header, index) => (
               <div
-                key={index}
+                className={classNames(
+                  "flex items-center w-[100%] cursor-pointer",
+                  selectedHeader.current === header?.title
+                    ? "bg-[#CFD6E0]"
+                    : "bg-[#ECF0F4]"
+                )}
                 style={{
                   width: header?.width,
                 }}
@@ -155,14 +161,36 @@ function TemplateMapping() {
                   selectedHeader.current = header?.title || "";
                   sortHandler();
                 }}
-                className={classNames(
-                  "text-[12px] text-[#374659] font-[500] px-[24px] py-[15px] leading-[16.39px] cursor-pointer",
-                  selectedHeader.current === header?.title
-                    ? "bg-[#CFD6E0]"
-                    : "bg-[#ECF0F4]"
-                )}
               >
-                {header?.title}
+                <div
+                  key={index}
+                  className={classNames(
+                    "text-[12px] text-[#374659] font-[500] font-lexend px-[24px] py-[15px] leading-[16.39px]"
+                  )}
+                >
+                  {header?.title}
+                </div>
+                <div className="flex flex-col">
+                  <CaretUpOutlined
+                    style={{
+                      fontSize: "11px",
+                      padding: "0px",
+                      margin: "0px",
+                      color: "gray",
+                    }}
+                  />
+                  <CaretDownOutlined
+                    style={{
+                      fontSize: "11px",
+                      padding: "0px",
+                      margin: "0px",
+                      color:
+                        selectedHeader.current === header?.title
+                          ? "#3F8FAB"
+                          : "gray",
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>

@@ -45,8 +45,21 @@ function ActionTemplateMapping() {
       const filteredData = prev?.[selectedTab]?.[
         index
       ]?.selectedVariables?.filter((item) => item !== variable);
-      prev[selectedTab][index].selectedVariables = filteredData;
-      return { ...prev };
+      if (filteredData?.length === 0) {
+        const prompt = window?.prompt(
+          `Are you sure want to empty the ${prev?.[selectedTab]?.[index]?.name} variables`,
+          "continue"
+        );
+        if (prompt) {
+          prev[selectedTab][index].selectedVariables = filteredData;
+          return { ...prev };
+        } else {
+          return { ...prev };
+        }
+      } else {
+        prev[selectedTab][index].selectedVariables = filteredData;
+        return { ...prev };
+      }
     });
   };
 
@@ -173,7 +186,7 @@ function ActionTemplateMapping() {
         <div>
           {/* Back Button */}
           <div
-            className="flex items-center cursor-pointer w-fit pb-[15px]"
+            className="flex items-center cursor-pointer w-fit pb-[15px] pl-[20px] pt-[20px]"
             onClick={() => router.back()}
           >
             <LeftOutlined className="text-[#3F8FAB] text-[10px]" />
@@ -182,7 +195,7 @@ function ActionTemplateMapping() {
             </div>
           </div>
           {/* Template Name */}
-          <div className="text-[18px] font-lexend leading-[22.5px] text-[#374659] pb-[20px]">
+          <div className="text-[18px] font-lexend leading-[22.5px] text-[#374659] pb-[20px] pl-[20px]">
             {selectedItem?.name || "name"}
           </div>
           {/* Tabs */}
@@ -215,7 +228,7 @@ function ActionTemplateMapping() {
                   <div className="w-[50%] pl-[25px] text-[14px] text-[#374659] font-[400] font-lexend">
                     {item?.name}
                   </div>
-                  <div className="w-[200px] pl-[25px] py-[19px]">
+                  <div className="w-[45%] pl-[25px] py-[19px]">
                     <MultiTextInputDropdown
                       placeHolder="Select variables"
                       className="justify-between bg-[#F6F8FA] h-[36px]"
@@ -235,10 +248,9 @@ function ActionTemplateMapping() {
             <PrimaryButton
               title="Save"
               className={classNames(
-                "px-[25px] py-[11px] text-[#FFFFFF] bg-[#FF7A59] font-[600] ml-[25px] rounded-[3px]",
-                activateSaveHandler() ? "opacity-100" : "opacity-50"
+                "px-[25px] py-[11px] text-[#FFFFFF] bg-[#FF7A59] font-[600] ml-[25px] rounded-[3px]"
               )}
-              onClick={() => activateSaveHandler() && saveHandler()}
+              onClick={() => saveHandler()}
             />
           </div>
         </div>

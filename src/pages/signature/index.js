@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { CrossIcon } from "../../components/CrossIcon";
 import { Input } from "../../components/Input";
 import { PlusIcon } from "../../components/PlusIcon";
@@ -43,6 +43,8 @@ function Signature() {
   const [roles, setRoles] = useState(
     type === "original" ? signersData : selectedItem?.metadata?.roles
   );
+  const [timer, setTimer] = useState(5);
+  const timeIntervel = useRef(null);
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -79,6 +81,10 @@ function Signature() {
       .then((response) => {
         localStorage.clear();
         setShowSuccessMessage(true);
+        timeIntervel.current = setInterval(
+          () => setTimer((prev) => prev - 1),
+          1000
+        );
         setLoading(false);
       })
       .catch((error) => {
@@ -226,9 +232,17 @@ function Signature() {
             },
           ],
           recipients: recipientIdHandler(),
-          redirect_url: encodeURI(
-            `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.object_type}&object_id=${docParams?.object_id}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstname}&last_name=${docParams?.lastname}&email=${docParams?.email}`
-          ),
+          redirect_url: `${
+            process.env.NEXT_PUBLIC_DEPLOYMENT_URL
+          }signature?name=${encodeURIComponent(
+            selectedItem?.name
+          )}&object_type=${docParams?.object_type}&object_id=${
+            docParams?.object_id
+          }&JWTtoken=${JWTtoken}&first_name=${encodeURIComponent(
+            docParams?.firstname
+          )}&last_name=${encodeURIComponent(
+            encodeURIComponent(docParams?.lastname)
+          )}&email=${encodeURIComponent(docParams?.email)}`,
           embedded_signing: false,
           is_ordered: false,
         };
@@ -256,7 +270,17 @@ function Signature() {
           message: message,
           cc: formattedEmails || [],
           recipient_role_mapping: recipientRoleMappingHandler(),
-          redirect_url: `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}signature?name=${selectedItem?.name}&object_type=${docParams?.object_type}&object_id=${docParams?.object_id}&JWTtoken=${JWTtoken}&first_name=${docParams?.firstname}&last_name=${docParams?.lastname}&email=${docParams?.email}`,
+          redirect_url: `${
+            process.env.NEXT_PUBLIC_DEPLOYMENT_URL
+          }signature?name=${encodeURIComponent(
+            selectedItem?.name
+          )}&object_type=${docParams?.object_type}&object_id=${
+            docParams?.object_id
+          }&JWTtoken=${JWTtoken}&first_name=${encodeURIComponent(
+            docParams?.firstname
+          )}&last_name=${encodeURIComponent(
+            docParams?.lastname
+          )}&email=${encodeURIComponent(docParams?.email)}`,
         };
       }
 
@@ -291,6 +315,11 @@ function Signature() {
       });
     }
   }, [selectedItem?.metadata?.roles]);
+
+  if (timer === 0) {
+    clearInterval(timeIntervel.current);
+    window?.close();
+  }
 
   const Step1 = () => (
     <div>
@@ -416,9 +445,11 @@ function Signature() {
                     }}
                   />
                   <div className="ml-[5px] text-[20px]">
-                    Sucessfully sent the document for the signature.
+                    Sucessfully sent the document for the signature.Taking you
+                    back to the main screen.
                   </div>
                 </div>
+                <div>{`${timer} Sec`}</div>
               </div>
             ) : (
               <form>

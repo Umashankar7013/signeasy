@@ -257,7 +257,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
               >
                 <div
                   className={classNames(
-                    "font-lexend font-[600] text-[14px]",
+                    "font-lexend font-[500] text-[#374659] text-[14px] leading-[16.39px]",
                     index === 0 && "md:pl-[60px] pl-[47px]"
                   )}
                 >
