@@ -3,7 +3,13 @@ import { CrossIcon } from "../../components/CrossIcon";
 import { Input } from "../../components/Input";
 import { PlusIcon } from "../../components/PlusIcon";
 import { PrimaryButton } from "../../components/PrimaryButton";
-import { LeftOutlined, CheckCircleFilled } from "@ant-design/icons";
+import {
+  LeftOutlined,
+  CheckCircleFilled,
+  BorderOutlined,
+  CheckSquareOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
 import { FormHeaderLables } from "../../components/FormHeaderLables";
 import { TextArea } from "../../components/TextArea";
 import { ReactMultiEmail } from "react-multi-email";
@@ -14,6 +20,9 @@ import { notification } from "antd";
 import { openNotification } from "../../utils/functions";
 import { Loader } from "../../components/Loader";
 import { AppContext } from "../../components/Layout";
+import Image from "next/image";
+import { ImageWithBasePath } from "../../components/ImageWithBasePath";
+import classNames from "classnames";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setDocParams } =
@@ -41,10 +50,15 @@ function Signature() {
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [roles, setRoles] = useState(
-    type === "original" ? signersData : selectedItem?.metadata?.roles
+    type === "original"
+      ? [{ ...signer, name: "Signer 1" }]
+      : selectedItem?.metadata?.roles
   );
   const [timer, setTimer] = useState(5);
   const timeIntervel = useRef(null);
+  const [enableDrag, setEnableDrag] = useState(false);
+  const dragItem = useRef();
+  const dragOverItem = useRef();
 
   const clearInputHandler = (index, title) => {
     const clearFunUtils = {
@@ -338,8 +352,6 @@ function Signature() {
     </div>
   );
 
-  console.log(selectedItem);
-
   const Step4 = () => (
     <div>
       <FormHeaderLables
@@ -420,6 +432,28 @@ function Signature() {
     }
   };
 
+  const dragStart = (e, position) => {
+    dragItem.current = position;
+  };
+
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position;
+    let data1 = roles[dragItem.current];
+    let data2 = roles[dragOverItem.current];
+    setRoles((prev) => {
+      prev[dragOverItem.current] = data1;
+      prev[dragItem.current] = data2;
+      return [...prev];
+    });
+    data1 = signersData[dragItem.current];
+    data2 = signersData[dragOverItem.current];
+    setSignersData((prev) => {
+      prev[dragOverItem.current] = data1;
+      prev[dragItem.current] = data2;
+      return [...prev];
+    });
+  };
+
   useEffect(() => {
     return () => setSignersData([{}]);
   }, []);
@@ -447,8 +481,8 @@ function Signature() {
                     }}
                   />
                   <div className="ml-[5px] text-[20px]">
-                    Contract sent out for signature successfully.Taking you back
-                    to the main screen.
+                    Contract sent out for signature successfully. Taking you
+                    back to the main screen.
                   </div>
                 </div>
                 <div className="text-[20px]">{`${timer} Sec`}</div>
@@ -465,123 +499,169 @@ function Signature() {
                     />
                     {roles?.map((item, index) => (
                       <div
-                        className="border-[1px] px-[20px] pt-[15px] pb-[20px] border-[#E0E3EA] rounded-[3px] mt-[14px] ml-[17px]"
-                        key={index}
+                        className={classNames(
+                          "flex items-center w-[100%]",
+                          enableDrag && roles?.length > 1 && "pl-[20px]"
+                        )}
                       >
-                        <div className="flex justify-between items-center">
-                          <div className="font-lexend font-[500] text-[14px] text-[#374659]">
-                            {item?.name || `Signer ${index + 1}`}
-                          </div>
+                        {enableDrag && roles?.length > 1 && (
                           <div
-                            onClick={() => {
-                              type === "original" &&
-                                setSignersData((prev) => {
-                                  return prev.filter(
-                                    (item, index1) => index !== index1
-                                  );
-                                });
-                              type === "original" &&
-                                setRoles((prev) => {
-                                  return prev.filter(
-                                    (item, index1) => index !== index1
-                                  );
-                                });
-                            }}
+                            draggable
+                            onDragStart={(e) => dragStart(e, index)}
+                            onDragEnter={(e) => dragEnter(e, index)}
                           >
-                            <CrossIcon />
-                          </div>
-                        </div>
-                        <div className="grid gap-x-[10px] gap-y-[10px] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[17px] w-[100%]">
-                          <div className="w-[100%]">
-                            <Input
-                              title="First name"
-                              required={true}
-                              className="w-[100%]"
-                              value={signersData[index]?.first_name}
-                              enableDelete={
-                                signersData[index]?.first_name !== ""
-                              }
-                              onChange={(event) =>
-                                setSignersData((prev) => {
-                                  let previous = [...prev];
-                                  previous[index].first_name =
-                                    event.target.value;
-                                  return previous;
-                                })
-                              }
-                              index={index}
-                              clearFun={clearInputHandler}
-                              showError={
-                                emptyInput &&
-                                signersData[index]?.first_name === ""
-                              }
+                            <ImageWithBasePath
+                              src="dragIcon"
+                              height={18}
+                              width={10}
+                              className="cursor-pointer"
                             />
                           </div>
-                          <div className="w-[100%]">
-                            <Input
-                              title="Last name"
-                              required={true}
-                              className="w-[100%]"
-                              value={signersData[index]?.last_name}
-                              enableDelete={
-                                signersData[index]?.last_name !== ""
-                              }
-                              onChange={(event) =>
-                                setSignersData((prev) => {
-                                  let previous = [...prev];
-                                  previous[index].last_name =
-                                    event.target.value;
-                                  return previous;
-                                })
-                              }
-                              index={index}
-                              clearFun={clearInputHandler}
-                              showError={
-                                emptyInput &&
-                                signersData[index]?.last_name === ""
-                              }
-                            />
+                        )}
+                        <div
+                          className="border-[1px] pt-[15px] px-[20px] w-[100%] pb-[20px] border-[#E0E3EA] rounded-[3px] mt-[14px] ml-[17px]"
+                          key={index}
+                        >
+                          <div className="flex justify-between items-center">
+                            <div className="font-lexend font-[500] text-[14px] text-[#374659]">
+                              {item?.name}
+                            </div>
+                            <div
+                              onClick={() => {
+                                type === "original" &&
+                                  setSignersData((prev) => {
+                                    return prev.filter(
+                                      (item, index1) => index !== index1
+                                    );
+                                  });
+                                type === "original" &&
+                                  setRoles((prev) => {
+                                    return prev.filter(
+                                      (item, index1) => index !== index1
+                                    );
+                                  });
+                              }}
+                            >
+                              <CrossIcon />
+                            </div>
                           </div>
-                          <div className="w-[100%]">
-                            <Input
-                              title="Email"
-                              required={true}
-                              className="w-[100%]"
-                              value={signersData[index]?.email}
-                              enableDelete={signersData[index]?.email !== ""}
-                              onChange={(event) =>
-                                setSignersData((prev) => {
-                                  let previous = [...prev];
-                                  previous[index].email = event.target.value;
-                                  return previous;
-                                })
-                              }
-                              index={index}
-                              clearFun={clearInputHandler}
-                              showError={
-                                emptyInput && signersData[index]?.email === ""
-                              }
-                            />
+                          <div className="grid gap-x-[10px] gap-y-[10px] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[17px] w-[100%]">
+                            <div className="w-[100%]">
+                              <Input
+                                title="First name"
+                                required={true}
+                                className="w-[100%]"
+                                value={signersData[index]?.first_name}
+                                enableDelete={
+                                  signersData[index]?.first_name !== ""
+                                }
+                                onChange={(event) =>
+                                  setSignersData((prev) => {
+                                    let previous = [...prev];
+                                    previous[index].first_name =
+                                      event.target.value;
+                                    return previous;
+                                  })
+                                }
+                                index={index}
+                                clearFun={clearInputHandler}
+                                showError={
+                                  emptyInput &&
+                                  signersData[index]?.first_name === ""
+                                }
+                              />
+                            </div>
+                            <div className="w-[100%]">
+                              <Input
+                                title="Last name"
+                                required={true}
+                                className="w-[100%]"
+                                value={signersData[index]?.last_name}
+                                enableDelete={
+                                  signersData[index]?.last_name !== ""
+                                }
+                                onChange={(event) =>
+                                  setSignersData((prev) => {
+                                    let previous = [...prev];
+                                    previous[index].last_name =
+                                      event.target.value;
+                                    return previous;
+                                  })
+                                }
+                                index={index}
+                                clearFun={clearInputHandler}
+                                showError={
+                                  emptyInput &&
+                                  signersData[index]?.last_name === ""
+                                }
+                              />
+                            </div>
+                            <div className="w-[100%]">
+                              <Input
+                                title="Email"
+                                required={true}
+                                className="w-[100%]"
+                                value={signersData[index]?.email}
+                                enableDelete={signersData[index]?.email !== ""}
+                                onChange={(event) =>
+                                  setSignersData((prev) => {
+                                    let previous = [...prev];
+                                    previous[index].email = event.target.value;
+                                    return previous;
+                                  })
+                                }
+                                index={index}
+                                clearFun={clearInputHandler}
+                                showError={
+                                  emptyInput && signersData[index]?.email === ""
+                                }
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
                     ))}
                     {type === "original" && (
-                      <div
-                        className="flex items-center ml-[17px] mt-[20px] cursor-pointer select-none"
-                        onClick={() => {
-                          type === "original" &&
-                            setSignersData((prev) => [...prev, signer]);
-                          type === "original" &&
-                            setRoles((prev) => [
-                              ...prev,
-                              { name: `Signer ${prev.length + 1}` },
-                            ]);
-                        }}
-                      >
-                        <PlusIcon />
-                        <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
-                          Add new recipient
+                      <div className="flex items-center justify-between ml-[17px] mt-[20px]">
+                        {roles?.length > 1 && (
+                          <div
+                            className="flex items-center cursor-pointer select-none"
+                            onClick={() => setEnableDrag(!enableDrag)}
+                          >
+                            <div
+                              className={classNames(
+                                "h-[16px] w-[16px] border-[1px] flex justify-center items-center rounded-[2px]",
+                                enableDrag && "bg-[#3F8FAB]"
+                              )}
+                            >
+                              {enableDrag && (
+                                <CheckOutlined className="text-[10px] text-[#fff]" />
+                              )}
+                            </div>
+                            <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
+                              Set signing order
+                            </div>
+                          </div>
+                        )}
+                        <div
+                          className="flex items-center cursor-pointer select-none"
+                          onClick={() => {
+                            type === "original" &&
+                              setSignersData((prev) => [...prev, signer]);
+                            type === "original" &&
+                              setRoles((prev) => [
+                                ...prev,
+                                {
+                                  ...signer,
+                                  name: `Signer ${prev.length + 1}`,
+                                },
+                              ]);
+                          }}
+                        >
+                          <PlusIcon />
+                          <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
+                            Add new recipient
+                          </div>
                         </div>
                       </div>
                     )}

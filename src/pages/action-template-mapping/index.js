@@ -16,7 +16,6 @@ function ActionTemplateMapping() {
   const router = useRouter();
   const { selectedItem, JWTtoken, tabsDropdownData, docParams } =
     useContext(AppContext);
-  const [browserWindow, setBrowserWindow] = useState();
   const tabs = ["Contacts", "Company", "Deals"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const headerData = ["SIGNEASY", "HUBSPOT VARIABLES"];
@@ -74,9 +73,10 @@ function ActionTemplateMapping() {
     data?.[selectedTab]?.map((item) => {
       if (item?.selectedVariables?.length > 0) {
         count += 1;
+        return;
       }
     });
-    if (count === data?.[selectedTab]?.length) return true;
+    if (count > 0) return true;
     else return false;
   };
 
@@ -94,6 +94,7 @@ function ActionTemplateMapping() {
         array.push({
           signeasy_field: item?.name,
           hubspot_field: item?.selectedVariables,
+          required: item?.required,
         });
       });
       formattedData[tabUtils[key]] = array;
@@ -161,6 +162,7 @@ function ActionTemplateMapping() {
                 tabUtils[tab],
                 field?.label
               ),
+              required: field?.required,
             });
           });
           dataObject[tab] = array;
@@ -180,7 +182,6 @@ function ActionTemplateMapping() {
 
   useEffect(() => {
     getSavedTemplateData();
-    setBrowserWindow(window);
   }, []);
 
   return (
@@ -308,7 +309,7 @@ function ActionTemplateMapping() {
                   key={index}
                 >
                   <div className="w-[50%] pl-[25px] text-[14px] text-[#374659] font-[400] font-lexend">
-                    {item?.name}
+                    {`${item?.name} ${item?.required ? "" : "(optional)"}`}
                   </div>
                   <div className="w-[45%] pl-[25px] py-[19px]">
                     <MultiTextInputDropdown
@@ -330,9 +331,10 @@ function ActionTemplateMapping() {
             <PrimaryButton
               title="Save"
               className={classNames(
-                "px-[25px] py-[11px] text-[#FFFFFF] bg-[#FF7A59] font-[600] ml-[25px] rounded-[3px]"
+                "px-[25px] py-[11px] text-[#FFFFFF] bg-[#FF7A59] font-[600] ml-[25px] rounded-[3px]",
+                activateSaveHandler() ? "opacity-100" : "opacity-50"
               )}
-              onClick={() => saveHandler()}
+              onClick={() => activateSaveHandler() && saveHandler()}
             />
           </div>
         </div>
