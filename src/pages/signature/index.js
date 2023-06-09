@@ -503,6 +503,7 @@ function Signature() {
                           "flex items-center w-[100%]",
                           enableDrag && roles?.length > 1 && "pl-[20px]"
                         )}
+                        key={index}
                       >
                         {enableDrag && roles?.length > 1 && (
                           <div
