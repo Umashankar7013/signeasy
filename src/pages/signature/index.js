@@ -640,7 +640,7 @@ function Signature() {
                     <input
                       type="submit"
                       value={type === "original" ? "Add fields" : "Preview"}
-                      className="border-[1px] px-[15px] py-[7px] cursor-pointer w-[50%] rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
+                      className="border-[1px] px-[15px] py-[7px] cursor-pointer rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
                       onClick={(e) => editHandler(e)}
                     />
                     <input
@@ -650,7 +650,7 @@ function Signature() {
                           ? "Send without fields"
                           : "Send for signature"
                       }
-                      className="border-[1px] px-[15px] ml-[10px] py-[7px] cursor-pointer w-[50%] rounded-[3px] bg-[#FF7A59] font-bold text-[14px] text-white"
+                      className="border-[1px] px-[15px] ml-[10px] py-[7px] cursor-pointer rounded-[3px] bg-[#FF7A59] font-bold text-[14px] text-white"
                       onClick={(e) => submitHandler(e)}
                     />
                   </div>
