@@ -5,7 +5,7 @@ import DocumentsPage from "../documentsPage";
 import { Tabs } from "../../components/Tabs";
 
 function TemplatesAndDocs() {
-  const tabs = ["Templates", "Documents"];
+  const tabs = ["Templates", "Originals"];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const onChangeTabHandler = (tab) => {
@@ -20,7 +20,7 @@ function TemplatesAndDocs() {
       </div>
       <Tabs tabs={tabs} onChangeTab={onChangeTabHandler} />
       {selectedTab === "Templates" && <Templates />}
-      {selectedTab === "Documents" && <DocumentsPage />}
+      {selectedTab === "Originals" && <DocumentsPage />}
     </div>
   );
 }
