@@ -99,7 +99,7 @@ const CheckStatus = () => {
     },
   };
   const headerData = [
-    { title: "Document Name", width: "30%" },
+    { title: "Document Name", width: "25%" },
     { title: "Object Type", width: '20%'},
     { title: "Status", width: "20%" },
     { title: "Last Modified", width: "20%" },
