@@ -18,7 +18,6 @@ import {
   import jwt_decode from "jwt-decode";
   import { ErrorPage } from "../../components/ErrorPage";
   import { AppContext } from "../../components/Layout";
-import { useRouter } from "next/router";
   
   const ViewAll = () => {
     const statusData = [
@@ -126,8 +125,7 @@ import { useRouter } from "next/router";
       isVisible: false,
       id: "",
     });
-    const router = useRouter()
-    console.log(router)
+    const [redirectUrl, setRedirectUrl] = useState('')
   
     const statusHandler = (data) => {
       let status;
@@ -276,6 +274,8 @@ import { useRouter } from "next/router";
       const authId = searchParams?.get("authId");
       const objectId = searchParams?.get("object_id");
       const objectType = searchParams?.get("object_type");
+      const redirect_url = searchParams?.get("redirect_url")
+      setRedirectUrl(redirect_url)
       setDocParams((prev) => ({ ...prev, authId, objectId, objectType }));
       if (authId !== docParams?.authId) {
         localStorage?.clear();
@@ -581,7 +581,7 @@ import { useRouter } from "next/router";
           <div className="p-[48px]">
             <VoidPopUp open={showVoidPopUp.isVisible} />
             <div className="font-[500] ">Signeasy documents</div>
-            <div className="float-right"><a>Back to hubspot</a></div>
+            <div className="float-right"><a href={redirectUrl}>Back to hubspot</a></div>
             <div className="flex border-[1px] w-fit py-[15px] rounded-[4px] mt-[20px] mb-[40px]">
               {statusData?.map((item, index) => (
                 <div
