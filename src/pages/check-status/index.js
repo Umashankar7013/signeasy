@@ -99,7 +99,8 @@ const CheckStatus = () => {
     },
   };
   const headerData = [
-    { title: "Document Name", width: "40%" },
+    { title: "Document Name", width: "30%" },
+    { title: "Object Type", width: '10%'},
     { title: "Status", width: "20%" },
     { title: "Last Modified", width: "20%" },
     { title: "Actions", width: "20%" },
@@ -636,12 +637,17 @@ const CheckStatus = () => {
                 className="flex items-center border-b-[1px] py-[12px] px-[30px]"
                 key={index}
               >
-                <div className="flex items-center w-[40%] pr-[10px]">
+                <div className="flex items-center w-[30%] pr-[10px]">
                   <div className="-mt-[6px]">
                     {statusUtils[item?.status]?.icon}
                   </div>
                   <div className="pl-[10px] font-[500] text-[14px]">
                     {item?.name}
+                  </div>
+                </div>
+                <div className="flex items-center w-[10%] pr-[10px]">
+                  <div className="pl-[10px] font-[500] text-[14px]">
+                    {item?.object_type}
                   </div>
                 </div>
                 <div
