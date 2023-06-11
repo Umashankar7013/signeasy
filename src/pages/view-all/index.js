@@ -274,8 +274,8 @@ import {
       const authId = searchParams?.get("authId");
       const objectId = searchParams?.get("object_id");
       const objectType = searchParams?.get("object_type");
-      const redirect_url = searchParams?.get("redirect_url")
-      setRedirectUrl(redirect_url)
+      const back_url = searchParams?.get("back_url")
+      setRedirectUrl(back_url)
       setDocParams((prev) => ({ ...prev, authId, objectId, objectType }));
       if (authId !== docParams?.authId) {
         localStorage?.clear();
