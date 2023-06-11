@@ -575,7 +575,7 @@ import {
         {loading ? (
           <Loader />
         ) : (
-          <div className="">
+          <div className="p-[24px]">
             <VoidPopUp open={showVoidPopUp.isVisible} />
             <div className="font-[500]">Signeasy documents</div>
             <div className="flex border-[1px] w-fit py-[15px] rounded-[4px] mt-[20px] mb-[40px]">
