@@ -581,7 +581,7 @@ import {
           <div className="p-[48px]">
             <VoidPopUp open={showVoidPopUp.isVisible} />
             <div className="font-[500] ">Signeasy documents</div>
-            <div className="float-right"><a href={redirectUrl}>Back to hubspot</a></div>
+            <div className="float-right hover:text-sky-600 hover:underline"><a href={redirectUrl}>Back to hubspot</a></div>
             <div className="flex border-[1px] w-fit py-[15px] rounded-[4px] mt-[20px] mb-[40px]">
               {statusData?.map((item, index) => (
                 <div
