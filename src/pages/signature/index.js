@@ -104,7 +104,7 @@ function Signature() {
       .catch((error) => {
         openNotification({
           message: "Error",
-          description: error.message,
+          description: error?.response?.data?.message,
           type: "error",
           api,
         });
@@ -311,7 +311,7 @@ function Signature() {
         .catch((error) => {
           openNotification({
             message: "Error",
-            description: error.message,
+            description: error?.response?.data?.message,
             type: "error",
             api,
           });

@@ -298,7 +298,7 @@ const CheckStatus = () => {
   const getDataHandler = async () => {
     const { objectId, objectType, data } = await tokenHandler();
     await getApi({
-      endUrl: `hubspot-card/check-status?object_type=${
+      endUrl: `hubspot-card/envelopes?cs=yes&object_type=${
         objectType || docParams?.objectType || "CONTACT"
       }&object_id=${Number(objectId || docParams?.objectId || "151")}`,
       headers: {
