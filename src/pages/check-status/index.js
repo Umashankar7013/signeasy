@@ -99,7 +99,7 @@ const CheckStatus = () => {
     },
   };
   const headerData = [
-    { title: "Document Name", width: "25%" },
+    { title: "Document Name", width: "28%" },
     { title: "Object Type", width: '20%'},
     { title: "Status", width: "20%" },
     { title: "Last Modified", width: "20%" },
@@ -684,7 +684,7 @@ const CheckStatus = () => {
                 <div className="w-[20%] text-[14px]">
                   {moment(item?.updatedAt).format("LLL")}
                 </div>
-                <div className="flex items-center relative justify-end w-[20%] select-none">
+                <div className="flex items-center relative justify-end w-[20%] pr-[10px] select-none">
                   {/* <div
                     className="w-[50%] justify-end flex items-center text-[#3c9eeb] text-[14px] cursor-pointer"
                     onClick={() =>

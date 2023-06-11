@@ -18,6 +18,7 @@ import {
   import jwt_decode from "jwt-decode";
   import { ErrorPage } from "../../components/ErrorPage";
   import { AppContext } from "../../components/Layout";
+import { useRouter } from "next/router";
   
   const ViewAll = () => {
     const statusData = [
@@ -125,6 +126,8 @@ import {
       isVisible: false,
       id: "",
     });
+    const router = useRouter()
+    console.log(router)
   
     const statusHandler = (data) => {
       let status;
@@ -577,7 +580,8 @@ import {
         ) : (
           <div className="p-[48px]">
             <VoidPopUp open={showVoidPopUp.isVisible} />
-            <div className="font-[500]">Signeasy documents</div>
+            <div className="font-[500] ">Signeasy documents</div>
+            <div className="float-right"><a>Back to hubspot</a></div>
             <div className="flex border-[1px] w-fit py-[15px] rounded-[4px] mt-[20px] mb-[40px]">
               {statusData?.map((item, index) => (
                 <div
