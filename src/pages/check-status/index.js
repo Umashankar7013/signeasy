@@ -100,10 +100,10 @@ const CheckStatus = () => {
   };
   const headerData = [
     { title: "Document Name", width: "30%" },
-    { title: "Object Type", width: '10%'},
+    { title: "Object Type", width: '20%'},
     { title: "Status", width: "20%" },
     { title: "Last Modified", width: "20%" },
-    { title: "Actions", width: "20%" },
+    { title: "Actions", width: "10%" },
   ];
   const [sortedData, setSortedData] = useState([]);
   const [browserWindow, setBrowserWindow] = useState();
@@ -645,7 +645,7 @@ const CheckStatus = () => {
                     {item?.name}
                   </div>
                 </div>
-                <div className="flex items-center w-[10%] pr-[10px]">
+                <div className="flex items-center w-[20%] pr-[10px]">
                   <div className="pl-[10px] font-[500] text-[14px]">
                     {item?.object_type}
                   </div>
