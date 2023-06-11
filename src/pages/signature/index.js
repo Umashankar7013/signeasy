@@ -214,7 +214,6 @@ function Signature() {
           });
         })
         .catch((error) => {
-          console.log(error)
           openNotification({
             message: "Error",
             description: error?.response?.data?.message,
