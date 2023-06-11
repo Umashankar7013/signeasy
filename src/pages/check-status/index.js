@@ -301,7 +301,7 @@ const CheckStatus = () => {
     await getApi({
       endUrl: `hubspot-card/envelopes?cs=yes&object_type=${
         objectType || docParams?.objectType || "CONTACT"
-      }&object_id=${Number(objectId || docParams?.objectId || "151")}&limit=-1`,
+      }&object_id=${Number(objectId || docParams?.objectId || "151")}&limit=999`,
       headers: {
         "x-access-token": data?.token || JWTtoken,
       },
