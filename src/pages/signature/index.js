@@ -217,7 +217,7 @@ function Signature() {
           console.log(error)
           openNotification({
             message: "Error",
-            description: error.message,
+            description: error?.response?.data?.message,
             type: "error",
             api,
           });
