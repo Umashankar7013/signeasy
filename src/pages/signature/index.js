@@ -486,7 +486,7 @@ function Signature() {
                     back to the main screen.
                   </div>
                 </div>
-                <div className="text-[20px]">{`${timer} Sec`}</div>
+                {/* <div className="text-[20px]">{`${timer} Sec`}</div> */}
               </div>
             ) : (
               <form>
