@@ -26,14 +26,14 @@ export const SignersData = ({ data }) => {
                   Email :
                   <span className="font-[300]">{` ${item?.email || ""}`}</span>
                 </div>
-                <div className="text-[14px] font-lexend">
-                  Status :
+                {<div className="text-[14px] font-lexend">
+                 {data?.status !== "completed" &&  'Status :'}
                   <span className="font-[300] ml-[2px]">
                     {data?.status === "completed"
                       ? `Signed on ${moment(item?.updatedAt).format("LLL")}`
                       : `${item?.status || ""}`}
                   </span>
-                </div>
+                </div>}
               </div>
             </div>
           </div>

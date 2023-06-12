@@ -23,6 +23,7 @@ import { AppContext } from "../../components/Layout";
 import Image from "next/image";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import classNames from "classnames";
+import { ButtonWithDropDown } from "../../components/ButtonWithDropDown";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setDocParams } =
@@ -702,7 +703,7 @@ function Signature() {
                   <Step4 />
                 </div>
                 {/* Bottom Buttons */}
-                <div className="xs:flex justify-between fixed py-[10px] bottom-[0px] w-[100%] bg-[white]">
+                <div className="xs:flex justify-between fixed py-[10px] bottom-[40px] w-[100%] bg-[white]">
                   <PrimaryButton
                     title="Back"
                     image={
@@ -717,24 +718,37 @@ function Signature() {
                     titleClassName="pl-[10px] font-bold text-[#FF7A59] text-[14px]"
                     onClick={() => router.back()}
                   />
-                  <div className="flex w-[100%] xs:w-fit xs:mt-[0px] mt-[10px]">
-                    <input
-                      type="submit"
-                      value={type === "original" ? "Add fields" : "Preview"}
-                      className="border-[1px] px-[15px] py-[7px] cursor-pointer rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
-                      onClick={(e) => editHandler(e)}
+                  {type === "original" ? (
+                    <ButtonWithDropDown
+                      buttonTitle="Add fields"
+                      dropdownData={[
+                        {
+                          title: "Send without Fields",
+                          onClick: submitHandler,
+                        },
+                      ]}
+                      buttonOnClick={editHandler}
                     />
-                    <input
-                      type="submit"
-                      value={
-                        type === "original"
-                          ? "Send without fields"
-                          : "Send for signature"
-                      }
-                      className="border-[1px] px-[15px] ml-[10px] py-[7px] cursor-pointer rounded-[3px] bg-[#FF7A59] font-bold text-[14px] text-white"
-                      onClick={(e) => submitHandler(e)}
-                    />
-                  </div>
+                  ) : (
+                    <div className="flex w-[100%] xs:w-fit xs:mt-[0px] mt-[10px]">
+                      <input
+                        type="submit"
+                        value={type === "original" ? "Add fields" : "Preview"}
+                        className="border-[1px] px-[15px] py-[7px] cursor-pointer rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
+                        onClick={(e) => editHandler(e)}
+                      />
+                      <input
+                        type="submit"
+                        value={
+                          type === "original"
+                            ? "Send without fields"
+                            : "Send for signature"
+                        }
+                        className="border-[1px] px-[15px] ml-[10px] py-[7px] cursor-pointer rounded-[3px] bg-[#FF7A59] font-bold text-[14px] text-white"
+                        onClick={(e) => submitHandler(e)}
+                      />
+                    </div>
+                  )}
                 </div>
               </form>
             )}
