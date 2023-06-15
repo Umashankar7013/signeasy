@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import { PrimaryButton } from "../../components/PrimaryButton";
+import { LoginIcon } from "../../../public/svg/LoginIcon";
 
 const Home = () => {
   const router = useRouter();
@@ -20,12 +21,9 @@ const Home = () => {
       <PrimaryButton
         title="Enable"
         image={
-          <ImageWithBasePath
-            src="enableIcon"
-            height={18}
-            width={18}
-            className="mr-[8px]"
-          />
+          <div className="mr-[8px]">
+            <LoginIcon />
+          </div>
         }
         className="bg-[#1088E7] px-[14px] py-[10px] mt-[30px] rounded-[8px] border-[#1088E7]"
         titleClassName="text-white"

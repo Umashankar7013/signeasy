@@ -9,7 +9,7 @@ export const ButtonWithDropDown = ({
   const [showDropdown, setShowDropdown] = useState(false);
   return (
     <div>
-      <div className="bg-[#FF7A59] pl-[12px] py-[7px] rounded-[3px] cursor-pointer flex items-baseline">
+      <div className="bg-[#FF7A59] px-[12px] py-[7px] rounded-[3px] cursor-pointer flex items-center">
         <div>
           <input
             type="submit"
@@ -20,7 +20,7 @@ export const ButtonWithDropDown = ({
         </div>
         <div
           onClick={() => setShowDropdown(!showDropdown)}
-          className="flex items-end"
+          className="flex items-center mt-[3px] ml-[3px]"
         >
           {showDropdown ? (
             <CaretUpOutlined
@@ -29,8 +29,6 @@ export const ButtonWithDropDown = ({
                 padding: "0px",
                 margin: "0px",
                 color: "#fff",
-                paddingLeft: 30,
-                paddingRight: 10,
               }}
             />
           ) : (
@@ -40,8 +38,6 @@ export const ButtonWithDropDown = ({
                 padding: "0px",
                 margin: "0px",
                 color: "#fff",
-                paddingLeft: 30,
-                paddingRight: 10,
               }}
             />
           )}
@@ -49,10 +45,10 @@ export const ButtonWithDropDown = ({
       </div>
 
       {showDropdown && dropdownData?.length > 0 && (
-        <div className="absolute py-[5px] px-[5px] text-[13px] font-[700] mt-[3px] shadow-all border-[1px] w-[100%] rounded-[4px]">
+        <div className="absolute py-[7px] border-[#E0E3EA] w-fit right-0 px-[15px] text-[14px] font-[400] mt-[3px] border-[1px] rounded-[4px]">
           {dropdownData?.map((item, index) => (
             <div
-              className="select-none pb-[5px] cursor-pointer"
+              className="select-none cursor-pointer"
               key={index}
               onClick={(e) => item.onClick(e)}
             >

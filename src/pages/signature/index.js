@@ -24,6 +24,7 @@ import Image from "next/image";
 import { ImageWithBasePath } from "../../components/ImageWithBasePath";
 import classNames from "classnames";
 import { ButtonWithDropDown } from "../../components/ButtonWithDropDown";
+import { TickIcon } from "../../../public/svg/TickIcon";
 
 function Signature() {
   const { selectedItem, docParams, JWTtoken, setDocParams } =
@@ -51,9 +52,7 @@ function Signature() {
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [roles, setRoles] = useState(
-    type === "original"
-      ? [{ ...signer, name: "Signer 1" }]
-      : selectedItem?.metadata?.roles
+    type === "original" ? signersData : selectedItem?.metadata?.roles
   );
   const [timer, setTimer] = useState(5);
   const timeIntervel = useRef(null);
@@ -341,6 +340,7 @@ function Signature() {
       <FormHeaderLables
         text1="1. Review documents in your envelope"
         text2=" All documents in this envelope are part of your choosen template."
+        className="pt-[6px]"
       />
       <div className="p-[16px] ml-[17px] border-[1px] mt-[14px] border-[#E0E3EA] rounded-[3px]">
         <div className="font-lexend font-[500] leading-[17px] text-[14px]">
@@ -358,6 +358,7 @@ function Signature() {
       <FormHeaderLables
         text1="4. Send copies of signed documents"
         text2=" Copies of signed document can be shared to the below contact."
+        className="pt-[40px]"
       />
       <div className="mt-[14px] pl-[17px] w-[75%]">
         <div className="font-lexend font-[500] mb-[3px] text-[14px] leading-[17px] text-[#374659]">
@@ -490,13 +491,14 @@ function Signature() {
               </div>
             ) : (
               <form>
-                <div className="fixed overflow-scroll xs:h-[90%] h-[85%] pb-[30px] overflow-x-hidden w-[100%]">
+                <div className="w-[100%] pb-[116.6px]">
                   <Step1 />
                   {/* <Step2 /> */}
                   <div>
                     <FormHeaderLables
                       text1="2. Invite signers"
                       text2="Add HubSpot contacts as recipients for this envelope."
+                      className="pt-[40px]"
                     />
                     {roles?.map((item, index) => (
                       <div
@@ -505,13 +507,12 @@ function Signature() {
                           enableDrag && roles?.length > 1 && "pl-[20px]"
                         )}
                         key={index}
+                        draggable
+                        onDragStart={(e) => dragStart(e, index)}
+                        onDragEnter={(e) => dragEnter(e, index)}
                       >
                         {enableDrag && roles?.length > 1 && (
-                          <div
-                            draggable
-                            onDragStart={(e) => dragStart(e, index)}
-                            onDragEnter={(e) => dragEnter(e, index)}
-                          >
+                          <div>
                             <ImageWithBasePath
                               src="dragIcon"
                               height={18}
@@ -526,7 +527,7 @@ function Signature() {
                         >
                           <div className="flex justify-between items-center">
                             <div className="font-lexend font-[500] text-[14px] text-[#374659]">
-                              {item?.name}
+                              {item?.name || `Signer ${index + 1}`}
                             </div>
                             <div
                               onClick={() => {
@@ -624,21 +625,27 @@ function Signature() {
                       </div>
                     ))}
                     {type === "original" && (
-                      <div className="flex items-center justify-between ml-[17px] mt-[20px]">
+                      <div
+                        className={classNames(
+                          "flex items-center ml-[17px] mt-[20px]",
+                          roles?.length > 1 ? "justify-between" : "justify-end"
+                        )}
+                      >
                         {roles?.length > 1 && (
                           <div
-                            className="flex items-center cursor-pointer select-none"
+                            className={classNames(
+                              "flex items-center cursor-pointer select-none",
+                              enableDrag && "pl-[30px]"
+                            )}
                             onClick={() => setEnableDrag(!enableDrag)}
                           >
                             <div
                               className={classNames(
-                                "h-[16px] w-[16px] border-[1px] flex justify-center items-center rounded-[2px]",
+                                "h-[16px] w-[16px] border-[1px] flex justify-center items-center rounded-[3px]",
                                 enableDrag && "bg-[#3F8FAB]"
                               )}
                             >
-                              {enableDrag && (
-                                <CheckOutlined className="text-[10px] text-[#fff]" />
-                              )}
+                              {enableDrag && <TickIcon />}
                             </div>
                             <div className="pl-[6px] font-lexend font-[600] text-[14px] leading-[17.5px] text-[#3F8FAB]">
                               Set signing order
@@ -651,13 +658,7 @@ function Signature() {
                             type === "original" &&
                               setSignersData((prev) => [...prev, signer]);
                             type === "original" &&
-                              setRoles((prev) => [
-                                ...prev,
-                                {
-                                  ...signer,
-                                  name: `Signer ${prev.length + 1}`,
-                                },
-                              ]);
+                              setRoles((prev) => [...prev, signer]);
                           }}
                         >
                           <PlusIcon />
@@ -673,6 +674,7 @@ function Signature() {
                     <FormHeaderLables
                       text1="3. Customize the message for your recipients"
                       text2=" Edit the subject and message for the email sent with your envelope."
+                      className="pt-[40px]"
                     />
                     <div className="mt-[14px] pl-[17px]">
                       <Input
@@ -703,7 +705,7 @@ function Signature() {
                   <Step4 />
                 </div>
                 {/* Bottom Buttons */}
-                <div className="xs:flex justify-between fixed py-[10px] bottom-[40px] w-[100%] bg-[white]">
+                <div className="xs:flex justify-between fixed bottom-0 pt-[10px] pb-[40px] w-[100%] bg-[white]">
                   <PrimaryButton
                     title="Back"
                     image={
@@ -714,7 +716,7 @@ function Signature() {
                         }}
                       />
                     }
-                    className="pl-[5px] py-[7px] pr-[15px] border-[#FF7A59] rounded-[3px]"
+                    className="pl-[5px] py-[7px] pr-[15px] border-[#FF7A59] rounded-[3px] border-[1px]"
                     titleClassName="pl-[10px] font-bold text-[#FF7A59] text-[14px]"
                     onClick={() => router.back()}
                   />
@@ -734,7 +736,7 @@ function Signature() {
                       <input
                         type="submit"
                         value={type === "original" ? "Add fields" : "Preview"}
-                        className="border-[1px] px-[15px] py-[7px] cursor-pointer rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
+                        className="px-[15px] py-[7px] cursor-pointer rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
                         onClick={(e) => editHandler(e)}
                       />
                       <input
@@ -744,7 +746,7 @@ function Signature() {
                             ? "Send without fields"
                             : "Send for signature"
                         }
-                        className="border-[1px] px-[15px] ml-[10px] py-[7px] cursor-pointer rounded-[3px] bg-[#FF7A59] font-bold text-[14px] text-white"
+                        className="px-[15px] ml-[10px] py-[7px] cursor-pointer rounded-[3px] bg-[#FF7A59] font-bold text-[14px] text-white"
                         onClick={(e) => submitHandler(e)}
                       />
                     </div>

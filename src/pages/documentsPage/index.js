@@ -278,7 +278,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
                   <div
                     className={classNames(
                       "font-lexend font-[600] text-[#374659] text-[12px] leading-[16.39px]",
-                      index === 0 && "md:pl-[60px] pl-[47px]"
+                      index === 0 && "pl-[70px]"
                     )}
                   >
                     {item}
@@ -306,7 +306,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
               ))}
             </div>
             {/* Table data */}
-            <div className="w-[100%] pb-[100px]">
+            <div className="w-[100%] pb-[75.6px]">
               {filteredData?.map((document, index) => (
                 <div
                   key={index}
@@ -315,7 +315,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
                   )}
                 >
                   <div
-                    className="flex flex-1 items-center ml-[10px] cursor-pointer"
+                    className="flex flex-1 items-center ml-[18px] cursor-pointer"
                     onClick={() => {
                       setSelectedItem((prev) =>
                         prev?.id === document?.id ? {} : document
@@ -326,11 +326,11 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
                       isActive={document?.id === selectedItem?.id}
                       isDisabled={document?.name === undefined}
                     />
-                    <div className="md:pl-[30px] pl-[15px] pr-[10px] text-[14px] font-lexend font-[700]">
+                    <div className="pl-[18px] pr-[50px] text-[14px] font-lexend font-[500]">
                       {document?.name}
                     </div>
                   </div>
-                  <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
+                  <div className="flex flex-col flex-[0.4] -ml-[120px] text-[14px] justify-center items-center">
                     <div className="font-lexend font-[400]">
                       {
                         dateHandler({
@@ -351,7 +351,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
             </div>
           </div>
           {/* Bottom Buttons */}
-          <div className="fixed bottom-0 bg-[white] w-[100%] py-[15px]">
+          <div className="fixed bottom-0 bg-[white] w-[100%]">
             <BottomButtons forTemplates={forTemplates} />
           </div>
         </>

@@ -6,7 +6,7 @@ export const Tabs = ({ tabs, onChangeTab = () => {} }) => {
   return (
     <div className="border-b-2 flex pt-[19px]">
       {tabs?.map((tab, index) => (
-        <div key={index}>
+        <div key={index} className="relative">
           <div
             className={classNames(
               "px-[20px] cursor-pointer font-lexend text-[#374659] text-[14px] pb-[12px] leading-[17.5px] select-none",
@@ -20,7 +20,7 @@ export const Tabs = ({ tabs, onChangeTab = () => {} }) => {
             {tab}
           </div>
           {selectedTab === tab && (
-            <div className="h-[5px] w-[100%] bg-[#374659] rounded-[10px]"></div>
+            <div className="h-[5px] w-[100%] absolute bg-[#374659] -mt-[1px] rounded-[10px]"></div>
           )}
         </div>
       ))}
