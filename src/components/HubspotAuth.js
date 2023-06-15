@@ -33,7 +33,7 @@ export const HubspotAuth = ({ api }) => {
 
   const hubSpotAuthHandler = async () => {
     const popup = await popupHandler({
-      url: `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}hubspot/sign-in?redirect_uri=${AUTH_REDIRECTION_URL}/`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}oauth/hubspot/sign-in?redirect_uri=${AUTH_REDIRECTION_URL}/`,
     });
     setHubspotPopup(popup);
   };

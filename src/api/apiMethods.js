@@ -19,7 +19,7 @@ export const getApi = async ({
 export const deleteApi = async ({ endUrl = "", params = {}, data = {} }) => {
   const apiData = await axios({
     method: "delete",
-    url: `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}${endUrl}`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}oauth/${endUrl}`,
     params,
     data,
   }).catch((err) => console.log("Error", err?.response?.data?.message));

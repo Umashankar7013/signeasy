@@ -43,7 +43,7 @@ export const SigneasyAuth = ({
 
   const signeasyAuthHandler = async () => {
     let popup;
-    let url = `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubspotCredentials?.userId}&hubspot_portal_id=${hubspotCredentials?.portalId}`;
+    let url = `${process.env.NEXT_PUBLIC_BASE_URL}oauth/signeasy/sign-in?redirect_uri=${redirectionUrl}&hubspot_user_id=${hubspotCredentials?.userId}&hubspot_portal_id=${hubspotCredentials?.portalId}`;
     if (openInPopup) {
       popup = await popupHandler({
         url,

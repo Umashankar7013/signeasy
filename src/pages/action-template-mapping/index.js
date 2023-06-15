@@ -202,7 +202,7 @@ function ActionTemplateMapping() {
               className="text-[14px] font-lexend"
               onClick={() =>
                 window?.open(
-                  `https://signeasy.vercel.app/template-mapping?showToast=show&authId=${docParams?.authId}`,
+                  `${process.env.NEXT_PUBLIC_DEPLOYMENT_URL}template-mapping?showToast=show&authId=${docParams?.authId}`,
                   "_self"
                 )
               }

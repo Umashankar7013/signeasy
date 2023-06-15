@@ -221,130 +221,134 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
     <>
       {contextHolder}
       {loading ? (
-        <Loader className="h-[60vh]" />
+        <Loader />
       ) : (
         <>
-          {/* Search bar */}
-          <div className="flex items-center justify-between">
-            <SearchBar
-              className="w-fit my-[20px]"
-              onChange={(event) => searchHandler(event?.target?.value)}
-            />
-            {showUpload && (
-              <div>
-                {/* Upload document */}
-                <input
-                  ref={inputFileRef}
-                  type="file"
-                  className="hidden"
-                  onChange={(event) => uploadDocHandler(event.target.files[0])}
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.xml,.rtf,.txt,.html,.htm,.jpeg,.jpg,.png,.bmp,.gif,.tiff,.tif,.ods,.odt,.odp,.csv"
-                />
-                <div
-                  onClick={() => inputFileRef.current.click()}
-                  className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
-                >
-                  Upload document
-                </div>
-              </div>
-            )}
-          </div>
-          {/* Table headers */}
-          <div className="flex justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
-            {headerData?.map((item, index) => (
-              <div
-                className={classNames(
-                  "flex items-center py-[12px] cursor-pointer text-center",
-                  selectedHeader.current === item && "bg-[#ebf0f5]",
-                  index === 0 && "flex-1 justify-start",
-                  index === 1 && "flex-[0.4] justify-center"
-                )}
-                key={index}
-                onClick={() => {
-                  if (selectedHeader.current === item) {
-                    if (sortAccending.current === true) {
-                      sortAccending.current = false;
-                    } else {
-                      sortAccending.current = true;
+          <div className="h-[60vh]">
+            {/* Search bar */}
+            <div className="flex items-center justify-between">
+              <SearchBar
+                className="w-fit my-[20px]"
+                onChange={(event) => searchHandler(event?.target?.value)}
+              />
+              {showUpload && (
+                <div>
+                  {/* Upload document */}
+                  <input
+                    ref={inputFileRef}
+                    type="file"
+                    className="hidden"
+                    onChange={(event) =>
+                      uploadDocHandler(event.target.files[0])
                     }
-                  }
-                  selectedHeader.current = item || "";
-                  sortHandler(sortAccending.current ? "acce" : "dec");
-                }}
-              >
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.xml,.rtf,.txt,.html,.htm,.jpeg,.jpg,.png,.bmp,.gif,.tiff,.tif,.ods,.odt,.odp,.csv"
+                  />
+                  <div
+                    onClick={() => inputFileRef.current.click()}
+                    className="text-[14px] font-lexend font-[600] cursor-pointer text-[#3F8FAB]"
+                  >
+                    Upload document
+                  </div>
+                </div>
+              )}
+            </div>
+            {/* Table headers */}
+            <div className="flex justify-between items-center bg-[#f6f8fa] border-[1px] border-[#D9D9D9]">
+              {headerData?.map((item, index) => (
                 <div
                   className={classNames(
-                    "font-lexend font-[600] text-[#374659] text-[12px] leading-[16.39px]",
-                    index === 0 && "md:pl-[60px] pl-[47px]"
+                    "flex items-center py-[12px] cursor-pointer text-center",
+                    selectedHeader.current === item && "bg-[#ebf0f5]",
+                    index === 0 && "flex-1 justify-start",
+                    index === 1 && "flex-[0.4] justify-center"
                   )}
-                >
-                  {item}
-                </div>
-                <div className="flex flex-col ml-[5px]">
-                  <CaretUpOutlined
-                    style={{
-                      fontSize: "11px",
-                      padding: "0px",
-                      margin: "0px",
-                      color: "gray",
-                    }}
-                  />
-                  <CaretDownOutlined
-                    style={{
-                      fontSize: "11px",
-                      padding: "0px",
-                      margin: "0px",
-                      color:
-                        selectedHeader.current === item ? "#3F8FAB" : "gray",
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* Table data */}
-          <div className="w-[100%] pb-[100px]">
-            {filteredData?.map((document, index) => (
-              <div
-                key={index}
-                className={classNames(
-                  "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px]"
-                )}
-              >
-                <div
-                  className="flex flex-1 items-center ml-[10px] cursor-pointer"
+                  key={index}
                   onClick={() => {
-                    setSelectedItem((prev) =>
-                      prev?.id === document?.id ? {} : document
-                    );
+                    if (selectedHeader.current === item) {
+                      if (sortAccending.current === true) {
+                        sortAccending.current = false;
+                      } else {
+                        sortAccending.current = true;
+                      }
+                    }
+                    selectedHeader.current = item || "";
+                    sortHandler(sortAccending.current ? "acce" : "dec");
                   }}
                 >
-                  <RadioButton
-                    isActive={document?.id === selectedItem?.id}
-                    isDisabled={document?.name === undefined}
-                  />
-                  <div className="md:pl-[30px] pl-[15px] pr-[10px] text-[14px] font-lexend font-[700]">
-                    {document?.name}
+                  <div
+                    className={classNames(
+                      "font-lexend font-[600] text-[#374659] text-[12px] leading-[16.39px]",
+                      index === 0 && "md:pl-[60px] pl-[47px]"
+                    )}
+                  >
+                    {item}
+                  </div>
+                  <div className="flex flex-col ml-[5px]">
+                    <CaretUpOutlined
+                      style={{
+                        fontSize: "11px",
+                        padding: "0px",
+                        margin: "0px",
+                        color: "gray",
+                      }}
+                    />
+                    <CaretDownOutlined
+                      style={{
+                        fontSize: "11px",
+                        padding: "0px",
+                        margin: "0px",
+                        color:
+                          selectedHeader.current === item ? "#3F8FAB" : "gray",
+                      }}
+                    />
                   </div>
                 </div>
-                <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
-                  <div className="font-lexend font-[400]">
-                    {
-                      dateHandler({
-                        timestamp: document?.[timeVariable],
-                      })[0]
-                    }
+              ))}
+            </div>
+            {/* Table data */}
+            <div className="w-[100%] pb-[100px]">
+              {filteredData?.map((document, index) => (
+                <div
+                  key={index}
+                  className={classNames(
+                    "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px]"
+                  )}
+                >
+                  <div
+                    className="flex flex-1 items-center ml-[10px] cursor-pointer"
+                    onClick={() => {
+                      setSelectedItem((prev) =>
+                        prev?.id === document?.id ? {} : document
+                      );
+                    }}
+                  >
+                    <RadioButton
+                      isActive={document?.id === selectedItem?.id}
+                      isDisabled={document?.name === undefined}
+                    />
+                    <div className="md:pl-[30px] pl-[15px] pr-[10px] text-[14px] font-lexend font-[700]">
+                      {document?.name}
+                    </div>
                   </div>
-                  <div className="font-lexend text-[14px] font-[400]">
-                    {
-                      dateHandler({
-                        timestamp: document?.[timeVariable],
-                      })[1]
-                    }
+                  <div className="flex flex-col flex-[0.4] text-[14px] justify-center items-center">
+                    <div className="font-lexend font-[400]">
+                      {
+                        dateHandler({
+                          timestamp: document?.[timeVariable],
+                        })[0]
+                      }
+                    </div>
+                    <div className="font-lexend text-[14px] font-[400]">
+                      {
+                        dateHandler({
+                          timestamp: document?.[timeVariable],
+                        })[1]
+                      }
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           {/* Bottom Buttons */}
           <div className="fixed bottom-0 bg-[white] w-[100%] py-[15px]">
