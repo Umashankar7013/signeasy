@@ -140,7 +140,7 @@ function TemplateMapping() {
     }
   };
 
-  const actionsHandler = async (item, index) => {
+  const actionsHandler = async (index) => {
     setSelectedItem(tempaltesData?.current[index]);
     setLoading(true);
     await router.push({
@@ -228,11 +228,12 @@ function TemplateMapping() {
             {sortedData?.map((template, index) => (
               <div
                 className={classNames(
-                  "flex w-[100%] items-center py-[20px]",
+                  "flex w-[100%] items-center py-[20px] cursor-pointer",
                   index !== tempaltesData?.current.length - 1 &&
                     "border-b-[1px] border-b-[#CDD6E1]"
                 )}
                 key={index}
+                onClick={() => actionsHandler(index)}
               >
                 <div className="w-[35%] text-[14px] text-[#3F8FAB] leading-[19.12px] font-[600] px-[24px]">
                   {template?.name}
@@ -261,7 +262,7 @@ function TemplateMapping() {
                   <div className="text-[14px] text-[#374659] font-[500] leading-[19.12px]">
                     {dateHandler({ timestamp: template?.modified_time })}
                   </div>
-                  <DropDown
+                  {/* <DropDown
                     enableSearch={false}
                     contentHeader="Actions"
                     className="w-[100px]"
@@ -271,7 +272,7 @@ function TemplateMapping() {
                     dropDownContentClassName="py-[15px] pl-[22px] text-[14px]"
                     onClick={actionsHandler}
                     specificIndex={index}
-                  />
+                  /> */}
                 </div>
               </div>
             ))}

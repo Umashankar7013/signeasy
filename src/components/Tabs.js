@@ -4,7 +4,7 @@ import React, { useState } from "react";
 export const Tabs = ({ tabs, onChangeTab = () => {} }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   return (
-    <div className="border-b-2 flex pt-[19px]">
+    <div className="border-b-2 flex">
       {tabs?.map((tab, index) => (
         <div key={index} className="relative">
           <div

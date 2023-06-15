@@ -224,7 +224,7 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
         <Loader />
       ) : (
         <>
-          <div className="h-[60vh]">
+          <div className="">
             {/* Search bar */}
             <div className="flex items-center justify-between">
               <SearchBar
@@ -306,52 +306,54 @@ function DocumentsPage({ showUpload = true, forTemplates = false }) {
               ))}
             </div>
             {/* Table data */}
-            <div className="w-[100%] pb-[75.6px]">
-              {filteredData?.map((document, index) => (
-                <div
-                  key={index}
-                  className={classNames(
-                    "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px]"
-                  )}
-                >
+            <div className="">
+              <div className="w-[100%] pb-[81.6px]">
+                {filteredData?.map((document, index) => (
                   <div
-                    className="flex flex-1 items-center ml-[18px] cursor-pointer"
-                    onClick={() => {
-                      setSelectedItem((prev) =>
-                        prev?.id === document?.id ? {} : document
-                      );
-                    }}
+                    key={index}
+                    className={classNames(
+                      "flex w-[100%] items-center border-b-[1px] border-l-[1px] border-r-[1px] border-[#D9D9D9] py-[10px]"
+                    )}
                   >
-                    <RadioButton
-                      isActive={document?.id === selectedItem?.id}
-                      isDisabled={document?.name === undefined}
-                    />
-                    <div className="pl-[18px] pr-[50px] text-[14px] font-lexend font-[500]">
-                      {document?.name}
+                    <div
+                      className="flex flex-1 items-center ml-[18px] cursor-pointer"
+                      onClick={() => {
+                        setSelectedItem((prev) =>
+                          prev?.id === document?.id ? {} : document
+                        );
+                      }}
+                    >
+                      <RadioButton
+                        isActive={document?.id === selectedItem?.id}
+                        isDisabled={document?.name === undefined}
+                      />
+                      <div className="pl-[18px] pr-[50px] text-[14px] font-lexend font-[500]">
+                        {document?.name}
+                      </div>
+                    </div>
+                    <div className="flex flex-col flex-[0.4] -ml-[120px] text-[14px] justify-center items-center">
+                      <div className="font-lexend font-[400]">
+                        {
+                          dateHandler({
+                            timestamp: document?.[timeVariable],
+                          })[0]
+                        }
+                      </div>
+                      <div className="font-lexend text-[14px] font-[400]">
+                        {
+                          dateHandler({
+                            timestamp: document?.[timeVariable],
+                          })[1]
+                        }
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-col flex-[0.4] -ml-[120px] text-[14px] justify-center items-center">
-                    <div className="font-lexend font-[400]">
-                      {
-                        dateHandler({
-                          timestamp: document?.[timeVariable],
-                        })[0]
-                      }
-                    </div>
-                    <div className="font-lexend text-[14px] font-[400]">
-                      {
-                        dateHandler({
-                          timestamp: document?.[timeVariable],
-                        })[1]
-                      }
-                    </div>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
           {/* Bottom Buttons */}
-          <div className="fixed bottom-0 bg-[white] w-[100%]">
+          <div className="fixed bottom-0 pb-[6px] bg-[white] w-[100%]">
             <BottomButtons forTemplates={forTemplates} />
           </div>
         </>

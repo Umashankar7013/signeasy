@@ -14,7 +14,7 @@ function TemplatesAndDocs() {
 
   return (
     <div>
-      <div className="font-lexend text-[14px] leading-[17.5px] text-[#374659] font-[300]">
+      <div className="font-lexend text-[14px] leading-[17.5px] text-[#374659] pb-[19px] font-[300]">
         Choose a template or document to send to your customer and attach to
         this contact
       </div>
