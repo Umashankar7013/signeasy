@@ -18,6 +18,11 @@ import { SignersData } from "../../components/SignersData";
 import jwt_decode from "jwt-decode";
 import { ErrorPage } from "../../components/ErrorPage";
 import { AppContext } from "../../components/Layout";
+import { CompletedIcon } from "../../../public/svg/CompletedIcon";
+import { DeclinedIcon } from "../../../public/svg/DeclinedIcon";
+import { VoidedIcon } from "../../../public/svg/VoidedIcon";
+import { WaitingIcon } from "../../../public/svg/WaitingIcon";
+import { DownArrowIcon } from "../../../public/svg/DownArrowIcon";
 
 const CheckStatus = () => {
   const statusData = [
@@ -32,8 +37,8 @@ const CheckStatus = () => {
   ];
   const statusUtils = {
     completed: {
-      icon: <CheckOutlined className="text-[15px]" />,
-      color: "#3ead5e",
+      icon: <CompletedIcon />,
+      color: "#0F9835",
       subText: "Signed by",
       action: "Download",
       actionData: [
@@ -53,8 +58,8 @@ const CheckStatus = () => {
       ],
     },
     declined: {
-      icon: <CloseCircleOutlined className="text-[15px]" />,
-      color: "#c85353",
+      icon: <DeclinedIcon />,
+      color: "#BC2C2C",
       subText: "by",
       action: "Void",
       actionData: [
@@ -70,14 +75,14 @@ const CheckStatus = () => {
       ],
     },
     voided: {
-      icon: <StopOutlined className="text-[15px]" />,
-      color: "#c85353",
+      icon: <VoidedIcon />,
+      color: "#BC2C2C",
       subText: "by",
       action: "Download",
     },
     pending: {
-      icon: <ClockCircleOutlined className="text-[15px]" />,
-      color: "#fea07c",
+      icon: <WaitingIcon />,
+      color: "#FF7540",
       subText: "for",
       action: "Send Reminder",
       actionData: [
@@ -100,7 +105,7 @@ const CheckStatus = () => {
   };
   const headerData = [
     { title: "Document Name", width: "28%" },
-    { title: "Object Type", width: '20%'},
+    { title: "Object Type", width: "20%" },
     { title: "Status", width: "20%" },
     { title: "Last Modified", width: "20%" },
     { title: "Actions", width: "10%" },
@@ -126,6 +131,8 @@ const CheckStatus = () => {
     isVisible: false,
     id: "",
   });
+  const selectedHeader = useRef("Last Modified");
+  const sortAccending = useRef(false);
 
   const statusHandler = (data) => {
     let status;
@@ -155,25 +162,45 @@ const CheckStatus = () => {
     return sortedEnvelopes;
   };
 
-  const sortOnUpdateHandler = (envelopes) => {
-    return envelopes?.sort((a, b) => {
-      if (a?.["updatedAt"] < b?.["updatedAt"]) return 1;
-      else if (a?.["updatedAt"] > b?.["updatedAt"]) return -1;
-      else if (a?.["updatedAt"] === b?.["updatedAt"]) return 0;
-    });
+  const sortOnUpdateHandler = (envelopes, value = "dec") => {
+    let sortedData;
+    if (value === "acce") {
+      sortedData = envelopes?.sort((a, b) => {
+        if (a?.["updatedAt"] > b?.["updatedAt"]) return 1;
+        else if (a?.["updatedAt"] < b?.["updatedAt"]) return -1;
+        else if (a?.["updatedAt"] === b?.["updatedAt"]) return 0;
+      });
+    } else {
+      sortedData = envelopes?.sort((a, b) => {
+        if (a?.["updatedAt"] < b?.["updatedAt"]) return 1;
+        else if (a?.["updatedAt"] > b?.["updatedAt"]) return -1;
+        else if (a?.["updatedAt"] === b?.["updatedAt"]) return 0;
+      });
+    }
+    return sortedData;
   };
 
-  const sortHandler = (selectedHeader) => {
+  const sortHandler = (selectedHeader, value) => {
     const documentUtils = {
       "Document Name": "name",
+      "Object Type": "object_type",
     };
     const sortKey = documentUtils?.[selectedHeader];
-    const laterSort = sortedData?.sort((a, b) => {
-      if (a?.[sortKey] > b?.[sortKey]) return 1;
-      else if (a?.[sortKey] < b?.[sortKey]) return -1;
-      else if (a?.[sortKey] === b?.[sortKey]) return 0;
-    });
-    laterSort && setSortedData([...laterSort]);
+    if (value === "acce") {
+      const laterSort = sortedData?.sort((a, b) => {
+        if (a?.[sortKey] > b?.[sortKey]) return 1;
+        else if (a?.[sortKey] < b?.[sortKey]) return -1;
+        else if (a?.[sortKey] === b?.[sortKey]) return 0;
+      });
+      laterSort && setSortedData([...laterSort]);
+    } else {
+      const laterSort = sortedData?.sort((a, b) => {
+        if (a?.[sortKey] < b?.[sortKey]) return 1;
+        else if (a?.[sortKey] > b?.[sortKey]) return -1;
+        else if (a?.[sortKey] === b?.[sortKey]) return 0;
+      });
+      laterSort && setSortedData([...laterSort]);
+    }
   };
 
   const dataManipulator = () => {
@@ -301,7 +328,9 @@ const CheckStatus = () => {
     await getApi({
       endUrl: `hubspot-card/envelopes?cs=yes&object_type=${
         objectType || docParams?.objectType || "CONTACT"
-      }&object_id=${Number(objectId || docParams?.objectId || "151")}&limit=999`,
+      }&object_id=${Number(
+        objectId || docParams?.objectId || "151"
+      )}&limit=999`,
       headers: {
         "x-access-token": data?.token || JWTtoken,
       },
@@ -498,7 +527,10 @@ const CheckStatus = () => {
         <div className="absolute right-0 bg-[white] z-20 border-[1px] w-[100%] top-[25px]">
           {subActions?.map((action, index) => (
             <div
-              className="py-[10px] px-[10px] text-[14px] cursor-pointer"
+              className={classNames(
+                "py-[10px] px-[10px] text-[14px] cursor-pointer",
+                index !== subActions?.length && "border-b-[1px]"
+              )}
               onClick={action?.onClick}
               key={index}
             >
@@ -578,18 +610,26 @@ const CheckStatus = () => {
       ) : (
         <div className="">
           <VoidPopUp open={showVoidPopUp.isVisible} />
-          <div className="font-[500]">Signeasy documents</div>
-          <div className="flex border-[1px] w-fit py-[15px] rounded-[4px] mt-[20px] mb-[40px]">
+          <div className="font-[600] text-[20px] font-lato leading-[28px] text-[#141414]">
+            Signeasy documents
+          </div>
+          <div className="flex border-[1px] w-fit py-[24px] rounded-[4px] mt-[26px] border-[#D7D7D7] mb-[48px]">
             {statusData?.map((item, index) => (
               <div
                 className={classNames(
                   index !== statusData?.length - 1 && "border-r-[1px]",
-                  "px-[15px]"
+                  index === 0
+                    ? "pl-[24px] pr-[32px]"
+                    : index === statusData?.length - 1
+                    ? "pr-[24px] pl-[32px]"
+                    : "px-[32px]"
                 )}
                 key={index}
               >
-                <div className="text-[#838b90] text-[14px]">{item?.title}</div>
-                <div className="font-[500]">
+                <div className="text-[#646E74] text-[14px] font-[500] font-lato leading-[20px]">
+                  {item?.title}
+                </div>
+                <div className="font-[600] text-[20px] font-lato leading-[28px] pt-[6px] text-[#141414]">
                   {item?.title === "Waiting for others"
                     ? docsData?.current?.pending
                     : docsData?.current?.[item?.title.toLowerCase()]}
@@ -607,25 +647,41 @@ const CheckStatus = () => {
                 )}
                 style={{ width: item?.width }}
                 onClick={() => {
+                  if (selectedHeader.current === item?.title) {
+                    if (sortAccending.current === true) {
+                      sortAccending.current = false;
+                    } else {
+                      sortAccending.current = true;
+                    }
+                  }
+                  selectedHeader.current = item?.title || "";
                   if (item?.title === "Status") {
                     const sortedEnvelopes = statusSortHandler(
                       docsData.current.envelopes
                     );
-                    setSortedData(sortedEnvelopes);
+                    setSortedData([...sortedEnvelopes]);
                   } else if (item?.title === "Last Modified") {
                     const sortedEnvelopes = sortOnUpdateHandler(
-                      docsData.current.envelopes
+                      docsData.current.envelopes,
+                      sortAccending.current ? "acce" : "dec"
                     );
-                    setSortedData(sortedEnvelopes);
+                    setSortedData([...sortedEnvelopes]);
                   } else {
-                    sortHandler(item?.title);
+                    sortHandler(
+                      item?.title,
+                      sortAccending.current ? "acce" : "dec"
+                    );
                   }
                 }}
                 key={index}
               >
-                <div className="text-[14px] text-[#838b90]">{item?.title}</div>
+                <div className="text-[14px] text-[#646E74] font-lato leading-[16px]">
+                  {item?.title}
+                </div>
                 {item?.title !== "Actions" && (
-                  <DownOutlined className="text-[12px] pl-[5px] pt-[2px] text-[#838b90]" />
+                  <div className="pl-[6px]">
+                    <DownArrowIcon />
+                  </div>
                 )}
               </div>
             ))}
@@ -637,16 +693,14 @@ const CheckStatus = () => {
                 className="flex items-center border-b-[1px] py-[12px] px-[30px]"
                 key={index}
               >
-                <div className="flex items-center w-[30%] pr-[10px]">
-                  <div className="-mt-[6px]">
-                    {statusUtils[item?.status]?.icon}
-                  </div>
-                  <div className="pl-[10px] font-[500] text-[14px]">
+                <div className="flex items-center w-[28%] pr-[10px]">
+                  <div>{statusUtils[item?.status]?.icon}</div>
+                  <div className="pl-[9px] font-[400] font-lato text-[14px] leading-[18px] text-[#141414]">
                     {item?.name}
                   </div>
                 </div>
                 <div className="flex items-center w-[20%] pr-[10px]">
-                  <div className="pl-[10px] font-[500] text-[14px]">
+                  <div className="font-[400] font-lato text-[14px]">
                     {item?.object_type}
                   </div>
                 </div>
@@ -664,13 +718,13 @@ const CheckStatus = () => {
                 >
                   <div
                     style={{ color: statusUtils[item?.status].color }}
-                    className="text-[14px] capitalize"
+                    className="text-[14px] capitalize font-lato"
                   >
                     {item?.status === "pending" ? "Waiting" : item?.status}
                   </div>
-                  <div className="text-[14px] text-[#838b90]">
+                  <div className="text-[14px] text-[#888888] font-lato">
                     {statusUtils[item?.status]?.subText}
-                    <span className="pl-[3px] text-[#3c9eeb]">
+                    <span className="pl-[3px] text-[#1088E7] font-lato">
                       {item?.status === "voided"
                         ? " You"
                         : signersCountHandler(item?.recipients, item?.status)}
@@ -681,10 +735,15 @@ const CheckStatus = () => {
                       <SignersData data={signersData.current} />
                     )}
                 </div>
-                <div className="w-[20%] text-[14px]">
-                  {moment(item?.updatedAt).format("LLL")}
+                <div className="w-[20%]">
+                  <div className="text-[14px] font-lato text-[#646E74] font-[400] leading-[20px]">
+                    {moment(item?.updatedAt).format("LL")}
+                  </div>
+                  <div className="text-[14px] font-lato text-[#8A8A8A] font-[400] leading-[20px]">
+                    {moment(item?.updatedAt).format("LT")}
+                  </div>
                 </div>
-                <div className="flex items-center relative justify-end w-[20%] pr-[20px] select-none">
+                <div className="flex items-center relative justify-end w-[10%] pr-[20px] select-none">
                   {/* <div
                     className="w-[50%] justify-end flex items-center text-[#3c9eeb] text-[14px] cursor-pointer"
                     onClick={() =>

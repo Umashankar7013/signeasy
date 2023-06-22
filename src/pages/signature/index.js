@@ -705,7 +705,7 @@ function Signature() {
                   <Step4 />
                 </div>
                 {/* Bottom Buttons */}
-                <div className="xs:flex justify-between fixed bottom-0 pt-[10px] pb-[40px] w-[100%] bg-[white]">
+                <div className="xs:flex justify-between fixed bottom-0 pt-[30px] pb-[40px] w-[100%] bg-[white]">
                   <PrimaryButton
                     title="Back"
                     image={
@@ -736,7 +736,7 @@ function Signature() {
                       <input
                         type="submit"
                         value={type === "original" ? "Add fields" : "Preview"}
-                        className="px-[15px] py-[7px] cursor-pointer rounded-[3px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
+                        className="px-[15px] py-[7px] cursor-pointer rounded-[3px] border-[1px] border-[#FF7A59] text-[#FF7A59] font-bold text-[14px]"
                         onClick={(e) => editHandler(e)}
                       />
                       <input

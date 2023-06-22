@@ -13,7 +13,8 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
-        lexend: ["Lexend Deca", " sans-serif"],
+        lexend: ["Lexend Deca", "sans-serif"],
+        lato: ["Lato", "sans - serif"],
       },
       boxShadow: {
         all: "2px 0px 10px 1px rgba(0, 0, 0, 0.3)",
